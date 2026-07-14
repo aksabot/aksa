@@ -1,5 +1,6 @@
 #include "vm.h"
 #include "ast.h"
+#include "checker.h"
 #include "lexer.h"
 #include "parser.h"
 #include <math.h>
@@ -686,6 +687,7 @@ static int vm_execute(VM *vm, Func *script) {
 int aksa_run(const char *src, const AksaLocale *loc, AksaErrors *errs,
              AksaOutFn out, void *user) {
     AksaNode *prog = aksa_parse(src, loc, errs);
+    if (errs->count == 0) aksa_check(prog, loc, errs);
     if (errs->count > 0) {
         aksa_ast_free(prog);
         return 1;

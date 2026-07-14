@@ -41,9 +41,12 @@
     "E102": "I don't know the command '{name}' (line {line})",
     "E103": "The number of inputs for '{name}' doesn't match (line {line})",
     "E104": "The values on line {line} don't fit this operation",
+    "E105": "The part inside ( ) must be true or false (line {line})",
     "E106": "'{name}' can't be used here yet (line {line})",
     "E107": "'stop' only works inside a loop (line {line})",
     "E108": "'return' only works inside a function (line {line})",
-    "E109": "This program goes too deep or is too big (line {line})"
+    "E109": "This program goes too deep or is too big (line {line})",
+    "E110": "'repeat' needs a number (line {line})",
+    "E111": "'{name}' has already been made (line {line})"
   }
 }

@@ -41,9 +41,12 @@
     "E102": "Aku tidak kenal perintah '{name}' (baris {line})",
     "E103": "Jumlah isian untuk '{name}' tidak pas (baris {line})",
     "E104": "Nilai-nilai di baris {line} tidak cocok untuk operasi ini",
+    "E105": "Bagian di dalam ( ) harus bernilai benar atau salah (baris {line})",
     "E106": "'{name}' belum bisa dipakai di sini (baris {line})",
     "E107": "'berhenti' hanya boleh di dalam pengulangan (baris {line})",
     "E108": "'kembali' hanya boleh di dalam fungsi (baris {line})",
-    "E109": "Program ini terlalu dalam atau terlalu besar (baris {line})"
+    "E109": "Program ini terlalu dalam atau terlalu besar (baris {line})",
+    "E110": "'ulangi' butuh angka (baris {line})",
+    "E111": "'{name}' sudah pernah dibuat (baris {line})"
   }
 }

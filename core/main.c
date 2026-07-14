@@ -1,3 +1,4 @@
+#include "checker.h"
 #include "lexer.h"
 #include "parser.h"
 #include "vm.h"
@@ -9,6 +10,7 @@ static int usage(void) {
     fprintf(stderr,
             "usage: aksa tokens <file.aksa> [--locale id]\n"
             "       aksa ast <file.aksa> [--locale id]\n"
+            "       aksa check <file.aksa> [--locale id]\n"
             "       aksa run <file.aksa> [--locale id]\n");
     return 2;
 }
@@ -19,7 +21,8 @@ int main(int argc, char **argv) {
     for (int i = 3; i < argc - 1; i++)
         if (strcmp(argv[i], "--locale") == 0) locale = argv[i + 1];
 
-    if (strcmp(cmd, "tokens") != 0 && strcmp(cmd, "ast") != 0 && strcmp(cmd, "run") != 0)
+    if (strcmp(cmd, "tokens") != 0 && strcmp(cmd, "ast") != 0 &&
+        strcmp(cmd, "check") != 0 && strcmp(cmd, "run") != 0)
         return usage();
 
     char path[512];
@@ -44,9 +47,17 @@ int main(int argc, char **argv) {
         return 1;
     }
     int nerr = 0;
-    if (strcmp(cmd, "run") == 0) {
+    if (strcmp(cmd, "run") == 0 || strcmp(cmd, "check") == 0) {
         AksaErrors errs = {0};
-        int rc = aksa_run(src, &loc, &errs, NULL, NULL);
+        int rc;
+        if (strcmp(cmd, "run") == 0) {
+            rc = aksa_run(src, &loc, &errs, NULL, NULL);
+        } else {
+            AksaNode *prog = aksa_parse(src, &loc, &errs);
+            if (errs.count == 0) aksa_check(prog, &loc, &errs);
+            aksa_ast_free(prog);
+            rc = errs.count > 0;
+        }
         size_t cap = 64, len = 0;
         char *msgs = malloc(cap);
         msgs[0] = 0;

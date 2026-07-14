@@ -1,6 +1,6 @@
 CC = cc
 CFLAGS = -std=c99 -Wall -Wextra -Werror -O2
-CORE = core/error.c core/locale.c core/lexer.c core/ast.c core/parser.c core/vm.c
+CORE = core/error.c core/locale.c core/lexer.c core/ast.c core/parser.c core/checker.c core/vm.c
 
 aksa: core/main.c $(CORE)
 	$(CC) $(CFLAGS) $^ -o $@
@@ -17,10 +17,14 @@ tests/test_parser: tests/test_parser.c $(CORE)
 tests/test_vm: tests/test_vm.c $(CORE)
 	$(CC) $(CFLAGS) $^ -o $@
 
-test: tests/test_locale tests/test_lexer tests/test_parser tests/test_vm
+tests/test_checker: tests/test_checker.c $(CORE)
+	$(CC) $(CFLAGS) $^ -o $@
+
+test: tests/test_locale tests/test_lexer tests/test_parser tests/test_checker tests/test_vm
 	./tests/test_locale
 	./tests/test_lexer
 	./tests/test_parser
+	./tests/test_checker
 	./tests/test_vm
 
 wasm: wasm/aksa.js
@@ -32,6 +36,6 @@ wasm/aksa.js: wasm/glue.c $(CORE)
 	  -sMODULARIZE=1 -sEXPORT_NAME=AksaModule
 
 clean:
-	rm -f aksa tests/test_lexer tests/test_locale tests/test_parser tests/test_vm wasm/aksa.js wasm/aksa.wasm
+	rm -f aksa tests/test_lexer tests/test_locale tests/test_parser tests/test_checker tests/test_vm wasm/aksa.js wasm/aksa.wasm
 
 .PHONY: test wasm clean

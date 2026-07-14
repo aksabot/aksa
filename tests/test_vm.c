@@ -105,7 +105,7 @@ int main(void) {
     run(&ID, "tulis(1 + benar)", eid, NULL);
     CHECK_STR(eid, "E104");
     run(&ID, "jika (1) { tulis(1) }", eid, NULL);
-    CHECK_STR(eid, "E104"); /* conditions must be logika */
+    CHECK_STR(eid, "E105"); /* checker catches non-logika conditions statically */
     run(&ID, "maju(10)", eid, NULL);
     CHECK_STR(eid, "E106"); /* turtle needs the browser (Phase 2) */
     /* undefined local read before assignment inside function */
