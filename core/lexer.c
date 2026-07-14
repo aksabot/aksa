@@ -48,7 +48,7 @@ static void skip_ws(AksaLexer *lx) {
     for (;;) {
         char c = peek(lx);
         if (c == ' ' || c == '\t' || c == '\r' || c == '\n') advance(lx);
-        else if (c == '#') {
+        else if (c == '/' && peek2(lx) == '/') {
             while (peek(lx) && peek(lx) != '\n') advance(lx);
         } else return;
     }

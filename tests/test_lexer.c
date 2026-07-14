@@ -109,7 +109,7 @@ int main(void) {
 
     /* comments and line/col tracking */
     {
-        int n = lex_all(&ID, "# komentar\ntulis(1)\n  jika", t, 64, NULL);
+        int n = lex_all(&ID, "// komentar\ntulis(1)\n  jika", t, 64, NULL);
         CHECK(n == 5);
         CHECK(t[0].kind == TOK_IDENT && t[0].line == 2 && t[0].col == 1);
         CHECK(t[3].kind == TOK_RPAREN && t[3].line == 2 && t[3].col == 8);

@@ -6,6 +6,10 @@
 
 - 76 example programs now run automatically to prove Aksa behaves exactly as promised.
 
+### Changed
+
+- Comments now start with // instead of #, matching the C family.
+
 ## 0.0.1 — 2026-07-14
 
 ### Added

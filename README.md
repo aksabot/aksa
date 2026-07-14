@@ -3,7 +3,7 @@
 A tiny programming language for kids — with keywords in *their* language.
 
 ```
-# my first program
+// my first program
 function greet(name) {
   return "hello " + name
 }
@@ -86,7 +86,7 @@ while (i > 0) {
 - **Types:** numbers, strings (`+` concatenates), booleans (`true`/`false`). Conditions must be boolean — `if (5)` is an error with a friendly explanation, not a silent truthy guess.
 - **Keywords (en / id):** if/jika, else/lainnya, repeat/ulangi, while/selama, function/fungsi, return/kembali, true/benar, false/salah, and/dan, or/atau, not/bukan, make/buat, stop/berhenti.
 - **Builtins:** console (`print`, `ask`), turtle (`forward`, `turn_right`, …) and hardware (`turn_on`, `read`, `wait`, …) — the latter two groups arrive with the browser environment and simulator.
-- Identifiers accept full Unicode, so kids name things in their own words. Comments start with `#`.
+- Identifiers accept full Unicode, so kids name things in their own words. Comments start with `//`.
 
 ## How it works
 
