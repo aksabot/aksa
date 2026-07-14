@@ -1,0 +1,11 @@
+/*.md
+!README.md
+!CHANGELOG.md
+!ROADMAP.md
+/aksa
+tests/test_lexer
+tests/test_locale
+wasm/aksa.js
+wasm/aksa.wasm
+*.o
+.DS_Store
