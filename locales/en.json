@@ -1,0 +1,38 @@
+{
+  "keywords": {
+    "if": "IF",
+    "else": "ELSE",
+    "repeat": "REPEAT",
+    "while": "WHILE",
+    "function": "FUNCTION",
+    "return": "RETURN",
+    "true": "TRUE",
+    "false": "FALSE",
+    "and": "AND",
+    "or": "OR",
+    "not": "NOT",
+    "make": "VAR",
+    "stop": "BREAK"
+  },
+  "builtins": {
+    "print": "print",
+    "ask": "ask",
+    "forward": "forward",
+    "backward": "backward",
+    "turn_right": "turn_right",
+    "turn_left": "turn_left",
+    "color": "color",
+    "pen_up": "pen_up",
+    "pen_down": "pen_down",
+    "turn_on": "pin_on",
+    "turn_off": "pin_off",
+    "read": "pin_read",
+    "read_analog": "pin_read_analog",
+    "wait": "wait"
+  },
+  "errors": {
+    "E001": "There is an unknown symbol: '{char}' (line {line})",
+    "E002": "This text is missing its closing quote \" (line {line})",
+    "E003": "This number can't be read: '{text}' (line {line})"
+  }
+}

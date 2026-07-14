@@ -1,0 +1,38 @@
+{
+  "keywords": {
+    "jika": "IF",
+    "lainnya": "ELSE",
+    "ulangi": "REPEAT",
+    "selama": "WHILE",
+    "fungsi": "FUNCTION",
+    "kembali": "RETURN",
+    "benar": "TRUE",
+    "salah": "FALSE",
+    "dan": "AND",
+    "atau": "OR",
+    "bukan": "NOT",
+    "buat": "VAR",
+    "berhenti": "BREAK"
+  },
+  "builtins": {
+    "tulis": "print",
+    "tanya": "ask",
+    "maju": "forward",
+    "mundur": "backward",
+    "belok_kanan": "turn_right",
+    "belok_kiri": "turn_left",
+    "warna": "color",
+    "angkat_pena": "pen_up",
+    "turunkan_pena": "pen_down",
+    "nyalakan": "pin_on",
+    "matikan": "pin_off",
+    "baca": "pin_read",
+    "baca_analog": "pin_read_analog",
+    "tunggu": "wait"
+  },
+  "errors": {
+    "E001": "Ada tanda yang tidak dikenal: '{char}' (baris {line})",
+    "E002": "Teks belum ditutup dengan tanda kutip \" (baris {line})",
+    "E003": "Angka ini tidak bisa dibaca: '{text}' (baris {line})"
+  }
+}

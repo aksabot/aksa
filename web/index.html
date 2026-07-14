@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Aksa — demo token</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; }
+  textarea { width: 100%; font: 1rem/1.4 ui-monospace, monospace; }
+  pre { background: #f4f4f4; padding: 1rem; min-height: 4rem; }
+</style>
+</head>
+<body>
+<h1>Aksa — token</h1>
+<p>
+  <label>Bahasa:
+    <select id="locale">
+      <option value="id" selected>Indonesia</option>
+      <option value="en">English</option>
+    </select>
+  </label>
+</p>
+<textarea id="src" rows="8">tulis("halo")</textarea>
+<p><button id="go">Tokenkan</button></p>
+<pre id="out"></pre>
+<script src="../wasm/aksa.js"></script>
+<script>
+AksaModule().then((M) => {
+  document.getElementById('go').onclick = async () => {
+    const locale = document.getElementById('locale').value;
+    const json = await (await fetch(`../locales/${locale}.json`)).text();
+    const src = document.getElementById('src').value;
+    const ptr = M.ccall('aksa_wasm_tokens', 'number', ['string', 'string'], [src, json]);
+    document.getElementById('out').textContent = M.UTF8ToString(ptr);
+    M._free(ptr);
+  };
+});
+</script>
+</body>
+</html>
