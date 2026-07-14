@@ -1,0 +1,6 @@
+x = 1
+fungsi f() {
+  tulis(x)
+  x = 2
+}
+f()

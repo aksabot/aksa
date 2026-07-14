@@ -5,7 +5,7 @@
 - [x] P1b: parser → AST (recursive descent, panic-mode recovery, `aksa ast`)
 - [x] P1c: semantic checker (`aksa check`; static E100–E111, runs before every `aksa run`)
 - [x] P1d: bytecode VM, `aksa run` (tulis/tanya, functions, loops, localized runtime errors)
-- [ ] P1e: golden tests (~40 ok + ~30 error programs)
+- [x] P1e: golden tests (40 ok + 36 error programs, `tests/golden.sh` in `make test`)
 - [ ] P2: browser editor, turtle, run controls
 - [ ] P3: hardware simulator
 - [ ] P4: C emitter + differential tests

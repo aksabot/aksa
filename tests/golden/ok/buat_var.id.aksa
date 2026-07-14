@@ -1,0 +1,2 @@
+buat nama = "Aksa"
+tulis("halo " + nama)

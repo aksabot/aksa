@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.2 — 2026-07-15
+
+### Added
+
+- 76 example programs now run automatically to prove Aksa behaves exactly as promised.
+
 ## 0.0.1 — 2026-07-14
 
 ### Added

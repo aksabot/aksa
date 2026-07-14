@@ -1,0 +1,2 @@
+fungsi f(a) { kembali a }
+tulis(f(1, 2))

@@ -1,0 +1,4 @@
+# program dengan komentar
+x = 1 # komentar di ujung baris
+# baris ini dilewati
+tulis(x)

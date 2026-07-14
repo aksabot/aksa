@@ -1,0 +1,2 @@
+nama = tanya("siapa namamu?")
+tulis("halo " + nama)

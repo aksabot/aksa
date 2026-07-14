@@ -1,0 +1,7 @@
+hasil = 1
+i = 1
+selama (i <= 5) {
+  hasil = hasil * i
+  i = i + 1
+}
+tulis(hasil)

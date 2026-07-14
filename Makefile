@@ -21,12 +21,13 @@ tests/test_vm: tests/test_vm.c $(CORE)
 tests/test_checker: tests/test_checker.c $(CORE)
 	$(CC) $(CFLAGS) $^ -o $@
 
-test: tests/test_locale tests/test_lexer tests/test_parser tests/test_checker tests/test_vm
+test: tests/test_locale tests/test_lexer tests/test_parser tests/test_checker tests/test_vm aksa
 	./tests/test_locale
 	./tests/test_lexer
 	./tests/test_parser
 	./tests/test_checker
 	./tests/test_vm
+	./tests/golden.sh
 
 wasm: wasm/aksa.js
 

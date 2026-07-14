@@ -1,0 +1,5 @@
+i = 3
+selama (i > 0) {
+  tulis(i)
+  i = i - 1
+}

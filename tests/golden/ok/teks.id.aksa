@@ -1,0 +1,2 @@
+tulis("umur: " + 9)
+tulis("ak" + "sa")

@@ -1,0 +1,10 @@
+fungsi jumlah(n) {
+  total = 0
+  i = 1
+  selama (i <= n) {
+    total = total + i
+    i = i + 1
+  }
+  kembali total
+}
+tulis(jumlah(5))

@@ -1,0 +1,2 @@
+fungsi f() { kembali f() + 1 }
+f()

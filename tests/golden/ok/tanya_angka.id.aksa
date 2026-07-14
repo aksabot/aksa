@@ -1,0 +1,2 @@
+x = tanya()
+tulis(x + 1)

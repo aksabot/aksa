@@ -1,0 +1,4 @@
+ulangi 2 {
+  ulangi 2 { tulis("a") }
+  tulis("b")
+}

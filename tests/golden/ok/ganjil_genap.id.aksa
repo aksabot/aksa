@@ -1,0 +1,5 @@
+fungsi cek(n) {
+  jika (n % 2 == 0) { tulis("genap") } lainnya { tulis("ganjil") }
+}
+cek(4)
+cek(7)

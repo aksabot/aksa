@@ -1,0 +1,2 @@
+pet = ask("favorite pet?")
+print("a " + pet)

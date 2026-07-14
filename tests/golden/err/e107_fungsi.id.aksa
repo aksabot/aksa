@@ -1,0 +1,4 @@
+ulangi 3 {
+  fungsi f() { berhenti }
+  f()
+}
