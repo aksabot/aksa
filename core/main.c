@@ -6,6 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef AKSA_DEFAULT_LOCALE
+#define AKSA_DEFAULT_LOCALE "en"
+#endif
+
 static int usage(void) {
     fprintf(stderr,
             "usage: aksa tokens <file.aksa> [--locale en]\n"
@@ -17,7 +21,7 @@ static int usage(void) {
 
 int main(int argc, char **argv) {
     if (argc < 3) return usage();
-    const char *cmd = argv[1], *file = argv[2], *locale = "en";
+    const char *cmd = argv[1], *file = argv[2], *locale = AKSA_DEFAULT_LOCALE;
     for (int i = 3; i < argc - 1; i++)
         if (strcmp(argv[i], "--locale") == 0) locale = argv[i + 1];
 

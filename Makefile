@@ -1,5 +1,6 @@
 CC = cc
-CFLAGS = -std=c99 -Wall -Wextra -Werror -O2
+LOCALE = id
+CFLAGS = -std=c99 -Wall -Wextra -Werror -O2 -DAKSA_DEFAULT_LOCALE=\"$(LOCALE)\"
 CORE = core/error.c core/locale.c core/lexer.c core/ast.c core/parser.c core/checker.c core/vm.c
 
 aksa: core/main.c $(CORE)
