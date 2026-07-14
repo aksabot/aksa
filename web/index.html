@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Aksa — demo token</title>
+<title>Aksa — token demo</title>
 <style>
   body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; }
   textarea { width: 100%; font: 1rem/1.4 ui-monospace, monospace; }
@@ -10,17 +10,17 @@
 </style>
 </head>
 <body>
-<h1>Aksa — token</h1>
+<h1>Aksa — tokens</h1>
 <p>
-  <label>Bahasa:
+  <label>Language:
     <select id="locale">
-      <option value="id" selected>Indonesia</option>
-      <option value="en">English</option>
+      <option value="en" selected>English</option>
+      <option value="id">Indonesia</option>
     </select>
   </label>
 </p>
-<textarea id="src" rows="8">tulis("halo")</textarea>
-<p><button id="go">Tokenkan</button></p>
+<textarea id="src" rows="8">print("hello")</textarea>
+<p><button id="go">Tokenize</button></p>
 <pre id="out"></pre>
 <script src="../wasm/aksa.js"></script>
 <script>

@@ -1,21 +1,9 @@
 # Aksa
 
-**Bahasa pemrograman untuk anak-anak.** A tiny programming language for kids — with keywords in *their* language, Indonesian first.
+A tiny programming language for kids — with keywords in *their* language.
 
 ```
-# program pertamaku
-fungsi sapa(nama) {
-  kembali "halo " + nama
-}
-
-ulangi 3 {
-  tulis(sapa("dunia"))
-}
-```
-
-The same program, same language, English locale:
-
-```
+# my first program
 function greet(name) {
   return "hello " + name
 }
@@ -25,9 +13,21 @@ repeat 3 {
 }
 ```
 
+The same program, same language, Indonesian locale:
+
+```
+fungsi sapa(nama) {
+  kembali "halo " + nama
+}
+
+ulangi 3 {
+  tulis(sapa("dunia"))
+}
+```
+
 Aksa (from *aksara* — script, letters; Sanskrit *akṣara*, "imperishable") is built on three ideas:
 
-1. **Kids should code in their own language.** All 13 keywords, every builtin, and every error message come from a locale dictionary (`locales/id.json`, `locales/en.json`). Adding a language is adding one JSON file — nothing is hardcoded.
+1. **Kids should code in their own language.** All 13 keywords, every builtin, and every error message come from a locale dictionary (`locales/en.json`, `locales/id.json`). Adding a language is adding one JSON file — nothing is hardcoded.
 2. **Error messages are the real product.** Every mistake has a stable ID, a source position, and a kid-friendly localized explanation. The whole program is checked before it runs, so kids see *all* their mistakes at once — never a compiler stack trace.
 3. **Zero installation, real graduation.** The core is pure C99 with no dependencies: it runs natively, compiles to WebAssembly for the browser, and (planned) transpiles to C for flashing onto real ESP32 boards — the same program from screen turtle to real LED.
 
@@ -37,7 +37,7 @@ Early days — the language core works, the kid-facing environment is next.
 
 | Milestone | |
 |---|---|
-| Lexer, locale system (id/en, Unicode identifiers) | ✅ |
+| Lexer, locale system (en/id, Unicode identifiers) | ✅ |
 | Parser → AST, several errors per run | ✅ |
 | Semantic checker (`aksa check`) | ✅ |
 | Bytecode VM (`aksa run`: functions, loops, `tulis`/`tanya`) | ✅ |
@@ -53,8 +53,8 @@ Requires a C compiler and `make` (plus `emcc` for the browser demo).
 
 ```sh
 make                                  # build the CLI
-./aksa run examples/halo.aksa         # run a program (locale defaults to id)
-./aksa run examples/hello.aksa --locale en
+./aksa run examples/hello.aksa        # run a program (locale defaults to en)
+./aksa run examples/halo.aksa --locale id
 ./aksa check file.aksa                # list every mistake, without running
 ./aksa ast file.aksa                  # peek at the parse tree
 make test                             # run the test suites
@@ -68,24 +68,24 @@ Run `aksa` from the repo root so it finds `locales/`.
 ## The language (v1)
 
 ```
-buat umur = 9              # 'buat' is optional: umur = 9 works too
-jika (umur > 7) {
-  tulis("sudah besar")
-} lainnya {
-  tulis("masih kecil")
+make age = 9               # 'make' is optional: age = 9 works too
+if (age > 7) {
+  print("big kid")
+} else {
+  print("little kid")
 }
 
 i = 3
-selama (i > 0) {
-  tulis(i)
+while (i > 0) {
+  print(i)
   i = i - 1
-  jika (i == 1) { berhenti }
+  if (i == 1) { stop }
 }
 ```
 
-- **Types:** `angka` (numbers), `teks` (strings, `+` concatenates), `logika` (`benar`/`salah`). Conditions must be `logika` — `jika (5)` is an error with a friendly explanation, not a silent truthy guess.
-- **Keywords (id / en):** jika/if, lainnya/else, ulangi/repeat, selama/while, fungsi/function, kembali/return, benar/true, salah/false, dan/and, atau/or, bukan/not, buat/make, berhenti/stop.
-- **Builtins:** console (`tulis`, `tanya`), turtle (`maju`, `belok_kanan`, …) and hardware (`nyalakan`, `baca`, `tunggu`, …) — the latter two groups arrive with the browser environment and simulator.
+- **Types:** numbers, strings (`+` concatenates), booleans (`true`/`false`). Conditions must be boolean — `if (5)` is an error with a friendly explanation, not a silent truthy guess.
+- **Keywords (en / id):** if/jika, else/lainnya, repeat/ulangi, while/selama, function/fungsi, return/kembali, true/benar, false/salah, and/dan, or/atau, not/bukan, make/buat, stop/berhenti.
+- **Builtins:** console (`print`, `ask`), turtle (`forward`, `turn_right`, …) and hardware (`turn_on`, `read`, `wait`, …) — the latter two groups arrive with the browser environment and simulator.
 - Identifiers accept full Unicode, so kids name things in their own words. Comments start with `#`.
 
 ## How it works

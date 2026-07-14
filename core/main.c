@@ -8,16 +8,16 @@
 
 static int usage(void) {
     fprintf(stderr,
-            "usage: aksa tokens <file.aksa> [--locale id]\n"
-            "       aksa ast <file.aksa> [--locale id]\n"
-            "       aksa check <file.aksa> [--locale id]\n"
-            "       aksa run <file.aksa> [--locale id]\n");
+            "usage: aksa tokens <file.aksa> [--locale en]\n"
+            "       aksa ast <file.aksa> [--locale en]\n"
+            "       aksa check <file.aksa> [--locale en]\n"
+            "       aksa run <file.aksa> [--locale en]\n");
     return 2;
 }
 
 int main(int argc, char **argv) {
     if (argc < 3) return usage();
-    const char *cmd = argv[1], *file = argv[2], *locale = "id";
+    const char *cmd = argv[1], *file = argv[2], *locale = "en";
     for (int i = 3; i < argc - 1; i++)
         if (strcmp(argv[i], "--locale") == 0) locale = argv[i + 1];
 
