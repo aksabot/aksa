@@ -33,6 +33,17 @@
   "errors": {
     "E001": "Ada tanda yang tidak dikenal: '{char}' (baris {line})",
     "E002": "Teks belum ditutup dengan tanda kutip \" (baris {line})",
-    "E003": "Angka ini tidak bisa dibaca: '{text}' (baris {line})"
+    "E003": "Angka ini tidak bisa dibaca: '{text}' (baris {line})",
+    "E004": "Ada yang tidak kuduga di sini: '{text}' (baris {line})",
+    "E005": "Sepertinya ada '{text}' yang hilang (baris {line})",
+    "E100": "Kamu belum membuat '{name}' (baris {line})",
+    "E101": "Tidak bisa membagi dengan nol (baris {line})",
+    "E102": "Aku tidak kenal perintah '{name}' (baris {line})",
+    "E103": "Jumlah isian untuk '{name}' tidak pas (baris {line})",
+    "E104": "Nilai-nilai di baris {line} tidak cocok untuk operasi ini",
+    "E106": "'{name}' belum bisa dipakai di sini (baris {line})",
+    "E107": "'berhenti' hanya boleh di dalam pengulangan (baris {line})",
+    "E108": "'kembali' hanya boleh di dalam fungsi (baris {line})",
+    "E109": "Program ini terlalu dalam atau terlalu besar (baris {line})"
   }
 }

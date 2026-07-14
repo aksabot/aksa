@@ -147,16 +147,6 @@ AksaToken aksa_lex_next(AksaLexer *lx) {
     return lex_error(lx, "E001", start, line, col);
 }
 
-static void sb_put(char **buf, size_t *len, size_t *cap, const char *s) {
-    size_t n = strlen(s);
-    if (*len + n + 1 > *cap) {
-        while (*len + n + 1 > *cap) *cap *= 2;
-        *buf = realloc(*buf, *cap);
-    }
-    memcpy(*buf + *len, s, n + 1);
-    *len += n;
-}
-
 char *aksa_dump_tokens(const char *src, const AksaLocale *loc, int *nerrors) {
     AksaErrors errs = {0};
     AksaLexer lx;
@@ -174,17 +164,11 @@ char *aksa_dump_tokens(const char *src, const AksaLocale *loc, int *nerrors) {
                      aksa_tok_name(t.kind), t.len > 200 ? 200 : t.len, t.start);
         else
             snprintf(lineb, sizeof lineb, "%d:%d %s\n", t.line, t.col, aksa_tok_name(t.kind));
-        sb_put(&buf, &len, &cap, lineb);
+        aksa_sb_put(&buf, &len, &cap, lineb);
         if (t.kind == TOK_EOF) break;
     }
 
-    for (int i = 0; i < errs.count; i++) {
-        char msg[256];
-        aksa_error_format(loc, &errs.items[i], msg, sizeof msg);
-        snprintf(lineb, sizeof lineb, "! %s %d:%d %s\n", errs.items[i].id,
-                 errs.items[i].line, errs.items[i].col, msg);
-        sb_put(&buf, &len, &cap, lineb);
-    }
+    aksa_errors_dump(loc, &errs, &buf, &len, &cap);
 
     if (nerrors) *nerrors = errs.count;
     return buf;

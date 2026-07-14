@@ -19,4 +19,12 @@ void aksa_errors_add(AksaErrors *e, const char *id, int line, int col, const cha
 struct AksaLocale;
 void aksa_error_format(const struct AksaLocale *loc, const AksaError *e, char *out, int outsz);
 
+/* growable string buffer append */
+#include <stddef.h>
+void aksa_sb_put(char **buf, size_t *len, size_t *cap, const char *s);
+
+/* append all errors, localized, one "! ID line:col msg" line each */
+void aksa_errors_dump(const struct AksaLocale *loc, const AksaErrors *e,
+                      char **buf, size_t *len, size_t *cap);
+
 #endif

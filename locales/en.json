@@ -33,6 +33,17 @@
   "errors": {
     "E001": "There is an unknown symbol: '{char}' (line {line})",
     "E002": "This text is missing its closing quote \" (line {line})",
-    "E003": "This number can't be read: '{text}' (line {line})"
+    "E003": "This number can't be read: '{text}' (line {line})",
+    "E004": "I didn't expect this here: '{text}' (line {line})",
+    "E005": "It looks like a '{text}' is missing (line {line})",
+    "E100": "You haven't made '{name}' yet (line {line})",
+    "E101": "Can't divide by zero (line {line})",
+    "E102": "I don't know the command '{name}' (line {line})",
+    "E103": "The number of inputs for '{name}' doesn't match (line {line})",
+    "E104": "The values on line {line} don't fit this operation",
+    "E106": "'{name}' can't be used here yet (line {line})",
+    "E107": "'stop' only works inside a loop (line {line})",
+    "E108": "'return' only works inside a function (line {line})",
+    "E109": "This program goes too deep or is too big (line {line})"
   }
 }
