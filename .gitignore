@@ -5,6 +5,9 @@
 /aksa
 tests/test_lexer
 tests/test_locale
+tests/test_parser
+tests/test_checker
+tests/test_vm
 wasm/aksa.js
 wasm/aksa.wasm
 *.o
