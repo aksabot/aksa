@@ -13,6 +13,6 @@
 - [x] P4: C emitter (`aksa emit`) + tiny value runtime + sim/esp32 HAL; differential tests (`tests/diff.sh`) prove emitted C compiles `-Werror` and matches the VM on all golden ok/err programs (E109 depth excluded)
 - [x] P5: compile server (Bun + arduino-cli in Docker, ESP32) + browser flasher (esptool-js) + serial monitor; flash path untested on a real board
 - [ ] P5 deferred: test on real ESP32; `tanya` on device (serial read in HAL); free/reuse strings in rt.c loops; Pico/UF2; per-IP rate limit; build+test Docker image (no Docker locally); flash.js: call requestPort() before compile (fail fast if no board + avoid user-gesture timeout)
-- [x] P6a (language only): IDE split into language page (lessons+turtle) and device page (board+flash); 9 graded lessons (id+en); share via URL hash
+- [x] P6a (language only): IDE split into language page (lessons+turtle) and device page (board+flash); 15 graded lessons (id+en), basic→middle→advanced; share via URL hash
 - [x] P6c: drawing cursor renamed turtle→robot, arrow replaced with a robot character (rounded body, eyes, nose showing heading)
 - [ ] P6b: more locales; device lesson track after real-board testing

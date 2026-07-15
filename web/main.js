@@ -16,7 +16,7 @@ const UI = {
     flash: 'Kirim ke Perangkat', flashing: 'Mengirim…', disconnect: 'Putus Sambungan',
     flashFail: 'Gagal mengirim ke perangkat', serverBusy: 'Server sibuk — coba lagi sebentar',
     noPin: (n) => `Tidak ada pin ${n} di papan`,
-    modeDevice: '🔌 Mode Perangkat', modeLang: '🐢 Mode Bahasa',
+    modeDevice: '🔌 Mode Perangkat', modeLang: '🤖 Mode Bahasa',
     examples: {
       'Kedip': 'ulangi 5 {\n    nyalakan(1)\n    tunggu(300)\n    matikan(1)\n    tunggu(300)\n}\n',
       'Tombol → Lampu': 'ulangi 20 {\n    jika (baca(4) == 1) {\n        nyalakan(2)\n    } lainnya {\n        matikan(2)\n    }\n    tunggu(100)\n}\n',
@@ -31,7 +31,7 @@ const UI = {
     flash: 'Send to Device', flashing: 'Sending…', disconnect: 'Disconnect',
     flashFail: 'Could not send to the device', serverBusy: 'Server is busy — try again in a moment',
     noPin: (n) => `There is no pin ${n} on the board`,
-    modeDevice: '🔌 Device Mode', modeLang: '🐢 Language Mode',
+    modeDevice: '🔌 Device Mode', modeLang: '🤖 Language Mode',
     examples: {
       'Blink': 'repeat 5 {\n    turn_on(1)\n    wait(300)\n    turn_off(1)\n    wait(300)\n}\n',
       'Button → Light': 'repeat 20 {\n    if (read(4) == 1) {\n        turn_on(2)\n    } else {\n        turn_off(2)\n    }\n    wait(100)\n}\n',

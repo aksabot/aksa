@@ -18,6 +18,7 @@
 - That C code is checked to behave exactly like the app, so nothing changes when you deploy.
 - A "Send to Device" button puts your program onto a real ESP32 board, straight from the browser.
 - A helper server builds your program into device firmware — nothing to install on your computer.
+- Lessons grew from 9 to 15, spanning easy, medium, and hard — including math, counting loops, and a guess-the-number game.
 - After sending, messages from the board appear live in the page, mistakes explained in your language.
 - Nine step-by-step lessons, from writing your first words to drawing your own spiral.
 - A Share button copies a link that opens your exact program on a friend's screen.
