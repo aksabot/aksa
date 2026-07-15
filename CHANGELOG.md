@@ -26,6 +26,7 @@
 
 - Comments now start with // instead of #, matching the C family.
 - The app now has two pages: one for learning the language, one for the circuit board and device.
+- The drawing arrow is now a little robot you can watch drive around and turn.
 
 ## 0.0.1 — 2026-07-14
 

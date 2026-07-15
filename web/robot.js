@@ -1,6 +1,6 @@
-// Turtle state lives entirely here; the VM just forwards builtin calls.
+// Robot state lives entirely here; the VM just forwards builtin calls.
 // Two stacked canvases: `lines` keeps drawn pixels, `overlay` shows the
-// turtle cursor so moving it never damages the drawing.
+// robot cursor so moving it never damages the drawing.
 
 // Indonesian color words -> canvas colors (English words pass through).
 const COLORS = {
@@ -9,7 +9,7 @@ const COLORS = {
   coklat: 'brown', 'merah muda': 'pink', 'abu-abu': 'gray',
 };
 
-export class Turtle {
+export class Robot {
   // opts: { speed: () => 1..10 (10 = instant), stopped: () => bool }
   constructor(lines, overlay, opts) {
     this.lines = lines;
@@ -33,14 +33,17 @@ export class Turtle {
     ctx.clearRect(0, 0, this.overlay.width, this.overlay.height);
     ctx.save();
     ctx.translate(this.x, this.y);
-    ctx.rotate((this.heading + 90) * Math.PI / 180);
-    ctx.beginPath();
-    ctx.moveTo(0, -8);
-    ctx.lineTo(6, 8);
-    ctx.lineTo(-6, 8);
-    ctx.closePath();
+    ctx.rotate((this.heading + 90) * Math.PI / 180); // front (-Y) faces heading
     ctx.fillStyle = this.color;
+    ctx.beginPath();                 // nose
+    ctx.moveTo(0, -9); ctx.lineTo(4, -4); ctx.lineTo(-4, -4); ctx.closePath();
     ctx.fill();
+    ctx.beginPath();                 // body
+    ctx.roundRect(-7, -4, 14, 12, 3);
+    ctx.fill();
+    ctx.fillStyle = 'white';         // eyes (separate paths so they don't join)
+    ctx.beginPath(); ctx.arc(-3, 1, 1.5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(3, 1, 1.5, 0, Math.PI * 2); ctx.fill();
     ctx.restore();
   }
 
@@ -79,7 +82,7 @@ export class Turtle {
     this.moveTo(tx, ty);
   }
 
-  // returns true if `canon` is a turtle builtin (and performs it)
+  // returns true if `canon` is a drawing builtin (and performs it)
   async op(canon, num, str) {
     switch (canon) {
       case 'forward': await this.forward(num); return true;

@@ -40,7 +40,7 @@ wasm: wasm/aksa.js
 
 web: wasm/aksa.js web/dist/main.js
 
-web/dist/main.js: web/main.js web/turtle.js web/board.js web/flash.js web/lessons.js web/package.json
+web/dist/main.js: web/main.js web/robot.js web/board.js web/flash.js web/lessons.js web/package.json
 	cd web && bun install && bun build main.js --outdir dist --minify
 
 wasm/aksa.js: wasm/glue.c $(CORE)

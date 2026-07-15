@@ -2,7 +2,7 @@ import { EditorView, basicSetup } from 'codemirror';
 import { StreamLanguage } from '@codemirror/language';
 import { linter } from '@codemirror/lint';
 import { Compartment } from '@codemirror/state';
-import { Turtle } from './turtle.js';
+import { Robot } from './robot.js';
 import { Board } from './board.js';
 import { Flasher, serialSupported } from './flash.js';
 import { LESSONS } from './lessons.js';
@@ -50,7 +50,7 @@ const speedEl = $('speed'), resetBtn = $('reset'), examplesSel = $('examples');
 const lessonEl = $('lesson');
 
 // One bundle serves both pages; each page declares what it has and the
-// wiring below skips whatever is missing. Language page: turtle canvas +
+// wiring below skips whatever is missing. Language page: robot canvas +
 // lessons. Device page: board + flash + device examples.
 const hasBoard = !!$('board');
 
@@ -123,7 +123,7 @@ function fromHash() {
 AksaModule().then(init);
 
 async function init(M) {
-  const turtle = $('lines') && new Turtle($('lines'), $('overlay'), {
+  const robot = $('lines') && new Robot($('lines'), $('overlay'), {
     speed: () => +speedEl.value,
     stopped: () => stopRequested,
   });
@@ -141,17 +141,17 @@ async function init(M) {
     btn.onpointerup = btn.onpointerleave = () => { board.pressed = false; };
   }
 
-  resetBtn.onclick = () => { if (turtle) turtle.reset(); if (board) board.reset(); };
+  resetBtn.onclick = () => { if (robot) robot.reset(); if (board) board.reset(); };
 
   // After stop, drawing and output are suppressed while the program races to
   // its end (the VM halts for real at its next yield checkpoint).
   M.aksaOut = (text) => { if (!stopRequested) put(text); };
 
-  // Turtle first, then the board; a return of false from both surfaces the
+  // Robot first, then the board; a return of false from both surfaces the
   // localized "can't be used here yet". Board reads return numbers.
   M.aksaHost = async (canon, num, str) => {
-    if (turtle) {
-      const r = await turtle.op(canon, num, str);
+    if (robot) {
+      const r = await robot.op(canon, num, str);
       if (r !== false) return r;
     }
     if (board) return board.op(canon, num);
@@ -288,7 +288,7 @@ async function init(M) {
     stopBtn.disabled = false;
     stopRequested = false;
     consoleEl.textContent = '';
-    if (turtle) turtle.reset();
+    if (robot) robot.reset();
     if (board) board.reset();
     const ptr = await M.ccall('aksa_wasm_run', 'number', ['string', 'string'],
                               [view.state.doc.toString(), localeJson[localeSel.value]],

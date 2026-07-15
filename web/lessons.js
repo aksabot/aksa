@@ -40,8 +40,8 @@ export const LESSONS = {
       code: 'fungsi sapa(nama) {\n    tulis("Halo,", nama, "!")\n}\nsapa("Kila")\nsapa("Bima")\nsapa("Ibu")\n',
     },
     {
-      title: '8. Kura-kura',
-      text: 'Kura-kura menggambar sambil berjalan. maju menggerakkannya, belok_kanan memutarnya. Empat kali maju dan belok membuat kotak. Coba ubah angkanya!',
+      title: '8. Robot',
+      text: 'Robot menggambar sambil berjalan. maju menggerakkannya, belok_kanan memutarnya. Empat kali maju dan belok membuat kotak. Coba ubah angkanya!',
       code: 'warna("biru")\nulangi 4 {\n    maju(100)\n    belok_kanan(90)\n}\n',
     },
     {
@@ -87,8 +87,8 @@ export const LESSONS = {
       code: 'function greet(name) {\n    print("Hello,", name, "!")\n}\ngreet("Kila")\ngreet("Bima")\ngreet("Mom")\n',
     },
     {
-      title: '8. Turtle',
-      text: 'The turtle draws while it walks. forward moves it, turn_right spins it. Four forwards and turns make a square. Try changing the numbers!',
+      title: '8. Robot',
+      text: 'The robot draws while it walks. forward moves it, turn_right spins it. Four forwards and turns make a square. Try changing the numbers!',
       code: 'color("blue")\nrepeat 4 {\n    forward(100)\n    turn_right(90)\n}\n',
     },
     {

@@ -29,7 +29,7 @@ Aksa (from *aksara* — script, letters; Sanskrit *akṣara*, "imperishable") is
 
 1. **Kids should code in their own language.** All 13 keywords, every builtin, and every error message come from a locale dictionary (`locales/en.json`, `locales/id.json`). Adding a language is adding one JSON file — nothing is hardcoded.
 2. **Error messages are the real product.** Every mistake has a stable ID, a source position, and a kid-friendly localized explanation. The whole program is checked before it runs, so kids see *all* their mistakes at once — never a compiler stack trace.
-3. **Zero installation, real graduation.** The core is pure C99 with no dependencies: it runs natively, compiles to WebAssembly for the browser, and (planned) transpiles to C for flashing onto real ESP32 boards — the same program from screen turtle to real LED.
+3. **Zero installation, real graduation.** The core is pure C99 with no dependencies: it runs natively, compiles to WebAssembly for the browser, and (planned) transpiles to C for flashing onto real ESP32 boards — the same program from screen robot to real LED.
 
 ## Status
 
@@ -41,7 +41,7 @@ Early days — the language core works, the kid-facing environment is next.
 | Parser → AST, several errors per run | ✅ |
 | Semantic checker (`aksa check`) | ✅ |
 | Bytecode VM (`aksa run`: functions, loops, `tulis`/`tanya`) | ✅ |
-| Browser editor, turtle graphics, run controls | ✅ |
+| Browser editor, robot graphics, run controls | ✅ |
 | Hardware simulator (LEDs, sensors) | ⏳ Phase 3 |
 | Transpile to C, flash real ESP32 via WebSerial | ⏳ Phase 4–5 |
 
@@ -85,14 +85,14 @@ while (i > 0) {
 
 - **Types:** numbers, strings (`+` concatenates), booleans (`true`/`false`). Conditions must be boolean — `if (5)` is an error with a friendly explanation, not a silent truthy guess.
 - **Keywords (en / id):** if/jika, else/lainnya, repeat/ulangi, while/selama, function/fungsi, return/kembali, true/benar, false/salah, and/dan, or/atau, not/bukan, make/buat, stop/berhenti.
-- **Builtins:** console (`print`, `ask`), turtle in the browser (`forward`, `turn_right`, `color`, …), and hardware (`turn_on`, `read`, `wait`, …) — the hardware group arrives with the simulator.
+- **Builtins:** console (`print`, `ask`), robot in the browser (`forward`, `turn_right`, `color`, …), and hardware (`turn_on`, `read`, `wait`, …) — the hardware group arrives with the simulator.
 - Identifiers accept full Unicode, so kids name things in their own words. Comments start with `//`.
 
 ## How it works
 
 ```
 source ──► lexer ──► parser ──► checker ──► bytecode VM   (learning mode)
-        (locale-      AST     every kid-    └─► turtle/sim in browser
+        (locale-      AST     every kid-    └─► robot/sim in browser
          driven)              facing error
                               caught here    └─► C emitter ──► real board
                                                  (deploy mode, planned)
@@ -107,5 +107,5 @@ core/      lexer, parser, checker, VM — pure C99
 locales/   id.json, en.json — keywords, builtins, error messages
 tests/     one small suite per component (make test)
 examples/  graded example programs
-wasm/      Emscripten glue        web/  browser editor (CodeMirror + turtle)
+wasm/      Emscripten glue        web/  browser editor (CodeMirror + robot)
 ```
