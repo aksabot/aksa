@@ -19,10 +19,13 @@
 - A "Send to Device" button puts your program onto a real ESP32 board, straight from the browser.
 - A helper server builds your program into device firmware — nothing to install on your computer.
 - After sending, messages from the board appear live in the page, mistakes explained in your language.
+- Nine step-by-step lessons, from writing your first words to drawing your own spiral.
+- A Share button copies a link that opens your exact program on a friend's screen.
 
 ### Changed
 
 - Comments now start with // instead of #, matching the C family.
+- The app now has two pages: one for learning the language, one for the circuit board and device.
 
 ## 0.0.1 — 2026-07-14
 

@@ -13,22 +13,31 @@
     </select>
     <button id="run"></button>
     <button id="stop" disabled></button>
+    <button id="flash" hidden></button>
     <button id="share"></button>
-    <label>🐢 <input id="speed" type="range" min="1" max="10" value="5"></label>
     <button id="reset">⟲</button>
     <select id="examples"></select>
-    <a id="mode-link" href="device.html"></a>
+    <a id="mode-link" href="index.html"></a>
   </div>
   <div class="panes">
     <div class="left">
-      <div id="lesson"></div>
       <div id="editor"></div>
       <div id="errors"></div>
     </div>
     <div class="right">
-      <div id="canvas">
-        <canvas id="lines" width="600" height="380"></canvas>
-        <canvas id="overlay" width="600" height="380"></canvas>
+      <div id="board">
+        <div class="row">
+          <div class="pin"><div class="led led-1"></div>1</div>
+          <div class="pin"><div class="led led-2"></div>2</div>
+          <div class="pin"><div class="led led-3"></div>3</div>
+        </div>
+        <div class="row">
+          <div class="pin"><button id="pin-btn">⬤</button><br>4</div>
+          <div class="pin"><input id="pin-pot" type="range" min="0" max="100" value="25">
+            <span id="pin-pot-val">25</span><br>5</div>
+          <div class="pin"><span id="pin-buzzer">🔔</span><br>6</div>
+          <div class="pin"><span id="pin-fan">✳</span><br>7</div>
+        </div>
       </div>
       <div id="console"></div>
     </div>
