@@ -11,6 +11,9 @@
 - A real code editor: colors for keywords and instant underlines where something is wrong.
 - Mistakes are listed in your language; click one to jump to the line.
 - Turtle drawing! Make shapes with maju/belok, pick colors, and set the drawing speed.
+- A virtual circuit board: lights, a button, a slider, a buzzer, and a fan you control from code.
+- Programs can now pause with tunggu/wait — the page stays alive and Stop always works.
+- A dropdown of ready-made projects, from blinking a light to a reaction game.
 
 ### Changed
 

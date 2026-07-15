@@ -17,6 +17,27 @@
   #canvas { position: relative; border: 1px solid #ccc; }
   #canvas canvas { display: block; }
   #canvas #overlay { position: absolute; inset: 0; pointer-events: none; }
+  .tabs { display: flex; gap: .25rem; }
+  .tabs button { padding: .15rem .75rem; border: 1px solid #ccc;
+                 background: #eee; cursor: pointer; }
+  .tabs button.active { background: #fff; border-bottom-color: #fff; }
+  #board { border: 1px solid #ccc; height: 380px; box-sizing: border-box;
+           display: flex; flex-direction: column; align-items: center;
+           justify-content: center; gap: 1.5rem; background: #f4f8f4; }
+  #board .row { display: flex; gap: 2rem; align-items: center; }
+  #board .pin { text-align: center; font-size: .8rem; color: #666; }
+  .led { width: 34px; height: 34px; border-radius: 50%; margin: 0 auto .25rem;
+         background: #ddd; border: 2px solid #bbb; }
+  .led-1.on { background: #f33; box-shadow: 0 0 14px #f33; }
+  .led-2.on { background: #fc0; box-shadow: 0 0 14px #fc0; }
+  .led-3.on { background: #3c3; box-shadow: 0 0 14px #3c3; }
+  #pin-buzzer, #pin-fan { font-size: 2rem; display: inline-block;
+                          filter: grayscale(1); opacity: .4; }
+  #pin-buzzer.on { filter: none; opacity: 1; }
+  #pin-fan.on { filter: none; opacity: 1;
+                animation: fan-spin .4s linear infinite; }
+  @keyframes fan-spin { to { transform: rotate(360deg); } }
+  #pin-pot { width: 140px; }
   #console { height: 12rem; overflow-y: auto; background: #1e1e1e;
              color: #ddd; font: 14px/1.5 ui-monospace, monospace; padding: .5rem;
              white-space: pre-wrap; box-sizing: border-box; }
@@ -37,6 +58,7 @@
     <button id="stop" disabled></button>
     <label>🐢 <input id="speed" type="range" min="1" max="10" value="5"></label>
     <button id="reset">⟲</button>
+    <select id="examples"></select>
   </div>
   <div class="panes">
     <div class="left">
@@ -44,9 +66,27 @@
       <div id="errors"></div>
     </div>
     <div class="right">
+      <div class="tabs">
+        <button id="tab-turtle" class="active">🐢</button>
+        <button id="tab-board">🔌</button>
+      </div>
       <div id="canvas">
         <canvas id="lines" width="600" height="380"></canvas>
         <canvas id="overlay" width="600" height="380"></canvas>
+      </div>
+      <div id="board" hidden>
+        <div class="row">
+          <div class="pin"><div class="led led-1"></div>1</div>
+          <div class="pin"><div class="led led-2"></div>2</div>
+          <div class="pin"><div class="led led-3"></div>3</div>
+        </div>
+        <div class="row">
+          <div class="pin"><button id="pin-btn">⬤</button><br>4</div>
+          <div class="pin"><input id="pin-pot" type="range" min="0" max="100" value="25">
+            <span id="pin-pot-val">25</span><br>5</div>
+          <div class="pin"><span id="pin-buzzer">🔔</span><br>6</div>
+          <div class="pin"><span id="pin-fan">✳</span><br>7</div>
+        </div>
       </div>
       <div id="console"></div>
     </div>

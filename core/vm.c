@@ -521,9 +521,13 @@ static int builtin_call(VM *vm, int line, const char *name, const char *canon,
             else if (args[0].t == V_STR) str = args[0].str;
             else { rterr(vm, line, "E104", ""); return 0; }
         }
-        /* host builtins take 0 or 1 args and return nothing; pin_read will
-           need a result out-param when the hardware simulator arrives */
-        if (vm->host(canon, num, str, vm->user)) return 1;
+        double res = 0;
+        if (vm->host(canon, num, str, &res, vm->user)) {
+            if (strcmp(canon, "pin_read") == 0 ||
+                strcmp(canon, "pin_read_analog") == 0)
+                *result = NUMV(res);
+            return 1;
+        }
     }
     /* turtle/hardware builtins exist but need the browser/device (Phase 2/3) */
     rterr(vm, line, "E106", name);

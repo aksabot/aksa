@@ -1,0 +1,8 @@
+repeat 20 {
+    if (read(4) == 1) {
+        turn_on(2)
+    } else {
+        turn_off(2)
+    }
+    wait(100)
+}

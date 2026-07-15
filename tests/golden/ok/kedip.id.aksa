@@ -1,0 +1,6 @@
+ulangi 5 {
+    nyalakan(1)
+    tunggu(300)
+    matikan(1)
+    tunggu(300)
+}

@@ -1,0 +1,10 @@
+buat sensor = 5
+buat kipas = 7
+ulangi 30 {
+    jika (baca_analog(sensor) > 30) {
+        nyalakan(kipas)
+    } lainnya {
+        matikan(kipas)
+    }
+    tunggu(200)
+}

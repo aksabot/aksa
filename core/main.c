@@ -10,6 +10,21 @@
 #define AKSA_DEFAULT_LOCALE "en"
 #endif
 
+/* Headless board: pin writes echo to stdout, reads are always 0, waiting
+   is skipped. Keeps hardware programs runnable and testable on the CLI. */
+static int cli_host(const char *canon, double num, const char *str,
+                    double *result, void *user) {
+    (void)str;
+    (void)user;
+    if (strcmp(canon, "pin_on") == 0) printf("[pin %g ON]\n", num);
+    else if (strcmp(canon, "pin_off") == 0) printf("[pin %g OFF]\n", num);
+    else if (strcmp(canon, "pin_read") == 0 ||
+             strcmp(canon, "pin_read_analog") == 0) *result = 0;
+    else if (strcmp(canon, "wait") == 0) { /* no delay */ }
+    else return 0; /* turtle builtins still need the browser */
+    return 1;
+}
+
 static int usage(void) {
     fprintf(stderr,
             "usage: aksa tokens <file.aksa> [--locale en]\n"
@@ -55,7 +70,8 @@ int main(int argc, char **argv) {
         AksaErrors errs = {0};
         int rc;
         if (strcmp(cmd, "run") == 0) {
-            rc = aksa_run(src, &loc, &errs, NULL);
+            AksaHost host = {.host = cli_host};
+            rc = aksa_run(src, &loc, &errs, &host);
         } else {
             AksaNode *prog = aksa_parse(src, &loc, &errs);
             if (errs.count == 0) aksa_check(prog, &loc, &errs);

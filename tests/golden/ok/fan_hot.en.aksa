@@ -1,0 +1,10 @@
+make sensor = 5
+make fan = 7
+repeat 30 {
+    if (read_analog(sensor) > 30) {
+        turn_on(fan)
+    } else {
+        turn_off(fan)
+    }
+    wait(200)
+}

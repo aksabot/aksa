@@ -1,0 +1,11 @@
+repeat 3 {
+    turn_on(1)
+    wait(1000)
+    turn_off(1)
+    turn_on(2)
+    wait(400)
+    turn_off(2)
+    turn_on(3)
+    wait(1000)
+    turn_off(3)
+}

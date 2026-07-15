@@ -1,0 +1,6 @@
+repeat 5 {
+    turn_on(1)
+    wait(300)
+    turn_off(1)
+    wait(300)
+}

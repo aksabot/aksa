@@ -1,0 +1,8 @@
+ulangi 20 {
+    jika (baca(4) == 1) {
+        nyalakan(2)
+    } lainnya {
+        matikan(2)
+    }
+    tunggu(100)
+}

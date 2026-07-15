@@ -3,6 +3,7 @@
 #include "../core/parser.h"
 #include "../core/vm.h"
 #include <emscripten.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,9 +14,12 @@ EM_JS(void, js_out, (const char *p), { Module.aksaOut(UTF8ToString(p)); })
 EM_ASYNC_JS(void, js_in, (char *buf, int sz),
             { stringToUTF8(await Module.aksaInput(), buf, sz); })
 EM_ASYNC_JS(int, js_yield, (void), { return await Module.aksaYield(); })
-EM_ASYNC_JS(int, js_host, (const char *canon, double num, const char *str), {
-    return await Module.aksaHost(UTF8ToString(canon), num,
-                                 str ? UTF8ToString(str) : null) ? 1 : 0;
+/* NaN = unhandled; any finite number (a pin reading, or 1 for act-only
+   builtins) = handled. */
+EM_ASYNC_JS(double, js_host, (const char *canon, double num, const char *str), {
+    const r = await Module.aksaHost(UTF8ToString(canon), num,
+                                    str ? UTF8ToString(str) : null);
+    return r === false || r === undefined ? NaN : +r;
 })
 
 static void hook_out(const char *text, void *user) {
@@ -30,9 +34,13 @@ static int hook_yield(void *user) {
     (void)user;
     return js_yield();
 }
-static int hook_host(const char *canon, double num, const char *str, void *user) {
+static int hook_host(const char *canon, double num, const char *str,
+                     double *result, void *user) {
     (void)user;
-    return js_host(canon, num, str);
+    double r = js_host(canon, num, str);
+    if (isnan(r)) return 0;
+    *result = r;
+    return 1;
 }
 
 static void json_escape(char **buf, size_t *len, size_t *cap, const char *s) {

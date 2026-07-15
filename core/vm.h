@@ -8,10 +8,12 @@ typedef void (*AksaOutFn)(const char *text, void *user);
 typedef void (*AksaInFn)(char *buf, int bufsz, void *user); /* read one line */
 typedef int (*AksaYieldFn)(void *user);                     /* nonzero => stop */
 /* Turtle/hardware builtins: canonical name + its single number or string
-   argument (builtins take at most one, checker-enforced). Return 1 if
-   handled, 0 if unknown (surfaces the "not available here" error). */
+   argument (builtins take at most one, checker-enforced). Reads (pin_read,
+   pin_read_analog) write their value into *result; other builtins leave it
+   alone. Return 1 if handled, 0 if unknown (surfaces the "not available
+   here" error). */
 typedef int (*AksaHostFn)(const char *canon, double num, const char *str,
-                          void *user);
+                          double *result, void *user);
 
 /* Host hooks for embedding; any NULL member falls back to the default. */
 typedef struct {
