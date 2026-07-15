@@ -14,6 +14,8 @@
 - A virtual circuit board: lights, a button, a slider, a buzzer, and a fan you control from code.
 - Programs can now pause with tunggu/wait — the page stays alive and Stop always works.
 - A dropdown of ready-made projects, from blinking a light to a reaction game.
+- Programs can now turn into real C code — the first step toward running on a device.
+- That C code is checked to behave exactly like the app, so nothing changes when you deploy.
 
 ### Changed
 

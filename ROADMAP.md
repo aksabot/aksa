@@ -10,6 +10,6 @@
 - [x] P2b: CodeMirror 6 editor (bun-bundled; locale-driven highlighting, live squiggles, error panel)
 - [x] P2c: turtle canvas (animated draw, live speed slider, reset, id color names)
 - [x] P3: hardware simulator (virtual board: 3 LEDs, button, slider, buzzer, fan; pin builtins + non-blocking tunggu; examples dropdown; headless CLI board for 10 golden tests)
-- [ ] P4: C emitter + differential tests
+- [x] P4: C emitter (`aksa emit`) + tiny value runtime + sim/esp32 HAL; differential tests (`tests/diff.sh`) prove emitted C compiles `-Werror` and matches the VM on all golden ok/err programs (E109 depth excluded)
 - [ ] P5: compile server + WebSerial flash
 - [ ] P6: lessons, sharing, more locales

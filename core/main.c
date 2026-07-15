@@ -1,4 +1,5 @@
 #include "checker.h"
+#include "emitter.h"
 #include "lexer.h"
 #include "parser.h"
 #include "vm.h"
@@ -30,7 +31,8 @@ static int usage(void) {
             "usage: aksa tokens <file.aksa> [--locale en]\n"
             "       aksa ast <file.aksa> [--locale en]\n"
             "       aksa check <file.aksa> [--locale en]\n"
-            "       aksa run <file.aksa> [--locale en]\n");
+            "       aksa run <file.aksa> [--locale en]\n"
+            "       aksa emit <file.aksa> [--locale en]\n");
     return 2;
 }
 
@@ -41,7 +43,8 @@ int main(int argc, char **argv) {
         if (strcmp(argv[i], "--locale") == 0) locale = argv[i + 1];
 
     if (strcmp(cmd, "tokens") != 0 && strcmp(cmd, "ast") != 0 &&
-        strcmp(cmd, "check") != 0 && strcmp(cmd, "run") != 0)
+        strcmp(cmd, "check") != 0 && strcmp(cmd, "run") != 0 &&
+        strcmp(cmd, "emit") != 0)
         return usage();
 
     char path[512];
@@ -86,6 +89,24 @@ int main(int argc, char **argv) {
         free(msgs);
         free(src);
         return rc ? 1 : 0;
+    }
+    if (strcmp(cmd, "emit") == 0) {
+        AksaErrors errs = {0};
+        char *c = aksa_emit_c(src, &loc, locale, &errs, file);
+        if (!c) {
+            size_t cap = 64, len = 0;
+            char *msgs = malloc(cap);
+            msgs[0] = 0;
+            aksa_errors_dump(&loc, &errs, &msgs, &len, &cap);
+            fputs(msgs, stderr);
+            free(msgs);
+            free(src);
+            return 1;
+        }
+        fputs(c, stdout);
+        free(c);
+        free(src);
+        return 0;
     }
     char *out = strcmp(cmd, "ast") == 0 ? aksa_dump_ast(src, &loc, &nerr)
                                         : aksa_dump_tokens(src, &loc, &nerr);

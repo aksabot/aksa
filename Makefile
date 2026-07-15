@@ -1,7 +1,7 @@
 CC = cc
 LOCALE = id
 CFLAGS = -std=c99 -Wall -Wextra -Werror -O2 -DAKSA_DEFAULT_LOCALE=\"$(LOCALE)\"
-CORE = core/error.c core/locale.c core/lexer.c core/ast.c core/parser.c core/checker.c core/vm.c
+CORE = core/error.c core/locale.c core/lexer.c core/ast.c core/parser.c core/checker.c core/vm.c core/emitter.c
 
 aksa: core/main.c $(CORE)
 	$(CC) $(CFLAGS) $^ -o $@
@@ -28,6 +28,10 @@ test: tests/test_locale tests/test_lexer tests/test_parser tests/test_checker te
 	./tests/test_checker
 	./tests/test_vm
 	./tests/golden.sh
+	./tests/diff.sh
+
+diff: aksa
+	./tests/diff.sh
 
 wasm: wasm/aksa.js
 
@@ -47,4 +51,4 @@ clean:
 	rm -f aksa tests/test_lexer tests/test_locale tests/test_parser tests/test_checker tests/test_vm wasm/aksa.js wasm/aksa.wasm
 	rm -rf web/dist
 
-.PHONY: test wasm web clean
+.PHONY: test diff wasm web clean
