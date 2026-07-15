@@ -20,6 +20,18 @@ static const char *kw_word(int tok, const char *fallback) {
     return fallback;
 }
 
+#ifdef ARDUINO
+#include "aksa_locale.h" /* locale JSON baked in at build time; no filesystem on device */
+
+void aksa_rt_init(const char *locale) {
+    (void)locale;
+    char err[128];
+    if (aksa_locale_load(&ak_loc, aksa_locale_json, err, sizeof err) == 0) {
+        ak_true_word = kw_word(TOK_TRUE, "true");
+        ak_false_word = kw_word(TOK_FALSE, "false");
+    }
+}
+#else
 void aksa_rt_init(const char *locale) {
     char path[512];
     snprintf(path, sizeof path, "locales/%s.json", locale);
@@ -32,6 +44,7 @@ void aksa_rt_init(const char *locale) {
     }
     free(json);
 }
+#endif
 
 void aksa_rt_error(const char *id, int line, const char *arg) {
     AksaErrors e = {0};
@@ -42,7 +55,14 @@ void aksa_rt_error(const char *id, int line, const char *arg) {
     aksa_errors_dump(&ak_loc, &e, &buf, &len, &cap);
     fputs(buf, stderr);
     free(buf);
+#ifdef ARDUINO
+    /* exit() reboots the chip and re-runs the program in a loop; halt instead
+       so the message stays visible on the serial monitor. */
+    fflush(stderr);
+    for (;;) hal_wait(1000);
+#else
     exit(1);
+#endif
 }
 
 /* ---------- values ---------- */
@@ -72,8 +92,9 @@ Ak ak_add(Ak a, Ak b, int line) {
         char ta[64], tb[64];
         const char *sa = ak_tostr(a, ta), *sb = ak_tostr(b, tb);
         /* Concatenation strings are never freed: emitted programs are
-           short-lived on the desktop. Device loops run forever, so P5 needs an
-           arena or explicit free here. */
+           short-lived on the desktop. A device program that builds strings in
+           a forever-loop will exhaust memory; add an arena or explicit free
+           when such programs show up. */
         char *s = malloc(strlen(sa) + strlen(sb) + 1);
         strcpy(s, sa);
         strcat(s, sb);
@@ -153,6 +174,21 @@ Ak ak_print(int n, ...) {
     return ak_nil();
 }
 
+#ifdef ARDUINO
+/* Localized word for a canonical builtin name (for error messages). */
+static const char *builtin_word(const char *canon) {
+    for (int i = 0; i < ak_loc.nbuiltins; i++)
+        if (strcmp(ak_loc.builtins[i].canon, canon) == 0) return ak_loc.builtins[i].word;
+    return canon;
+}
+
+Ak ak_ask(Ak prompt) {
+    /* No keyboard on the device; asking a question can't work yet. */
+    (void)prompt;
+    aksa_rt_error("E106", 0, builtin_word("ask"));
+    return ak_nil();
+}
+#else
 Ak ak_ask(Ak prompt) {
     char tmp[64];
     if (prompt.t != AK_NIL) {
@@ -169,6 +205,7 @@ Ak ak_ask(Ak prompt) {
     strcpy(s, buf);
     return ak_str(s);
 }
+#endif
 
 Ak ak_pin_on(Ak pin) { hal_pin_on(ak_asnum(pin)); return ak_nil(); }
 Ak ak_pin_off(Ak pin) { hal_pin_off(ak_asnum(pin)); return ak_nil(); }

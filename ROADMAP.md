@@ -11,5 +11,6 @@
 - [x] P2c: turtle canvas (animated draw, live speed slider, reset, id color names)
 - [x] P3: hardware simulator (virtual board: 3 LEDs, button, slider, buzzer, fan; pin builtins + non-blocking tunggu; examples dropdown; headless CLI board for 10 golden tests)
 - [x] P4: C emitter (`aksa emit`) + tiny value runtime + sim/esp32 HAL; differential tests (`tests/diff.sh`) prove emitted C compiles `-Werror` and matches the VM on all golden ok/err programs (E109 depth excluded)
-- [ ] P5: compile server + WebSerial flash
+- [x] P5: compile server (Bun + arduino-cli in Docker, ESP32) + browser flasher (esptool-js) + serial monitor; flash path untested on a real board
+- [ ] P5 deferred: test on real ESP32; `tanya` on device (serial read in HAL); free/reuse strings in rt.c loops; Pico/UF2; per-IP rate limit; build+test Docker image (no Docker locally)
 - [ ] P6: lessons, sharing, more locales

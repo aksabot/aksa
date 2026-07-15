@@ -4,12 +4,15 @@ import { linter } from '@codemirror/lint';
 import { Compartment } from '@codemirror/state';
 import { Turtle } from './turtle.js';
 import { Board } from './board.js';
+import { Flasher, serialSupported } from './flash.js';
 
 // UI strings live here, not in locales/*.json (that loader only accepts
 // keywords/builtins/errors sections).
 const UI = {
   id: {
     run: 'Jalankan', stop: 'Berhenti', stopped: '— dihentikan —',
+    flash: 'Kirim ke Perangkat', flashing: 'Mengirim…', disconnect: 'Putus Sambungan',
+    flashFail: 'Gagal mengirim ke perangkat', serverBusy: 'Server sibuk — coba lagi sebentar',
     noPin: (n) => `Tidak ada pin ${n} di papan`,
     sample: 'nama = tanya("Siapa namamu?")\ntulis("Halo,", nama)\nulangi 3 {\n    tulis("Aksa!")\n}\n',
     sampleName: 'Halo',
@@ -23,6 +26,8 @@ const UI = {
   },
   en: {
     run: 'Run', stop: 'Stop', stopped: '— stopped —',
+    flash: 'Send to Device', flashing: 'Sending…', disconnect: 'Disconnect',
+    flashFail: 'Could not send to the device', serverBusy: 'Server is busy — try again in a moment',
     noPin: (n) => `There is no pin ${n} on the board`,
     sample: 'name = ask("What is your name?")\nprint("Hello,", name)\nrepeat 3 {\n    print("Aksa!")\n}\n',
     sampleName: 'Hello',
@@ -41,10 +46,12 @@ function uiDocs(u) { return [u.sample, ...Object.values(u.examples)]; }
 
 const $ = (id) => document.getElementById(id);
 const localeSel = $('locale'), runBtn = $('run'), stopBtn = $('stop');
+const flashBtn = $('flash');
 const consoleEl = $('console'), errorsEl = $('errors');
 const speedEl = $('speed'), resetBtn = $('reset'), examplesSel = $('examples');
 
 let running = false;
+let flashState = 'idle'; // 'flashing' | 'monitoring'
 let stopRequested = false;
 let pendingInput = null; // resolver of the promise ask() is awaiting
 const localeJson = {};   // locale id -> fetched JSON text
@@ -203,6 +210,7 @@ async function init(M) {
   function applyLabels() {
     runBtn.textContent = ui().run;
     stopBtn.textContent = ui().stop;
+    flashBtn.textContent = flashState === 'monitoring' ? ui().disconnect : ui().flash;
     examplesSel.textContent = '';
     uiDocs(ui()).forEach((doc, i) => {
       const opt = document.createElement('option');
@@ -260,5 +268,33 @@ async function init(M) {
   stopBtn.onclick = () => {
     stopRequested = true;
     if (pendingInput) pendingInput('');
+  };
+
+  const flasher = new Flasher(put);
+  flashBtn.hidden = !serialSupported();
+  flashBtn.onclick = async () => {
+    if (flashState === 'monitoring') { await flasher.disconnect(); return; }
+    if (running) return;
+    const src = view.state.doc.toString();
+    const errs = check(src);
+    if (errs.length) { renderPanel(errs); return; } // fix it here first
+    flashState = 'flashing';
+    flashBtn.disabled = true;
+    flashBtn.textContent = ui().flashing;
+    consoleEl.textContent = '';
+    try {
+      await flasher.deploy(src, localeSel.value);
+      flashState = 'monitoring';
+      flashBtn.disabled = false;
+      applyLabels();
+      await flasher.monitor(); // runs until disconnect or unplug
+    } catch (e) {
+      if (e.name !== 'NotFoundError') // silent when the port picker is cancelled
+        put(`${e.message === 'busy' ? ui().serverBusy : ui().flashFail}\n`, 'err');
+      await flasher.disconnect();
+    }
+    flashState = 'idle';
+    flashBtn.disabled = false;
+    applyLabels();
   };
 }

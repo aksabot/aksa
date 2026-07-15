@@ -1,0 +1,8 @@
+web/node_modules
+web/dist
+wasm/aksa.js
+wasm/aksa.wasm
+tests
+examples
+aksa
+.git

@@ -16,6 +16,9 @@
 - A dropdown of ready-made projects, from blinking a light to a reaction game.
 - Programs can now turn into real C code — the first step toward running on a device.
 - That C code is checked to behave exactly like the app, so nothing changes when you deploy.
+- A "Send to Device" button puts your program onto a real ESP32 board, straight from the browser.
+- A helper server builds your program into device firmware — nothing to install on your computer.
+- After sending, messages from the board appear live in the page, mistakes explained in your language.
 
 ### Changed
 

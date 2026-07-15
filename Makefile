@@ -33,11 +33,14 @@ test: tests/test_locale tests/test_lexer tests/test_parser tests/test_checker te
 diff: aksa
 	./tests/diff.sh
 
+test-server: aksa
+	bun server/test.js
+
 wasm: wasm/aksa.js
 
 web: wasm/aksa.js web/dist/main.js
 
-web/dist/main.js: web/main.js web/turtle.js web/board.js web/package.json
+web/dist/main.js: web/main.js web/turtle.js web/board.js web/flash.js web/package.json
 	cd web && bun install && bun build main.js --outdir dist --minify
 
 wasm/aksa.js: wasm/glue.c $(CORE)
@@ -51,4 +54,4 @@ clean:
 	rm -f aksa tests/test_lexer tests/test_locale tests/test_parser tests/test_checker tests/test_vm wasm/aksa.js wasm/aksa.wasm
 	rm -rf web/dist
 
-.PHONY: test diff wasm web clean
+.PHONY: test diff test-server wasm web clean
