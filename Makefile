@@ -31,13 +31,20 @@ test: tests/test_locale tests/test_lexer tests/test_parser tests/test_checker te
 
 wasm: wasm/aksa.js
 
+web: wasm/aksa.js web/dist/main.js
+
+web/dist/main.js: web/main.js web/turtle.js web/package.json
+	cd web && bun install && bun build main.js --outdir dist --minify
+
 wasm/aksa.js: wasm/glue.c $(CORE)
 	emcc -O2 -std=c99 $^ -o $@ \
-	  -sEXPORTED_FUNCTIONS=_aksa_wasm_tokens,_malloc,_free \
-	  -sEXPORTED_RUNTIME_METHODS=ccall,UTF8ToString \
+	  -sASYNCIFY \
+	  -sEXPORTED_FUNCTIONS=_aksa_wasm_tokens,_aksa_wasm_run,_aksa_wasm_check,_malloc,_free \
+	  -sEXPORTED_RUNTIME_METHODS=ccall,UTF8ToString,stringToUTF8 \
 	  -sMODULARIZE=1 -sEXPORT_NAME=AksaModule
 
 clean:
 	rm -f aksa tests/test_lexer tests/test_locale tests/test_parser tests/test_checker tests/test_vm wasm/aksa.js wasm/aksa.wasm
+	rm -rf web/dist
 
-.PHONY: test wasm clean
+.PHONY: test wasm web clean

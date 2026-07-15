@@ -25,7 +25,8 @@ static void capture_out(const char *text, void *user) {
 static const char *run(const AksaLocale *loc, const char *src, char *err_id, int *err_line) {
     capture[0] = 0;
     AksaErrors errs = {0};
-    aksa_run(src, loc, &errs, capture_out, NULL);
+    AksaHost host = {.out = capture_out};
+    aksa_run(src, loc, &errs, &host);
     if (err_id) strcpy(err_id, errs.count ? errs.items[0].id : "");
     if (err_line) *err_line = errs.count ? errs.items[0].line : 0;
     return capture;

@@ -389,6 +389,9 @@ typedef struct {
     const AksaLocale *loc;
     AksaErrors *errs;
     AksaOutFn out;
+    AksaInFn in;
+    AksaYieldFn yield;
+    AksaHostFn host;
     void *user;
     char **owned; /* every runtime-created string, freed when the VM ends */
     int nowned, capowned;
@@ -398,6 +401,11 @@ typedef struct {
 static void stdout_out(const char *text, void *user) {
     (void)user;
     fputs(text, stdout);
+}
+
+static void stdin_in(char *buf, int bufsz, void *user) {
+    (void)user;
+    if (!fgets(buf, bufsz, stdin)) buf[0] = 0;
 }
 
 static char *own(VM *vm, char *s) {
@@ -492,7 +500,7 @@ static int builtin_call(VM *vm, int line, const char *name, const char *canon,
             vm->out(" ", vm->user);
         }
         char buf[256];
-        if (!fgets(buf, sizeof buf, stdin)) buf[0] = 0;
+        vm->in(buf, sizeof buf, vm->user);
         buf[strcspn(buf, "\r\n")] = 0;
         char *end;
         double d = strtod(buf, &end); /* numeric answers become numbers */
@@ -504,6 +512,18 @@ static int builtin_call(VM *vm, int line, const char *name, const char *canon,
         strcpy(s, buf);
         *result = (Val){V_STR, 0, own(vm, s), NULL};
         return 1;
+    }
+    if (vm->host && argc <= 1) {
+        double num = 0;
+        const char *str = NULL;
+        if (argc == 1) {
+            if (args[0].t == V_NUM) num = args[0].num;
+            else if (args[0].t == V_STR) str = args[0].str;
+            else { rterr(vm, line, "E104", ""); return 0; }
+        }
+        /* host builtins take 0 or 1 args and return nothing; pin_read will
+           need a result out-param when the hardware simulator arrives */
+        if (vm->host(canon, num, str, vm->user)) return 1;
     }
     /* turtle/hardware builtins exist but need the browser/device (Phase 2/3) */
     rterr(vm, line, "E106", name);
@@ -532,7 +552,15 @@ static int vm_execute(VM *vm, Func *script) {
         PUSH(op); \
     } while (0)
 
+/* how many instructions run between host yields (~1ms of work) */
+#define AKSA_YIELD_EVERY 100000
+
+    int budget = AKSA_YIELD_EVERY;
     for (;;) {
+        if (vm->yield && --budget <= 0) {
+            budget = AKSA_YIELD_EVERY;
+            if (vm->yield(vm->user)) return vm->failed; /* stop: halt, no error */
+        }
         uint8_t op = *f->ip++;
         switch (op) {
         case OP_CONST: PUSH(f->fn->ch.consts[*f->ip++]); break;
@@ -685,7 +713,7 @@ static int vm_execute(VM *vm, Func *script) {
 /* ---------- entry point ---------- */
 
 int aksa_run(const char *src, const AksaLocale *loc, AksaErrors *errs,
-             AksaOutFn out, void *user) {
+             const AksaHost *host) {
     AksaNode *prog = aksa_parse(src, loc, errs);
     if (errs->count == 0) aksa_check(prog, loc, errs);
     if (errs->count > 0) {
@@ -715,8 +743,11 @@ int aksa_run(const char *src, const AksaLocale *loc, AksaErrors *errs,
         VM *vm = calloc(1, sizeof *vm); /* ~45KB — too big for the WASM stack */
         vm->loc = loc;
         vm->errs = errs;
-        vm->out = out ? out : stdout_out;
-        vm->user = user;
+        vm->out = host && host->out ? host->out : stdout_out;
+        vm->in = host && host->in ? host->in : stdin_in;
+        vm->yield = host ? host->yield : NULL;
+        vm->host = host ? host->host : NULL;
+        vm->user = host ? host->user : NULL;
         rc = vm_execute(vm, script);
         for (int i = 0; i < vm->nowned; i++) free(vm->owned[i]);
         free(vm->owned);

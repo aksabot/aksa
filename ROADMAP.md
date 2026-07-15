@@ -6,7 +6,9 @@
 - [x] P1c: semantic checker (`aksa check`; static E100–E111, runs before every `aksa run`)
 - [x] P1d: bytecode VM, `aksa run` (tulis/tanya, functions, loops, localized runtime errors)
 - [x] P1e: golden tests (40 ok + 36 error programs, `tests/golden.sh` in `make test`)
-- [ ] P2: browser editor, turtle, run controls
+- [x] P2a: browser run (console via WASM hooks, inline async `tanya`, stop button, instruction-budget yield)
+- [x] P2b: CodeMirror 6 editor (bun-bundled; locale-driven highlighting, live squiggles, error panel)
+- [x] P2c: turtle canvas (animated draw, live speed slider, reset, id color names)
 - [ ] P3: hardware simulator
 - [ ] P4: C emitter + differential tests
 - [ ] P5: compile server + WebSerial flash

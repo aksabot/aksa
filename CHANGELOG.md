@@ -5,6 +5,12 @@
 ### Added
 
 - 76 example programs now run automatically to prove Aksa behaves exactly as promised.
+- Programs now run right in the browser: press Run and watch the output appear.
+- Questions from your program show a typing box in the page — no popups.
+- A Stop button, and endless loops can never freeze the page.
+- A real code editor: colors for keywords and instant underlines where something is wrong.
+- Mistakes are listed in your language; click one to jump to the line.
+- Turtle drawing! Make shapes with maju/belok, pick colors, and set the drawing speed.
 
 ### Changed
 

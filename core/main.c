@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
         AksaErrors errs = {0};
         int rc;
         if (strcmp(cmd, "run") == 0) {
-            rc = aksa_run(src, &loc, &errs, NULL, NULL);
+            rc = aksa_run(src, &loc, &errs, NULL);
         } else {
             AksaNode *prog = aksa_parse(src, &loc, &errs);
             if (errs.count == 0) aksa_check(prog, &loc, &errs);

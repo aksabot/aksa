@@ -41,7 +41,7 @@ Early days — the language core works, the kid-facing environment is next.
 | Parser → AST, several errors per run | ✅ |
 | Semantic checker (`aksa check`) | ✅ |
 | Bytecode VM (`aksa run`: functions, loops, `tulis`/`tanya`) | ✅ |
-| Browser editor, turtle graphics | ⏳ Phase 2 |
+| Browser editor, turtle graphics, run controls | ✅ |
 | Hardware simulator (LEDs, sensors) | ⏳ Phase 3 |
 | Transpile to C, flash real ESP32 via WebSerial | ⏳ Phase 4–5 |
 
@@ -49,7 +49,7 @@ See `ROADMAP.md` for detail.
 
 ## Try it
 
-Requires a C compiler and `make` (plus `emcc` for the browser demo).
+Requires a C compiler and `make` (plus `emcc` and `bun` for the browser editor).
 
 ```sh
 make                                  # build the CLI
@@ -59,7 +59,7 @@ make                                  # build the CLI
 ./aksa ast file.aksa                  # peek at the parse tree
 make test                             # run the test suites
 
-make wasm                             # build the WebAssembly module
+make web                              # build the WASM module + editor bundle
 python3 -m http.server                # then open http://localhost:8000/web/
 ```
 
@@ -85,7 +85,7 @@ while (i > 0) {
 
 - **Types:** numbers, strings (`+` concatenates), booleans (`true`/`false`). Conditions must be boolean — `if (5)` is an error with a friendly explanation, not a silent truthy guess.
 - **Keywords (en / id):** if/jika, else/lainnya, repeat/ulangi, while/selama, function/fungsi, return/kembali, true/benar, false/salah, and/dan, or/atau, not/bukan, make/buat, stop/berhenti.
-- **Builtins:** console (`print`, `ask`), turtle (`forward`, `turn_right`, …) and hardware (`turn_on`, `read`, `wait`, …) — the latter two groups arrive with the browser environment and simulator.
+- **Builtins:** console (`print`, `ask`), turtle in the browser (`forward`, `turn_right`, `color`, …), and hardware (`turn_on`, `read`, `wait`, …) — the hardware group arrives with the simulator.
 - Identifiers accept full Unicode, so kids name things in their own words. Comments start with `//`.
 
 ## How it works
@@ -107,5 +107,5 @@ core/      lexer, parser, checker, VM — pure C99
 locales/   id.json, en.json — keywords, builtins, error messages
 tests/     one small suite per component (make test)
 examples/  graded example programs
-wasm/      Emscripten glue        web/  bare browser demo
+wasm/      Emscripten glue        web/  browser editor (CodeMirror + turtle)
 ```

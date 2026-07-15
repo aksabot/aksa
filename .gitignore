@@ -10,5 +10,7 @@ tests/test_checker
 tests/test_vm
 wasm/aksa.js
 wasm/aksa.wasm
+web/node_modules/
+web/dist/
 *.o
 .DS_Store
