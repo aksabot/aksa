@@ -5,6 +5,7 @@
 ### Added
 
 - Send to Device now recognizes the board you plug in (C3 or C6) automatically.
+- The board can be its own computer: join its Wi-Fi from any phone and code — no PC needed.
 
 ### Fixed
 

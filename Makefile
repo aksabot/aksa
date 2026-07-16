@@ -40,6 +40,16 @@ test-server: aksa
 typecheck:
 	cd web && bun install && bun x tsc --noEmit
 
+DEVICE_FQBN = esp32:esp32:esp32c3
+DEVICE_PORT ?= $(firstword $(wildcard /dev/cu.usbmodem*))
+
+device:
+	device/build.sh
+	arduino-cli compile --fqbn $(DEVICE_FQBN) device/sketch
+
+device-flash: device
+	arduino-cli upload --fqbn $(DEVICE_FQBN) -p $(DEVICE_PORT) device/sketch
+
 wasm: wasm/aksa.js
 
 web: wasm/aksa.js web/dist/main.js
@@ -56,6 +66,6 @@ wasm/aksa.js: wasm/glue.c $(CORE)
 
 clean:
 	rm -f aksa tests/test_lexer tests/test_locale tests/test_parser tests/test_checker tests/test_vm wasm/aksa.js wasm/aksa.wasm
-	rm -rf web/dist
+	rm -rf web/dist device/sketch
 
-.PHONY: test diff test-server typecheck wasm web clean
+.PHONY: test diff test-server typecheck wasm web device device-flash clean

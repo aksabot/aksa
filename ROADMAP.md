@@ -20,3 +20,4 @@
 - [x] P6e: all JS → strict TypeScript (web+server, bun-native); tsconfig + `make typecheck`
 - [x] P6f: auto-detect chip on flash (esptool-js CHIP_NAME → board); compile targets esp32c3/esp32c6, bootloader at 0x0; others rejected
 - [ ] P6b: more locales; device lesson track after real-board testing; per-board GPIO pin map (C3 vs C6)
+- [ ] P7: on-device runtime — ESP32-C3 is its own hotspot + editor + interpreter (`make device` / `device-flash`); compiles at 78% flash; check off after real-board test (LED polarity, heap, both locales)
