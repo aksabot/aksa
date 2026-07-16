@@ -2,6 +2,10 @@
 
 ## 0.0.3 — 2026-07-16
 
+### Added
+
+- Send to Device now recognizes the board you plug in (C3 or C6) automatically.
+
 ### Changed
 
 - Lessons now live in one file per language, making them easier to edit.

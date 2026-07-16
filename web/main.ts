@@ -13,7 +13,7 @@ interface UIStrings {
   run: string; stop: string; stopped: string;
   share: string; copied: string;
   flash: string; flashing: string; disconnect: string;
-  flashFail: string; serverBusy: string;
+  flashFail: string; serverBusy: string; unsupportedDevice: string;
   noPin: (n: number) => string;
   modeDevice: string; modeLang: string;
   examples: Record<string, string>;
@@ -25,6 +25,7 @@ const UI: Record<string, UIStrings> = {
     share: 'Bagikan', copied: 'Tautan disalin — kirim ke temanmu!',
     flash: 'Kirim ke Perangkat', flashing: 'Mengirim…', disconnect: 'Putus Sambungan',
     flashFail: 'Gagal mengirim ke perangkat', serverBusy: 'Server sibuk — coba lagi sebentar',
+    unsupportedDevice: 'Perangkat ini belum didukung',
     noPin: (n: number) => `Tidak ada pin ${n} di papan`,
     modeDevice: '🔌 Mode Perangkat', modeLang: '🤖 Mode Bahasa',
     examples: {
@@ -40,6 +41,7 @@ const UI: Record<string, UIStrings> = {
     share: 'Share', copied: 'Link copied — send it to a friend!',
     flash: 'Send to Device', flashing: 'Sending…', disconnect: 'Disconnect',
     flashFail: 'Could not send to the device', serverBusy: 'Server is busy — try again in a moment',
+    unsupportedDevice: 'This device is not supported yet',
     noPin: (n: number) => `There is no pin ${n} on the board`,
     modeDevice: '🔌 Device Mode', modeLang: '🤖 Language Mode',
     examples: {
@@ -349,7 +351,9 @@ async function init(M: AksaM) {
     } catch (e) {
       const err = e instanceof Error ? e : new Error(String(e));
       if (err.name !== 'NotFoundError') // silent when the port picker is cancelled
-        put(`${err.message === 'busy' ? ui().serverBusy : ui().flashFail}\n`, 'err');
+        put(`${err.message === 'busy' ? ui().serverBusy
+          : err.message === 'unsupported_chip' ? ui().unsupportedDevice
+          : ui().flashFail}\n`, 'err');
       await flasher.disconnect();
     }
     flashState = 'idle';

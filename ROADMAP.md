@@ -17,4 +17,5 @@
 - [x] P6c: drawing cursor renamed turtle→robot, arrow replaced with a robot character (rounded body, eyes, nose showing heading)
 - [x] P6d: lessons split into one file per locale (lessons.id.js/lessons.en.js), lessons.js just assembles the map
 - [x] P6e: all JS → strict TypeScript (web+server, bun-native); tsconfig + `make typecheck`
-- [ ] P6b: more locales; device lesson track after real-board testing
+- [x] P6f: auto-detect chip on flash (esptool-js CHIP_NAME → board); compile targets esp32c3/esp32c6, bootloader at 0x0; others rejected
+- [ ] P6b: more locales; device lesson track after real-board testing; per-board GPIO pin map (C3 vs C6)

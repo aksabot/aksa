@@ -11,6 +11,10 @@ const COMPILE_URL = new URLSearchParams(location.search).get('server')
 
 const b64 = (s: string) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 
+// esptool-js chip name → server board id. Others (S3, original ESP32) are
+// rejected as unsupported.
+const CHIP: Record<string, string> = { 'ESP32-C3': 'c3', 'ESP32-C6': 'c6' };
+
 export class Flasher {
   port: SerialPort | null = null;
   reader?: ReadableStreamDefaultReader<Uint8Array>;
@@ -20,14 +24,8 @@ export class Flasher {
   // Compile + flash. Throws with a short code ('busy', 'internal', …) on
   // failure; the caller owns the kid-facing wording.
   async deploy(source: string, locale: string) {
-    const res = await fetch(COMPILE_URL, {
-      method: 'POST',
-      body: JSON.stringify({ source, locale, board: 'esp32' }),
-    }).catch(() => null);
-    if (!res) throw new Error('no_server');
-    if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? 'internal');
-    const { parts } = await res.json();
-
+    // Connect first so esptool-js can identify the chip, then compile for that
+    // exact target — one port session does detect → compile → flash.
     this.port = await navigator.serial.requestPort();
     const transport = new Transport(this.port);
     try {
@@ -38,6 +36,17 @@ export class Flasher {
         terminal: { clean() {}, write: (t: string) => put(t, 'info'), writeLine: (t: string) => put(t + '\n', 'info') },
       });
       await loader.main();
+      const board = CHIP[loader.chip.CHIP_NAME];
+      if (!board) throw new Error('unsupported_chip');
+
+      const res = await fetch(COMPILE_URL, {
+        method: 'POST',
+        body: JSON.stringify({ source, locale, board }),
+      }).catch(() => null);
+      if (!res) throw new Error('no_server');
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? 'internal');
+      const { parts } = await res.json();
+
       await loader.writeFlash({
         fileArray: parts.map((p: { data: string; addr: number }) => ({ data: b64(p.data), address: p.addr })),
         flashMode: 'keep',

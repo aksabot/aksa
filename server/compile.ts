@@ -10,7 +10,13 @@ import { tmpdir } from "node:os";
 
 const ROOT = join(import.meta.dir, "..");
 const PORT = Number(process.env.PORT || 8765);
-const FQBN = "esp32:esp32:esp32";
+// Chip → Arduino FQBN. Detection (from esptool-js on connect) picks the key;
+// add S3/etc. here when a board joins. ponytail: per-board GPIO pin map is the
+// follow-up — `board` is the hook for it, but wiring isn't finalized yet.
+const FQBN: Record<string, string> = {
+    c3: "esp32:esp32:esp32c3",
+    c6: "esp32:esp32:esp32c6",
+};
 const AKSA = join(ROOT, "aksa");
 const COMPILE_TIMEOUT_MS = 180_000;
 const MAX_BODY = 64 * 1024;
@@ -71,7 +77,7 @@ async function part(path: string, addr: number) {
     return { addr, data: Buffer.from(await readFile(path)).toString("base64") };
 }
 
-async function compile(source: string, locale: string) {
+async function compile(source: string, locale: string, board: string) {
     const tmp = await mkdtemp(join(tmpdir(), "aksa-"));
     try {
         const src = join(tmp, "program.aksa");
@@ -98,7 +104,7 @@ async function compile(source: string, locale: string) {
 
         const out = join(tmp, "out");
         const cc = await run(
-            ["arduino-cli", "compile", "--fqbn", FQBN, "--output-dir", out, sketch],
+            ["arduino-cli", "compile", "--fqbn", FQBN[board], "--output-dir", out, sketch],
             { timeout: COMPILE_TIMEOUT_MS },
         );
         if (cc.code !== 0) {
@@ -109,7 +115,7 @@ async function compile(source: string, locale: string) {
         // Separate parts, not the merged image: merged.bin is the full 4MB
         // flash (mostly padding); these four total a few hundred KB.
         const parts = [
-            await part(join(out, "aksa.ino.bootloader.bin"), 0x1000),
+            await part(join(out, "aksa.ino.bootloader.bin"), 0x0),
             await part(join(out, "aksa.ino.partitions.bin"), 0x8000),
             await part(bootApp0, 0xe000),
             await part(join(out, "aksa.ino.bin"), 0x10000),
@@ -131,14 +137,14 @@ Bun.serve({
 
         let body: any;
         try { body = await req.json(); } catch { return fail(400, "bad_request"); }
-        const { source, locale = "id", board = "esp32" } = body;
+        const { source, locale = "id", board = "c3" } = body;
         if (typeof source !== "string" || source.length > MAX_BODY) return fail(400, "bad_request");
         if (!/^[a-z]{2,8}$/.test(locale) || !existsSync(join(ROOT, "locales", `${locale}.json`))) return fail(400, "bad_request");
-        if (board !== "esp32") return fail(400, "bad_request");
+        if (!FQBN[board]) return fail(400, "bad_request");
 
         if (!(await acquire())) return fail(429, "busy");
         try {
-            return await compile(source, locale);
+            return await compile(source, locale, board);
         } catch (e) {
             console.error(e);
             return fail(500, "internal");
@@ -147,4 +153,4 @@ Bun.serve({
         }
     },
 });
-console.log(`aksa compile server on :${PORT} (fqbn ${FQBN})`);
+console.log(`aksa compile server on :${PORT} (boards ${Object.keys(FQBN).join(", ")})`);
