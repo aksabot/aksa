@@ -6,6 +6,10 @@
 
 - Send to Device now recognizes the board you plug in (C3 or C6) automatically.
 
+### Fixed
+
+- Programs that build text in a loop no longer run out of memory on the board.
+
 ### Changed
 
 - Lessons now live in one file per language, making them easier to edit.

@@ -208,7 +208,13 @@ static void emit_expr(E *e, const AksaNode *n) {
         put(e, ")");
         break;
     case AST_BOOL: putf(e, "ak_bool(%d)", (int)n->num); break;
-    case AST_NAME: emit_var(e, n->str); break;
+    case AST_NAME:
+        /* borrow → fresh: a stored string gets its own reference so the
+           consuming op can release it without touching the variable's copy */
+        put(e, "ak_retain(");
+        emit_var(e, n->str);
+        put(e, ")");
+        break;
     case AST_UNOP:
         put(e, n->op == TOK_NOT ? "ak_not(" : "ak_neg(");
         emit_expr(e, n->a);
@@ -239,6 +245,16 @@ static void emit_expr(E *e, const AksaNode *n) {
 
 /* ---------- statements ---------- */
 
+/* release every local (incl. params) before leaving a function, so a stored
+   string's last owner drops it. Globals live to program end (never released). */
+static void emit_release_locals(E *e) {
+    for (int i = 0; i < e->locals.n; i++) {
+        put(e, "ak_release(l_");
+        mangle(e, e->locals.names[i]);
+        put(e, "); ");
+    }
+}
+
 static void emit_stmt(E *e, const AksaNode *n, int lvl);
 
 static void emit_block(E *e, const AksaNode *b, int lvl) {
@@ -253,13 +269,14 @@ static void emit_stmt(E *e, const AksaNode *n, int lvl) {
 
     switch (n->kind) {
     case AST_ASSIGN:
+        put(e, "ak_assign(&");
         emit_var(e, n->str);
-        put(e, " = ");
+        put(e, ", ");
         emit_expr(e, n->a);
-        put(e, ";\n");
+        put(e, ");\n");
         break;
     case AST_IF:
-        put(e, "if (ak_asbool(");
+        put(e, "if (ak_truth(");
         emit_expr(e, n->a);
         put(e, ")) {\n");
         emit_block(e, n->b, lvl + 1);
@@ -275,7 +292,7 @@ static void emit_stmt(E *e, const AksaNode *n, int lvl) {
         put(e, "\n");
         break;
     case AST_WHILE:
-        put(e, "while (ak_asbool(");
+        put(e, "while (ak_truth(");
         emit_expr(e, n->a);
         put(e, ")) {\n");
         emit_block(e, n->b, lvl + 1);
@@ -285,7 +302,7 @@ static void emit_stmt(E *e, const AksaNode *n, int lvl) {
     case AST_REPEAT: {
         int r = e->repeatctr++;
         put(e, "{ double _r");
-        putf(e, "%d = ak_asnum(", r);
+        putf(e, "%d = ak_count(", r);
         emit_expr(e, n->a);
         put(e, ");\n");
         indent(e, lvl + 1);
@@ -303,17 +320,21 @@ static void emit_stmt(E *e, const AksaNode *n, int lvl) {
     }
     case AST_BREAK: put(e, "break;\n"); break;
     case AST_RETURN:
-        put(e, "return ");
+        /* compute the value (it may read locals), then release locals, return */
+        put(e, "{ Ak _rv = ");
         if (n->a) emit_expr(e, n->a);
         else put(e, "ak_nil()");
-        put(e, ";\n");
+        put(e, "; ");
+        emit_release_locals(e);
+        put(e, "return _rv; }\n");
         break;
     case AST_BLOCK:
         emit_block(e, n, lvl);
         break;
-    default: /* expression statement */
+    default: /* expression statement: drop the discarded (fresh) result */
+        put(e, "ak_release(");
         emit_expr(e, n);
-        put(e, ";\n");
+        put(e, ");\n");
     }
 }
 
@@ -353,7 +374,9 @@ static void emit_func(E *e, const AksaNode *fn) {
             put(e, " = ak_nil();\n");
         }
     emit_block(e, fn->a, 1);
-    put(e, "    return ak_nil();\n}\n\n");
+    put(e, "    ");
+    emit_release_locals(e);
+    put(e, "return ak_nil();\n}\n\n");
 
     e->locals = (Set){0};
     free(locals.names);

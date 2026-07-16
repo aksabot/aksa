@@ -29,6 +29,7 @@ test: tests/test_locale tests/test_lexer tests/test_parser tests/test_checker te
 	./tests/test_vm
 	./tests/golden.sh
 	./tests/diff.sh
+	./tests/mem.sh
 
 diff: aksa
 	./tests/diff.sh
