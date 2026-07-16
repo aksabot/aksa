@@ -3,18 +3,25 @@
 // robot cursor so moving it never damages the drawing.
 
 // Indonesian color words -> canvas colors (English words pass through).
-const COLORS = {
+const COLORS: Record<string, string> = {
   merah: 'red', biru: 'blue', hijau: 'green', kuning: 'yellow',
   hitam: 'black', putih: 'white', ungu: 'purple', jingga: 'orange',
   coklat: 'brown', 'merah muda': 'pink', 'abu-abu': 'gray',
 };
 
 export class Robot {
-  // opts: { speed: () => 1..10 (10 = instant), stopped: () => bool }
-  constructor(lines, overlay, opts) {
-    this.lines = lines;
-    this.overlay = overlay;
-    this.opts = opts;
+  x = 0;
+  y = 0;
+  heading = 0;
+  penDown = true;
+  color = '#222';
+
+  // opts.speed: () => 1..10 (10 = instant)
+  constructor(
+    public lines: HTMLCanvasElement,
+    public overlay: HTMLCanvasElement,
+    public opts: { speed: () => number; stopped: () => boolean },
+  ) {
     this.reset();
   }
 
@@ -24,12 +31,12 @@ export class Robot {
     this.heading = -90; // up
     this.penDown = true;
     this.color = '#222';
-    this.lines.getContext('2d').clearRect(0, 0, this.lines.width, this.lines.height);
+    this.lines.getContext('2d')!.clearRect(0, 0, this.lines.width, this.lines.height);
     this.drawCursor();
   }
 
   drawCursor() {
-    const ctx = this.overlay.getContext('2d');
+    const ctx = this.overlay.getContext('2d')!;
     ctx.clearRect(0, 0, this.overlay.width, this.overlay.height);
     ctx.save();
     ctx.translate(this.x, this.y);
@@ -47,9 +54,9 @@ export class Robot {
     ctx.restore();
   }
 
-  moveTo(nx, ny) {
+  moveTo(nx: number, ny: number) {
     if (this.penDown) {
-      const ctx = this.lines.getContext('2d');
+      const ctx = this.lines.getContext('2d')!;
       ctx.strokeStyle = this.color;
       ctx.lineWidth = 2;
       ctx.lineCap = 'round';
@@ -63,7 +70,7 @@ export class Robot {
     this.drawCursor();
   }
 
-  async forward(dist) {
+  async forward(dist: number) {
     const rad = this.heading * Math.PI / 180;
     const sx = this.x, sy = this.y;
     const tx = sx + Math.cos(rad) * dist;
@@ -83,7 +90,7 @@ export class Robot {
   }
 
   // returns true if `canon` is a drawing builtin (and performs it)
-  async op(canon, num, str) {
+  async op(canon: string, num: number, str: string) {
     switch (canon) {
       case 'forward': await this.forward(num); return true;
       case 'backward': await this.forward(-num); return true;

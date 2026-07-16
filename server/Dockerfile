@@ -35,4 +35,4 @@ RUN mkdir -p /tmp/warm/warm && printf 'void setup(){} void loop(){}\n' > /tmp/wa
     && arduino-cli compile --fqbn esp32:esp32:esp32 /tmp/warm/warm && rm -rf /tmp/warm
 
 EXPOSE 8765
-CMD ["bun", "server/compile.js"]
+CMD ["bun", "server/compile.ts"]

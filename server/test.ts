@@ -6,7 +6,7 @@ import { join } from "node:path";
 
 const ROOT = join(import.meta.dir, "..");
 
-async function have(cmd) {
+async function have(cmd: string[]) {
     try { return (await Bun.spawn(cmd, { stdout: "pipe", stderr: "pipe" }).exited) === 0; }
     catch { return false; }
 }
@@ -21,7 +21,7 @@ if (!cores.includes("esp32:esp32")) {
 }
 
 const port = 18000 + Math.floor(Math.random() * 1000);
-const server = Bun.spawn(["bun", join(import.meta.dir, "compile.js")], {
+const server = Bun.spawn(["bun", join(import.meta.dir, "compile.ts")], {
     env: { ...process.env, PORT: String(port) },
     stdout: "pipe",
     stderr: "inherit",
@@ -33,7 +33,7 @@ for (let i = 0; ; i++) {
 }
 
 let failed = 0;
-function check(name, ok) {
+function check(name: string, ok: boolean) {
     if (!ok) failed++;
     console.log(`${ok ? "ok" : "FAIL"} - ${name}`);
 }
@@ -47,7 +47,7 @@ try {
     check("blink compiles (200)", res.status === 200);
     const { parts } = await res.json();
     check("returns flash parts", Array.isArray(parts) && parts.length === 4);
-    const app = parts.find((p) => p.addr === 0x10000);
+    const app = parts.find((p: { addr: number; data: string }) => p.addr === 0x10000);
     check("app binary is real (>100KB)", app && atob(app.data).length > 100_000);
 
     const bad = await fetch(url, {

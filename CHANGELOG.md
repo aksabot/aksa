@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.3 — 2026-07-16
+
+### Changed
+
+- Lessons now live in one file per language, making them easier to edit.
+- The app's code now checks itself for mistakes before every release.
+
 ## 0.0.2 — 2026-07-15
 
 ### Added

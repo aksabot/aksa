@@ -6,5 +6,8 @@
     "@codemirror/view": "^6.43.6",
     "codemirror": "^6.0.2",
     "esptool-js": "0.6.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
   }
 }

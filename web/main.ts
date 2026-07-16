@@ -1,21 +1,31 @@
 import { EditorView, basicSetup } from 'codemirror';
 import { StreamLanguage } from '@codemirror/language';
 import { linter } from '@codemirror/lint';
-import { Compartment } from '@codemirror/state';
-import { Robot } from './robot.js';
-import { Board } from './board.js';
-import { Flasher, serialSupported } from './flash.js';
-import { LESSONS } from './lessons.js';
+import { Compartment, Text } from '@codemirror/state';
+import { Robot } from './robot.ts';
+import { Board } from './board.ts';
+import { Flasher, serialSupported } from './flash.ts';
+import { LESSONS } from './lessons.ts';
 
 // UI strings live here, not in locales/*.json (that loader only accepts
 // keywords/builtins/errors sections).
-const UI = {
+interface UIStrings {
+  run: string; stop: string; stopped: string;
+  share: string; copied: string;
+  flash: string; flashing: string; disconnect: string;
+  flashFail: string; serverBusy: string;
+  noPin: (n: number) => string;
+  modeDevice: string; modeLang: string;
+  examples: Record<string, string>;
+}
+
+const UI: Record<string, UIStrings> = {
   id: {
     run: 'Jalankan', stop: 'Berhenti', stopped: '— dihentikan —',
     share: 'Bagikan', copied: 'Tautan disalin — kirim ke temanmu!',
     flash: 'Kirim ke Perangkat', flashing: 'Mengirim…', disconnect: 'Putus Sambungan',
     flashFail: 'Gagal mengirim ke perangkat', serverBusy: 'Server sibuk — coba lagi sebentar',
-    noPin: (n) => `Tidak ada pin ${n} di papan`,
+    noPin: (n: number) => `Tidak ada pin ${n} di papan`,
     modeDevice: '🔌 Mode Perangkat', modeLang: '🤖 Mode Bahasa',
     examples: {
       'Kedip': 'ulangi 5 {\n    nyalakan(1)\n    tunggu(300)\n    matikan(1)\n    tunggu(300)\n}\n',
@@ -30,7 +40,7 @@ const UI = {
     share: 'Share', copied: 'Link copied — send it to a friend!',
     flash: 'Send to Device', flashing: 'Sending…', disconnect: 'Disconnect',
     flashFail: 'Could not send to the device', serverBusy: 'Server is busy — try again in a moment',
-    noPin: (n) => `There is no pin ${n} on the board`,
+    noPin: (n: number) => `There is no pin ${n} on the board`,
     modeDevice: '🔌 Device Mode', modeLang: '🤖 Language Mode',
     examples: {
       'Blink': 'repeat 5 {\n    turn_on(1)\n    wait(300)\n    turn_off(1)\n    wait(300)\n}\n',
@@ -42,11 +52,11 @@ const UI = {
   },
 };
 
-const $ = (id) => document.getElementById(id);
-const localeSel = $('locale'), runBtn = $('run'), stopBtn = $('stop');
-const flashBtn = $('flash'), shareBtn = $('share'), modeLink = $('mode-link');
+const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+const localeSel = $<HTMLSelectElement>('locale'), runBtn = $<HTMLButtonElement>('run'), stopBtn = $<HTMLButtonElement>('stop');
+const flashBtn = $<HTMLButtonElement>('flash'), shareBtn = $<HTMLButtonElement>('share'), modeLink = $('mode-link');
 const consoleEl = $('console'), errorsEl = $('errors');
-const speedEl = $('speed'), resetBtn = $('reset'), examplesSel = $('examples');
+const speedEl = $<HTMLInputElement>('speed'), resetBtn = $('reset'), examplesSel = $<HTMLSelectElement>('examples');
 const lessonEl = $('lesson');
 
 // One bundle serves both pages; each page declares what it has and the
@@ -55,15 +65,15 @@ const lessonEl = $('lesson');
 const hasBoard = !!$('board');
 
 let running = false;
-let flashState = 'idle'; // 'flashing' | 'monitoring'
+let flashState: 'idle' | 'flashing' | 'monitoring' = 'idle';
 let stopRequested = false;
-let pendingInput = null; // resolver of the promise ask() is awaiting
-const localeJson = {};   // locale id -> fetched JSON text
+let pendingInput: ((answer: string) => void) | null = null; // resolver of the promise ask() is awaiting
+const localeJson: Record<string, string> = {};   // locale id -> fetched JSON text
 
 function ui() { return UI[localeSel.value]; }
 
 // every pristine doc a locale can show, in a stable order shared by locales
-function docsFor(loc) {
+function docsFor(loc: string) {
   return hasBoard ? Object.values(UI[loc].examples)
                   : LESSONS[loc].map((l) => l.code);
 }
@@ -72,7 +82,7 @@ function titles() {
                   : LESSONS[localeSel.value].map((l) => l.title);
 }
 
-function put(text, cls) {
+function put(text: string, cls?: string) {
   const span = document.createElement('span');
   if (cls) span.className = cls;
   span.textContent = text;
@@ -82,7 +92,7 @@ function put(text, cls) {
 
 // Tokenizer over the locale's own keyword/builtin words, so highlighting
 // follows the selected language for free.
-function aksaLanguage(json) {
+function aksaLanguage(json: string) {
   const dict = JSON.parse(json);
   const keywords = new Set(Object.keys(dict.keywords));
   const builtins = new Set(Object.keys(dict.builtins));
@@ -104,7 +114,7 @@ function aksaLanguage(json) {
   });
 }
 
-async function fetchLocale(loc) {
+async function fetchLocale(loc: string) {
   if (!localeJson[loc])
     localeJson[loc] = await (await fetch(`../locales/${loc}.json`)).text();
   return localeJson[loc];
@@ -122,8 +132,8 @@ function fromHash() {
 
 AksaModule().then(init);
 
-async function init(M) {
-  const robot = $('lines') && new Robot($('lines'), $('overlay'), {
+async function init(M: AksaM) {
+  const robot = $('lines') && new Robot($<HTMLCanvasElement>('lines'), $<HTMLCanvasElement>('overlay'), {
     speed: () => +speedEl.value,
     stopped: () => stopRequested,
   });
@@ -135,7 +145,7 @@ async function init(M) {
   });
   if (board) {
     const potVal = $('pin-pot-val');
-    $('pin-pot').oninput = () => { potVal.textContent = $('pin-pot').value; };
+    $('pin-pot').oninput = () => { potVal.textContent = $<HTMLInputElement>('pin-pot').value; };
     const btn = $('pin-btn');
     btn.onpointerdown = () => { board.pressed = true; };
     btn.onpointerup = btn.onpointerleave = () => { board.pressed = false; };
@@ -169,13 +179,13 @@ async function init(M) {
     consoleEl.appendChild(field);
     consoleEl.appendChild(document.createTextNode('\n'));
     field.focus();
-    pendingInput = (answer) => {
+    pendingInput = (answer: string) => {
       pendingInput = null;
       field.disabled = true;
       field.value = answer;
       resolve(answer);
     };
-    field.onkeydown = (ev) => { if (ev.key === 'Enter') pendingInput(field.value); };
+    field.onkeydown = (ev) => { if (ev.key === 'Enter') pendingInput?.(field.value); };
   });
 
   // Awaiting a 0ms timeout yields to the browser so the page stays
@@ -185,21 +195,23 @@ async function init(M) {
     return stopRequested ? 1 : 0;
   };
 
-  function check(src) {
+  interface AksaErr { line: number; col: number; msg: string }
+
+  function check(src: string) {
     const ptr = M.ccall('aksa_wasm_check', 'number', ['string', 'string'],
                         [src, localeJson[localeSel.value]]);
     const errs = JSON.parse(M.UTF8ToString(ptr));
     M._free(ptr);
-    return errs;
+    return errs as AksaErr[];
   }
 
-  function errorPos(doc, e) {
+  function errorPos(doc: Text, e: AksaErr) {
     const line = doc.line(Math.min(Math.max(e.line, 1), doc.lines));
     const from = Math.min(line.from + Math.max(e.col - 1, 0), line.to);
     return { from, to: Math.min(from + 1, line.to) };
   }
 
-  function renderPanel(errs) {
+  function renderPanel(errs: AksaErr[]) {
     errorsEl.textContent = '';
     for (const e of errs) {
       const row = document.createElement('div');
@@ -233,7 +245,7 @@ async function init(M) {
     parent: $('editor'),
   });
 
-  function showLesson(i) {
+  function showLesson(i: number) {
     if (lessonEl) lessonEl.textContent = LESSONS[localeSel.value][i].text;
   }
 
@@ -247,7 +259,7 @@ async function init(M) {
     examplesSel.textContent = '';
     titles().forEach((title, i) => {
       const opt = document.createElement('option');
-      opt.value = i;
+      opt.value = String(i);
       opt.textContent = title;
       examplesSel.appendChild(opt);
     });
@@ -255,7 +267,7 @@ async function init(M) {
   }
   applyLabels();
 
-  function setDoc(text) {
+  function setDoc(text: string) {
     view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: text } });
   }
   examplesSel.onchange = () => {
@@ -278,7 +290,7 @@ async function init(M) {
           ? { changes: { from: 0, to: doc.length, insert: docsFor(localeSel.value)[match] } }
           : {}),
     });
-    if (match >= 0) examplesSel.value = match;
+    if (match >= 0) examplesSel.value = String(match);
     applyLabels();
   };
 
@@ -335,8 +347,9 @@ async function init(M) {
       applyLabels();
       await flasher.monitor(); // runs until disconnect or unplug
     } catch (e) {
-      if (e.name !== 'NotFoundError') // silent when the port picker is cancelled
-        put(`${e.message === 'busy' ? ui().serverBusy : ui().flashFail}\n`, 'err');
+      const err = e instanceof Error ? e : new Error(String(e));
+      if (err.name !== 'NotFoundError') // silent when the port picker is cancelled
+        put(`${err.message === 'busy' ? ui().serverBusy : ui().flashFail}\n`, 'err');
       await flasher.disconnect();
     }
     flashState = 'idle';

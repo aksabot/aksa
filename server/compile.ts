@@ -1,7 +1,7 @@
 /* Aksa compile server: POST /compile {source, locale, board} → firmware parts.
    Receives kid source (never raw C), emits C with the native aksa binary, and
    compiles it as an Arduino sketch. Toolchain output stays server-side; the
-   browser only ever sees stable error codes. Run: bun server/compile.js */
+   browser only ever sees stable error codes. Run: bun server/compile.ts */
 
 import { mkdtemp, rm, mkdir, writeFile, readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
@@ -25,7 +25,7 @@ const RUNTIME_FILES = [
 ];
 const INO = 'extern "C" int aksa_main(void);\nvoid setup() { aksa_main(); }\nvoid loop() {}\n';
 
-async function run(cmd, opts = {}) {
+async function run(cmd: string[], opts: { timeout?: number; cwd?: string } = {}) {
     const proc = Bun.spawn(cmd, { stdout: "pipe", stderr: "pipe", ...opts });
     let timedOut = false;
     const timer = opts.timeout && setTimeout(() => { timedOut = true; proc.kill(); }, opts.timeout);
@@ -50,11 +50,11 @@ if (!bootApp0) { console.error("esp32 core not installed — run `arduino-cli co
 
 /* Tiny queue: a classroom is a burst of ~30; beyond that, tell them to retry. */
 let running = 0;
-const waiting = [];
+const waiting: ((ok: boolean) => void)[] = [];
 function acquire() {
     if (running < MAX_RUNNING) { running++; return Promise.resolve(true); }
     if (waiting.length >= MAX_WAITING) return Promise.resolve(false);
-    return new Promise((resolve) => waiting.push(resolve));
+    return new Promise<boolean>((resolve) => waiting.push(resolve));
 }
 function release() {
     const next = waiting.shift();
@@ -65,13 +65,13 @@ const CORS = {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "content-type",
 };
-const fail = (status, error) => Response.json({ error }, { status, headers: CORS });
+const fail = (status: number, error: string) => Response.json({ error }, { status, headers: CORS });
 
-async function part(path, addr) {
+async function part(path: string, addr: number) {
     return { addr, data: Buffer.from(await readFile(path)).toString("base64") };
 }
 
-async function compile(source, locale) {
+async function compile(source: string, locale: string) {
     const tmp = await mkdtemp(join(tmpdir(), "aksa-"));
     try {
         const src = join(tmp, "program.aksa");
@@ -85,7 +85,7 @@ async function compile(source, locale) {
         // on the include path (it breaks the toolchain's own C++ headers), so
         // it's renamed to ak_locale.h during assembly.
         for (const f of RUNTIME_FILES) {
-            const name = f.split("/").pop();
+            const name = f.split("/").pop()!;
             const text = (await readFile(join(ROOT, f), "utf8"))
                 .replaceAll('#include "locale.h"', '#include "ak_locale.h"');
             await writeFile(join(sketch, name.startsWith("locale.") ? "ak_" + name : name), text);
@@ -129,7 +129,7 @@ Bun.serve({
         if (req.method !== "POST" || url.pathname !== "/compile") return fail(404, "bad_request");
         if (Number(req.headers.get("content-length")) > MAX_BODY) return fail(413, "bad_request");
 
-        let body;
+        let body: any;
         try { body = await req.json(); } catch { return fail(400, "bad_request"); }
         const { source, locale = "id", board = "esp32" } = body;
         if (typeof source !== "string" || source.length > MAX_BODY) return fail(400, "bad_request");

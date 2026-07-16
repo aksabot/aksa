@@ -9,17 +9,17 @@ export const serialSupported = () => 'serial' in navigator;
 const COMPILE_URL = new URLSearchParams(location.search).get('server')
   ?? 'http://localhost:8765/compile';
 
-const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const b64 = (s: string) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
 
 export class Flasher {
-  constructor(put) {
-    this.put = put;
-    this.port = null;
-  }
+  port: SerialPort | null = null;
+  reader?: ReadableStreamDefaultReader<Uint8Array>;
+
+  constructor(public put: (text: string, cls?: string) => void) {}
 
   // Compile + flash. Throws with a short code ('busy', 'internal', …) on
   // failure; the caller owns the kid-facing wording.
-  async deploy(source, locale) {
+  async deploy(source: string, locale: string) {
     const res = await fetch(COMPILE_URL, {
       method: 'POST',
       body: JSON.stringify({ source, locale, board: 'esp32' }),
@@ -35,11 +35,11 @@ export class Flasher {
       const loader = new ESPLoader({
         transport,
         baudrate: 921600,
-        terminal: { clean() {}, write: (t) => put(t, 'info'), writeLine: (t) => put(t + '\n', 'info') },
+        terminal: { clean() {}, write: (t: string) => put(t, 'info'), writeLine: (t: string) => put(t + '\n', 'info') },
       });
       await loader.main();
       await loader.writeFlash({
-        fileArray: parts.map((p) => ({ data: b64(p.data), address: p.addr })),
+        fileArray: parts.map((p: { data: string; addr: number }) => ({ data: b64(p.data), address: p.addr })),
         flashMode: 'keep',
         flashFreq: 'keep',
         flashSize: 'keep',
@@ -55,13 +55,13 @@ export class Flasher {
   // Read serial output line by line until disconnect(). Runtime errors arrive
   // as "! E101 3:0 <already-localized message>" — shown in error styling.
   async monitor() {
-    await this.port.open({ baudRate: 115200 });
-    this.reader = this.port.readable.getReader();
+    await this.port!.open({ baudRate: 115200 });
+    this.reader = this.port!.readable.getReader();
     const dec = new TextDecoder();
     let buf = '';
     try {
       for (;;) {
-        const { value, done } = await this.reader.read();
+        const { value, done } = await this.reader!.read();
         if (done) break;
         buf += dec.decode(value, { stream: true });
         let nl;

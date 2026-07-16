@@ -8,18 +8,31 @@
 //   6  buzzer         pin_on / pin_off (audible tone + glow)
 //   7  fan            pin_on / pin_off (spins while on)
 
+interface BoardOpts {
+  stopped: () => boolean;
+  notify: (pin: number) => void;
+  activate: () => void;
+}
+
 export class Board {
-  // opts: { stopped: () => bool, notify: (text) => void, activate: () => void }
-  constructor(root, opts) {
+  opts: BoardOpts;
+  leds: Element[];
+  btn: Element;
+  pot: HTMLInputElement;
+  buzzer: Element;
+  fan: Element;
+  pressed = false;
+  osc: OscillatorNode | null = null;
+  audio?: AudioContext;
+
+  constructor(root: Element, opts: BoardOpts) {
     this.opts = opts;
-    this.leds = [root.querySelector('.led-1'), root.querySelector('.led-2'),
-                 root.querySelector('.led-3')];
-    this.btn = root.querySelector('#pin-btn');
-    this.pot = root.querySelector('#pin-pot');
-    this.buzzer = root.querySelector('#pin-buzzer');
-    this.fan = root.querySelector('#pin-fan');
-    this.pressed = false;
-    this.osc = null;
+    this.leds = [root.querySelector('.led-1')!, root.querySelector('.led-2')!,
+                 root.querySelector('.led-3')!];
+    this.btn = root.querySelector('#pin-btn')!;
+    this.pot = root.querySelector<HTMLInputElement>('#pin-pot')!;
+    this.buzzer = root.querySelector('#pin-buzzer')!;
+    this.fan = root.querySelector('#pin-fan')!;
     this.reset();
   }
 
@@ -34,7 +47,7 @@ export class Board {
     if (this.osc) { this.osc.stop(); this.osc = null; }
   }
 
-  buzz(on) {
+  buzz(on: boolean) {
     this.buzzer.classList.toggle('on', on);
     if (!on) return this.silence();
     if (this.osc) return;
@@ -46,14 +59,14 @@ export class Board {
     this.osc.start();
   }
 
-  set(pin, on) {
+  set(pin: number, on: boolean) {
     if (pin >= 1 && pin <= 3) this.leds[pin - 1].classList.toggle('on', on);
     else if (pin === 6) this.buzz(on);
     else if (pin === 7) this.fan.classList.toggle('on', on);
     else this.opts.notify(pin);
   }
 
-  read(pin, analog) {
+  read(pin: number, analog: boolean) {
     if (!analog && pin === 4) return this.pressed ? 1 : 0;
     if (analog && pin === 5) return +this.pot.value;
     this.opts.notify(pin);
@@ -61,14 +74,14 @@ export class Board {
   }
 
   // waits in short slices so the stop button interrupts long pauses
-  async wait(ms) {
+  async wait(ms: number) {
     const end = performance.now() + ms;
     while (performance.now() < end && !this.opts.stopped())
       await new Promise((r) => setTimeout(r, Math.min(50, end - performance.now())));
   }
 
   // returns false if `canon` is not a board builtin
-  async op(canon, num) {
+  async op(canon: string, num: number) {
     if (this.opts.stopped()) return true; // swallow trailing ops after stop
     switch (canon) {
       case 'pin_on': this.opts.activate(); this.set(num, true); return true;

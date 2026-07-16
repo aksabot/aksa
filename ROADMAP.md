@@ -15,4 +15,6 @@
 - [ ] P5 deferred: test on real ESP32; `tanya` on device (serial read in HAL); free/reuse strings in rt.c loops; Pico/UF2; per-IP rate limit; build+test Docker image (no Docker locally); flash.js: call requestPort() before compile (fail fast if no board + avoid user-gesture timeout)
 - [x] P6a (language only): IDE split into language page (lessons+turtle) and device page (board+flash); 15 graded lessons (id+en), basic→middle→advanced; share via URL hash
 - [x] P6c: drawing cursor renamed turtle→robot, arrow replaced with a robot character (rounded body, eyes, nose showing heading)
+- [x] P6d: lessons split into one file per locale (lessons.id.js/lessons.en.js), lessons.js just assembles the map
+- [x] P6e: all JS → strict TypeScript (web+server, bun-native); tsconfig + `make typecheck`
 - [ ] P6b: more locales; device lesson track after real-board testing
