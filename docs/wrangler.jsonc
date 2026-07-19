@@ -1,8 +1,0 @@
-{
-	"name": "aksabot-docs",
-	"compatibility_date": "2026-05-17",
-	"assets": {
-		"directory": "./dist/static",
-		"not_found_handling": "404-page",
-	},
-}
