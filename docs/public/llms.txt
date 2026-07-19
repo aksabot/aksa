@@ -1,0 +1,44 @@
+# Aksa
+> A tiny programming language for kids — keywords, builtins, and error messages all come from a locale dictionary (English and Indonesian today). Runs in the browser via WebAssembly and deploys to real ESP32 boards. Aksabot is the upcoming hardware kit built on the same language.
+
+Every page is also available in Indonesian under the /id/ prefix.
+
+## Start Here
+- [Introduction](https://docs.aksabot.com/)
+- [Getting Started](https://docs.aksabot.com/getting-started)
+
+## Language
+- [Overview](https://docs.aksabot.com/language/overview)
+- [Keywords](https://docs.aksabot.com/language/keywords)
+- [Types & Values](https://docs.aksabot.com/language/types)
+- [Control Flow](https://docs.aksabot.com/language/control-flow)
+- [Functions](https://docs.aksabot.com/language/functions)
+- [Grammar](https://docs.aksabot.com/language/grammar)
+
+## Learn
+- [1. Writing](https://docs.aksabot.com/learn/lesson-01)
+- [2. Variables](https://docs.aksabot.com/learn/lesson-02)
+- [3. Math](https://docs.aksabot.com/learn/lesson-03)
+- [4. Asking](https://docs.aksabot.com/learn/lesson-04)
+- [5. Repeating](https://docs.aksabot.com/learn/lesson-05)
+- [6. Choosing](https://docs.aksabot.com/learn/lesson-06)
+- [7. Counting](https://docs.aksabot.com/learn/lesson-07)
+- [8. While](https://docs.aksabot.com/learn/lesson-08)
+- [9. True & False](https://docs.aksabot.com/learn/lesson-09)
+- [10. Functions](https://docs.aksabot.com/learn/lesson-10)
+- [11. Returning Answers](https://docs.aksabot.com/learn/lesson-11)
+- [12. Even or Odd](https://docs.aksabot.com/learn/lesson-12)
+- [13. Robot](https://docs.aksabot.com/learn/lesson-13)
+- [14. Project: Spiral](https://docs.aksabot.com/learn/lesson-14)
+- [15. Project: Guess the Number](https://docs.aksabot.com/learn/lesson-15)
+
+## Aksabot
+- [Overview](https://docs.aksabot.com/aksabot/overview)
+- [Builtins](https://docs.aksabot.com/aksabot/builtins)
+
+## Reference
+- [Builtins](https://docs.aksabot.com/reference/builtins)
+- [Error Codes](https://docs.aksabot.com/reference/errors)
+- [CLI](https://docs.aksabot.com/reference/cli)
+- [Changelog](https://docs.aksabot.com/reference/changelog)
+- [Roadmap](https://docs.aksabot.com/reference/roadmap)
