@@ -19,7 +19,7 @@ ulangi 4 {
 
 Editor memeriksa seluruh programmu sambil kamu mengetik dan menampilkan setiap kesalahan dalam bahasamu, lengkap dengan barisnya.
 
-Kalau membangun dari sumber, `make web` membangun modul WebAssembly dan bundel editor, lalu sajikan akar repo dan buka `/web/`.
+Kalau membangun dari sumber, `make play` membangun modul WebAssembly dan bundel editor, lalu sajikan akar repo dan buka `/play/`.
 
 ## Di baris perintah
 

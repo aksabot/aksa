@@ -10,8 +10,8 @@ tests/test_checker
 tests/test_vm
 wasm/aksa.js
 wasm/aksa.wasm
-web/node_modules/
-web/dist/
+play/node_modules/
+play/dist/
 *.o
 .DS_Store
 /backup

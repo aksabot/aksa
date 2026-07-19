@@ -59,8 +59,8 @@ make                                  # build the CLI
 ./aksa ast file.aksa                  # peek at the parse tree
 make test                             # run the test suites
 
-make web                              # build the WASM module + editor bundle
-python3 -m http.server                # then open http://localhost:8000/web/
+make play                             # build the WASM module + editor bundle
+python3 -m http.server                # then open http://localhost:8000/play/
 ```
 
 Run `aksa` from the repo root so it finds `locales/`.
@@ -107,5 +107,5 @@ core/      lexer, parser, checker, VM — pure C99
 locales/   id.json, en.json — keywords, builtins, error messages
 tests/     one small suite per component (make test)
 examples/  graded example programs
-wasm/      Emscripten glue        web/  browser editor (CodeMirror + robot)
+wasm/      Emscripten glue        play/ browser editor (CodeMirror + robot)
 ```

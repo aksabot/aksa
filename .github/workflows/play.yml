@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - "web/**"
+      - "play/**"
       - "wasm/**"
       - "core/**"
       - "locales/**"
@@ -23,15 +23,15 @@ jobs:
       - uses: mymindstorm/setup-emsdk@v14
 
       - name: Build wasm + bundle
-        run: make web
+        run: make play
 
       # The pages reference ../wasm and ../locales, which can't exist above
       # a site root, so assemble a flat dir and rewrite those two paths.
       - name: Package site
         run: |
           mkdir -p site/wasm site/locales
-          cp web/index.html web/device.html web/style.css web/favicon.svg site/
-          cp -r web/dist site/
+          cp play/index.html play/device.html play/style.css play/favicon.svg site/
+          cp -r play/dist site/
           cp wasm/aksa.js wasm/aksa.wasm site/wasm/
           cp locales/*.json site/locales/
           sed -i 's|\.\./wasm/|wasm/|' site/index.html site/device.html

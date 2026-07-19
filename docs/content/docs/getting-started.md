@@ -19,7 +19,7 @@ repeat 4 {
 
 The editor checks your whole program as you type and lists every mistake in your language, with the line highlighted.
 
-If you are building from source, `make web` builds the WebAssembly module and editor bundle, then serve the repo root and open `/web/`.
+If you are building from source, `make play` builds the WebAssembly module and editor bundle, then serve the repo root and open `/play/`.
 
 ## On the command line
 
