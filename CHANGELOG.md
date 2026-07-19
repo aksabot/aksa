@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.0.4 — 2026-07-19
+
+### Added
+
+- A documentation website: guides, all 15 lessons, and every command — in English and Indonesian.
+- The docs also introduce Aksabot, the upcoming hardware kit, and its planned commands.
+
 ## 0.0.3 — 2026-07-16
 
 ### Added

@@ -24,3 +24,4 @@
 - [ ] P8: Aksabot (closed kit, ESP32-C6) — reuse P7 AP+editor+on-chip VM; board profile (named components via generated `buat name = gpio` preamble); 3 new snake_case builtins (`atur`/pin_pwm, `sudut`/servo_write, `baca_jarak`/pin_read_distance) + HAL (esp32/sim); hardware lesson track (parallel to 15 screen lessons). v1 editor = text
 - [ ] Production order (Aksabot): 1 prototype from off-the-shelf modules → prove C6 software → prove curriculum with kids → PCB+casing → mass. No PCB before wiring+curriculum validated
 - [ ] Block+text editor: drag-drop blocks that emit Aksa text side-by-side. Deferred until text editor v1 proves out
+- [x] Docs site (docs.aksabot.com): static bosia app in `docs/` — en + /id, language guide, builtins/errors/CLI reference, 15 lessons, Aksabot section, search, llms.txt, Cloudflare deploy
