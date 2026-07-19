@@ -3,8 +3,11 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "bosia dev",
-		"build": "bosia build",
+		"sync": "bun run sync-docs.ts",
+		"gen-llms": "bun run scripts/gen-llms.ts",
+		"gen-search": "bun run scripts/gen-search-index.ts",
+		"dev": "bun run sync && bun run gen-llms && bun run gen-search && bosia dev",
+		"build": "bun run sync && bun run gen-llms && bun run gen-search && bosia build",
 		"start": "bosia start",
 		"check": "bosia sync && svelte-check --tsconfig ./tsconfig.json && tsc --noEmit",
 		"format": "prettier --write .",
