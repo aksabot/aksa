@@ -1,14 +1,8 @@
-<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <!-- Top block -->
-  <rect fill="currentColor" x="50" y="50" width="28" height="28" rx="6"/>
-  <rect fill="currentColor" x="86" y="50" width="60" height="28" rx="6"/>
-
-  <!-- Middle block -->
-  <rect fill="currentColor" x="86" y="86" width="72" height="28" rx="6"/>
-
-  <!-- Bottom block -->
-  <rect fill="currentColor" x="86" y="122" width="60" height="28" rx="6"/>
-
-  <!-- Connector bar on left -->
-  <rect fill="currentColor" x="50" y="50" width="28" height="100" rx="6"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <line x1="12" y1="6" x2="12" y2="3.5" stroke="#0f172a" stroke-width="1.6"/>
+  <circle cx="12" cy="2.6" r="1.6" fill="#f59e0b"/>
+  <rect x="3" y="6" width="18" height="15" rx="5" fill="#0f172a"/>
+  <circle cx="8.6" cy="12.2" r="2" fill="#ffffff"/>
+  <circle cx="15.4" cy="12.2" r="2" fill="#ffffff"/>
+  <rect x="9.5" y="16.4" width="5" height="1.8" rx="0.9" fill="#f59e0b"/>
 </svg>
