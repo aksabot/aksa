@@ -1,48 +1,73 @@
 <!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>Aksa</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="toolbar">
-    <select id="locale">
-      <option value="id" selected>Bahasa Indonesia</option>
-      <option value="en">English</option>
-    </select>
-    <button id="run"></button>
-    <button id="stop" disabled></button>
-    <button id="flash" hidden></button>
-    <button id="share"></button>
-    <button id="reset">⟲</button>
-    <select id="examples"></select>
-    <a id="mode-link" href="index.html"></a>
-  </div>
-  <div class="panes">
-    <div class="left">
-      <div id="editor"></div>
-      <div id="errors"></div>
-    </div>
-    <div class="right">
-      <div id="board">
-        <div class="row">
-          <div class="pin"><div class="led led-1"></div>1</div>
-          <div class="pin"><div class="led led-2"></div>2</div>
-          <div class="pin"><div class="led led-3"></div>3</div>
+    <head>
+        <meta charset="utf-8" />
+        <title>Aksa</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="toolbar">
+            <span class="brand"><img src="favicon.svg" alt="" /> Aksa</span>
+            <select id="locale">
+                <option value="id" selected>Bahasa Indonesia</option>
+                <option value="en">English</option>
+            </select>
+            <button id="run"></button>
+            <button id="stop" disabled></button>
+            <button id="flash" hidden disabled></button>
+            <button id="share"></button>
+            <button id="reset">⟲</button>
+            <select id="examples"></select>
+            <a id="mode-link" href="index.html"></a>
         </div>
-        <div class="row">
-          <div class="pin"><button id="pin-btn">⬤</button><br>4</div>
-          <div class="pin"><input id="pin-pot" type="range" min="0" max="100" value="25">
-            <span id="pin-pot-val">25</span><br>5</div>
-          <div class="pin"><span id="pin-buzzer">🔔</span><br>6</div>
-          <div class="pin"><span id="pin-fan">✳</span><br>7</div>
+        <div class="panes">
+            <div class="left">
+                <div id="editor"></div>
+                <div id="errors"></div>
+            </div>
+            <div class="right">
+                <div id="board">
+                    <div class="row">
+                        <div class="pin">
+                            <div class="led led-1"></div>
+                            1
+                        </div>
+                        <div class="pin">
+                            <div class="led led-2"></div>
+                            2
+                        </div>
+                        <div class="pin">
+                            <div class="led led-3"></div>
+                            3
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pin">
+                            <button id="pin-btn">⬤</button><br />4
+                        </div>
+                        <div class="pin">
+                            <input
+                                id="pin-pot"
+                                type="range"
+                                min="0"
+                                max="100"
+                                value="25"
+                            />
+                            <span id="pin-pot-val">25</span><br />5
+                        </div>
+                        <div class="pin">
+                            <span id="pin-buzzer">🔔</span><br />6
+                        </div>
+                        <div class="pin">
+                            <span id="pin-fan">✳</span><br />7
+                        </div>
+                    </div>
+                </div>
+                <div id="console"></div>
+            </div>
         </div>
-      </div>
-      <div id="console"></div>
-    </div>
-  </div>
-  <script src="../wasm/aksa.js"></script>
-  <script type="module" src="dist/main.js"></script>
-</body>
+        <script src="../wasm/aksa.js"></script>
+        <script type="module" src="dist/main.js"></script>
+    </body>
 </html>

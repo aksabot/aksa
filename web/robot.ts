@@ -35,22 +35,28 @@ export class Robot {
     this.drawCursor();
   }
 
+  // Same robot as the site icon: navy body, white eyes, amber antenna and
+  // mouth. Antenna points toward the heading; antenna ball shows pen color.
   drawCursor() {
     const ctx = this.overlay.getContext('2d')!;
     ctx.clearRect(0, 0, this.overlay.width, this.overlay.height);
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate((this.heading + 90) * Math.PI / 180); // front (-Y) faces heading
+    ctx.scale(0.9, 0.9);
+    ctx.translate(-12, -12);         // icon is drawn in a 24x24 box
+    ctx.strokeStyle = '#0f172a';     // antenna
+    ctx.lineWidth = 1.6;
+    ctx.beginPath(); ctx.moveTo(12, 6); ctx.lineTo(12, 3.5); ctx.stroke();
     ctx.fillStyle = this.color;
-    ctx.beginPath();                 // nose
-    ctx.moveTo(0, -9); ctx.lineTo(4, -4); ctx.lineTo(-4, -4); ctx.closePath();
-    ctx.fill();
-    ctx.beginPath();                 // body
-    ctx.roundRect(-7, -4, 14, 12, 3);
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(12, 2.6, 1.8, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#0f172a';       // body
+    ctx.beginPath(); ctx.roundRect(3, 6, 18, 15, 5); ctx.fill();
     ctx.fillStyle = 'white';         // eyes (separate paths so they don't join)
-    ctx.beginPath(); ctx.arc(-3, 1, 1.5, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(3, 1, 1.5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(8.6, 12.2, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(15.4, 12.2, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#f59e0b';       // mouth
+    ctx.beginPath(); ctx.roundRect(9.5, 16.4, 5, 1.8, 0.9); ctx.fill();
     ctx.restore();
   }
 

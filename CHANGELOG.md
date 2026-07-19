@@ -7,6 +7,12 @@
 - A documentation website: guides, all 15 lessons, and every command — in English and Indonesian.
 - The docs also introduce Aksabot, the upcoming hardware kit, and its planned commands.
 
+### Changed
+
+- The coding playground has a fresh, playful look: rounded buttons, bright colors, kid-friendly fonts.
+- The drawing robot on the canvas now looks like the Aksa logo robot.
+- The playground now publishes automatically to play.aksabot.com.
+
 ## 0.0.3 — 2026-07-16
 
 ### Added

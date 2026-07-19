@@ -1,0 +1,56 @@
+name: Deploy Play
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "wasm/**"
+      - "core/**"
+      - "locales/**"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: mymindstorm/setup-emsdk@v14
+
+      - name: Build wasm + bundle
+        run: make web
+
+      # The pages reference ../wasm and ../locales, which can't exist above
+      # a site root, so assemble a flat dir and rewrite those two paths.
+      - name: Package site
+        run: |
+          mkdir -p site/wasm site/locales
+          cp web/index.html web/device.html web/style.css web/favicon.svg site/
+          cp -r web/dist site/
+          cp wasm/aksa.js wasm/aksa.wasm site/wasm/
+          cp locales/*.json site/locales/
+          sed -i 's|\.\./wasm/|wasm/|' site/index.html site/device.html
+          sed -i 's|\.\./locales/|locales/|' site/dist/main.js
+
+      # Only needed for the very first run to create the Pages project.
+      - name: Ensure Pages project exists
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: bun
+          command: pages project create aksa-play --production-branch=main
+        continue-on-error: true
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          packageManager: bun
+          command: pages deploy ./site --project-name=aksa-play --branch=main

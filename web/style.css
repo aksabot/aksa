@@ -1,41 +1,337 @@
-body { font-family: system-ui, sans-serif; margin: 1rem; }
-.toolbar { display: flex; gap: .5rem; margin-bottom: .5rem; align-items: center; }
-.toolbar a { margin-left: auto; font-size: .9rem; text-decoration: none; }
-.panes { display: flex; gap: 1rem; }
-.left { width: 50%; }
-#lesson { border: 1px solid #cd9; background: #f7fbef; padding: .5rem .75rem;
-          margin-bottom: .5rem; font-size: .95rem; line-height: 1.5; }
-#editor { border: 1px solid #ccc; }
-#editor .cm-editor { height: 24rem; }
-#errors div { color: #b00; font: 13px/1.6 ui-monospace, monospace;
-              cursor: pointer; }
-#errors div:hover { text-decoration: underline; }
-.right { width: 50%; display: flex; flex-direction: column; gap: .5rem; }
-#canvas { position: relative; border: 1px solid #ccc; }
-#canvas canvas { display: block; }
-#canvas #overlay { position: absolute; inset: 0; pointer-events: none; }
-#board { border: 1px solid #ccc; height: 380px; box-sizing: border-box;
-         display: flex; flex-direction: column; align-items: center;
-         justify-content: center; gap: 1.5rem; background: #f4f8f4; }
-#board .row { display: flex; gap: 2rem; align-items: center; }
-#board .pin { text-align: center; font-size: .8rem; color: #666; }
-.led { width: 34px; height: 34px; border-radius: 50%; margin: 0 auto .25rem;
-       background: #ddd; border: 2px solid #bbb; }
-.led-1.on { background: #f33; box-shadow: 0 0 14px #f33; }
-.led-2.on { background: #fc0; box-shadow: 0 0 14px #fc0; }
-.led-3.on { background: #3c3; box-shadow: 0 0 14px #3c3; }
-#pin-buzzer, #pin-fan { font-size: 2rem; display: inline-block;
-                        filter: grayscale(1); opacity: .4; }
-#pin-buzzer.on { filter: none; opacity: 1; }
-#pin-fan.on { filter: none; opacity: 1;
-              animation: fan-spin .4s linear infinite; }
-@keyframes fan-spin { to { transform: rotate(360deg); } }
-#pin-pot { width: 140px; }
-#console { height: 12rem; overflow-y: auto; background: #1e1e1e;
-           color: #ddd; font: 14px/1.5 ui-monospace, monospace; padding: .5rem;
-           white-space: pre-wrap; box-sizing: border-box; }
-#console .err { color: #f66; }
-#console .info { color: #8a8; }
-#console input { background: #333; color: #ddd; border: 1px solid #555;
-                 font: inherit; width: 60%; }
-button { font-size: 1rem; padding: .25rem 1rem; }
+@import url("https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;700;800&display=swap");
+
+:root {
+    --bg: #eaf6ff;
+    --card: #fff;
+    --ink: #22303f;
+    --muted: #64748b;
+    --line: #cfe6f7;
+    --red: #ee204d;
+    --blue: #2f9de4;
+    --green: #1fab5c;
+    --orange: #f59e0b;
+    --lemon: #fff9d6;
+    --radius: 18px;
+    --bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Nunito", system-ui, sans-serif;
+    font-weight: 600;
+    margin: 0;
+    padding: 1rem 1.25rem;
+    background: var(--bg);
+    color: var(--ink);
+}
+
+.brand {
+    font-family: "Lilita One", system-ui, sans-serif;
+    font-size: 1.45rem;
+    color: var(--green);
+    margin-right: 0.35rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.brand img {
+    width: 1.5em;
+    height: 1.5em;
+}
+.brand:hover {
+    animation: wiggle 0.5s var(--bounce);
+}
+@keyframes wiggle {
+    25% {
+        transform: rotate(-6deg) scale(1.08);
+    }
+    75% {
+        transform: rotate(5deg) scale(1.05);
+    }
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    align-items: center;
+}
+
+.toolbar a {
+    margin-left: auto;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--blue);
+    background: var(--card);
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    transition: transform 0.15s var(--bounce);
+}
+.toolbar a:hover {
+    border-color: var(--blue);
+    transform: scale(1.05);
+}
+
+button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 800;
+    padding: 0.45rem 1.15rem;
+    border: none;
+    border-radius: 999px;
+    color: #fff;
+    background: var(--blue);
+    cursor: pointer;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+    transition: transform 0.15s var(--bounce);
+}
+button:hover:not(:disabled) {
+    transform: scale(1.07);
+}
+button:active:not(:disabled) {
+    transform: scale(0.93);
+    box-shadow: none;
+}
+button:disabled {
+    opacity: 0.4;
+    cursor: default;
+    box-shadow: none;
+}
+
+#run {
+    background: var(--green);
+}
+#stop {
+    background: var(--red);
+}
+#flash {
+    background: var(--orange);
+}
+#reset {
+    background: var(--card);
+    color: var(--muted);
+    border: 2px solid var(--line);
+    box-shadow: none;
+}
+
+select {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.35rem 0.6rem;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink);
+    cursor: pointer;
+}
+
+input[type="range"] {
+    accent-color: var(--blue);
+}
+.toolbar label {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.panes {
+    display: flex;
+    gap: 1rem;
+}
+.left {
+    width: 50%;
+}
+.right {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+@media (max-width: 800px) {
+    .panes {
+        flex-direction: column;
+    }
+    .left,
+    .right {
+        width: 100%;
+    }
+}
+
+#lesson {
+    background: var(--lemon);
+    border: 2px solid #ffd84d;
+    border-radius: var(--radius);
+    padding: 0.6rem 0.9rem 0.6rem 2.4rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    position: relative;
+}
+#lesson::before {
+    content: "💡";
+    position: absolute;
+    left: 0.7rem;
+    top: 0.55rem;
+}
+
+#editor {
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+}
+#editor .cm-editor {
+    height: 24rem;
+    font-size: 14px;
+}
+#editor .cm-editor.cm-focused {
+    outline: none;
+}
+#editor .cm-gutters {
+    background: #f4faff;
+    border-right: 1px solid var(--line);
+}
+
+#errors {
+    margin-top: 0.5rem;
+}
+#errors div {
+    color: #c62828;
+    background: #ffebee;
+    border-radius: 10px;
+    padding: 0.15rem 0.6rem;
+    margin-bottom: 0.25rem;
+    font:
+        13px/1.6 ui-monospace,
+        monospace;
+    cursor: pointer;
+}
+#errors div:hover {
+    text-decoration: underline;
+}
+
+#canvas {
+    position: relative;
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--card);
+}
+#canvas canvas {
+    display: block;
+}
+#canvas #overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+#board {
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    background: var(--card);
+}
+#board .row {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+#board .pin {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--muted);
+}
+#board button {
+    padding: 0.3rem 0.7rem;
+}
+
+.led {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    margin: 0 auto 0.25rem;
+    background: #e3edf5;
+    border: 2px solid #c4d6e4;
+    transition:
+        background 0.15s,
+        box-shadow 0.15s;
+}
+.led-1.on {
+    background: #f33;
+    box-shadow: 0 0 16px #f33;
+}
+.led-2.on {
+    background: #fc0;
+    box-shadow: 0 0 16px #fc0;
+}
+.led-3.on {
+    background: #3c3;
+    box-shadow: 0 0 16px #3c3;
+}
+
+#pin-buzzer,
+#pin-fan {
+    font-size: 2rem;
+    display: inline-block;
+    filter: grayscale(1);
+    opacity: 0.4;
+}
+#pin-buzzer.on {
+    filter: none;
+    opacity: 1;
+}
+#pin-fan.on {
+    filter: none;
+    opacity: 1;
+    animation: fan-spin 0.4s linear infinite;
+}
+@keyframes fan-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+#pin-pot {
+    width: 140px;
+}
+
+#console {
+    height: 12rem;
+    overflow-y: auto;
+    background: #1d2b3a;
+    color: #e6eef7;
+    font:
+        14px/1.5 ui-monospace,
+        monospace;
+    padding: 0.6rem 0.8rem;
+    white-space: pre-wrap;
+    border-radius: var(--radius);
+}
+#console .err {
+    color: #ff8a80;
+}
+#console .info {
+    color: #9be29b;
+}
+#console input {
+    background: #2e4358;
+    color: #e6eef7;
+    border: 1px solid var(--blue);
+    border-radius: 8px;
+    font: inherit;
+    width: 60%;
+    padding: 0.1rem 0.4rem;
+}

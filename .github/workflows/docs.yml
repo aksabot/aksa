@@ -27,14 +27,16 @@ jobs:
         working-directory: docs
         run: bun run build
 
-      - name: Ensure Pages project exists
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          packageManager: bun
-          command: pages project create aksa-docs --production-branch=main
-        continue-on-error: true
+      # Only needed for the very first run to create the Pages project.
+      # The project now exists, so this step is disabled.
+      # - name: Ensure Pages project exists
+      #   uses: cloudflare/wrangler-action@v3
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     packageManager: bun
+      #     command: pages project create aksa-docs --production-branch=main
+      #   continue-on-error: true
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
