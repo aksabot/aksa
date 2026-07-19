@@ -28,3 +28,5 @@ description: What's done, what's next, and where Aksa is headed.
 - [ ] Production order (Aksabot): 1 prototype from off-the-shelf modules → prove C6 software → prove curriculum with kids → PCB+casing → mass. No PCB before wiring+curriculum validated
 - [ ] Block+text editor: drag-drop blocks that emit Aksa text side-by-side. Deferred until text editor v1 proves out
 - [x] Docs site (docs.aksabot.com): static bosia app in `docs/` — en + /id, language guide, builtins/errors/CLI reference, 15 lessons, Aksabot section, search, llms.txt, Cloudflare deploy
+- [x] Web redesign: playful kid theme (Lilita One/Nunito, sky bg, bouncy buttons); both pages, mobile stack <800px; brand + canvas cursor use favicon robot (antenna ball = pen color)
+- [x] Play deploy (play.aksabot.com): CI builds wasm (emsdk) + bundle, flattens web/+wasm/+locales/ into site/, Cloudflare Pages `aksa-play`

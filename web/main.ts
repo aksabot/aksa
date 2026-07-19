@@ -16,6 +16,7 @@ interface UIStrings {
   flashFail: string; serverBusy: string; unsupportedDevice: string;
   noPin: (n: number) => string;
   modeDevice: string; modeLang: string;
+  docs: string; docsUrl: string;
   examples: Record<string, string>;
 }
 
@@ -28,6 +29,7 @@ const UI: Record<string, UIStrings> = {
     unsupportedDevice: 'Perangkat ini belum didukung',
     noPin: (n: number) => `Tidak ada pin ${n} di papan`,
     modeDevice: '🔌 Mode Perangkat', modeLang: '🤖 Mode Bahasa',
+    docs: '📖 Panduan', docsUrl: 'https://docs.aksabot.com/id',
     examples: {
       'Kedip': 'ulangi 5 {\n    nyalakan(1)\n    tunggu(300)\n    matikan(1)\n    tunggu(300)\n}\n',
       'Tombol → Lampu': 'ulangi 20 {\n    jika (baca(4) == 1) {\n        nyalakan(2)\n    } lainnya {\n        matikan(2)\n    }\n    tunggu(100)\n}\n',
@@ -44,6 +46,7 @@ const UI: Record<string, UIStrings> = {
     unsupportedDevice: 'This device is not supported yet',
     noPin: (n: number) => `There is no pin ${n} on the board`,
     modeDevice: '🔌 Device Mode', modeLang: '🤖 Language Mode',
+    docs: '📖 Guide', docsUrl: 'https://docs.aksabot.com',
     examples: {
       'Blink': 'repeat 5 {\n    turn_on(1)\n    wait(300)\n    turn_off(1)\n    wait(300)\n}\n',
       'Button → Light': 'repeat 20 {\n    if (read(4) == 1) {\n        turn_on(2)\n    } else {\n        turn_off(2)\n    }\n    wait(100)\n}\n',
@@ -57,6 +60,7 @@ const UI: Record<string, UIStrings> = {
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const localeSel = $<HTMLSelectElement>('locale'), runBtn = $<HTMLButtonElement>('run'), stopBtn = $<HTMLButtonElement>('stop');
 const flashBtn = $<HTMLButtonElement>('flash'), shareBtn = $<HTMLButtonElement>('share'), modeLink = $('mode-link');
+const docsLink = $<HTMLAnchorElement>('docs-link');
 const consoleEl = $('console'), errorsEl = $('errors');
 const speedEl = $<HTMLInputElement>('speed'), resetBtn = $('reset'), examplesSel = $<HTMLSelectElement>('examples');
 const lessonEl = $('lesson');
@@ -258,6 +262,8 @@ async function init(M: AksaM) {
     if (flashBtn)
       flashBtn.textContent = flashState === 'monitoring' ? ui().disconnect : ui().flash;
     modeLink.textContent = hasBoard ? ui().modeLang : ui().modeDevice;
+    docsLink.textContent = ui().docs;
+    docsLink.href = ui().docsUrl;
     examplesSel.textContent = '';
     titles().forEach((title, i) => {
       const opt = document.createElement('option');

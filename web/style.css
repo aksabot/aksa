@@ -61,8 +61,10 @@ body {
     align-items: center;
 }
 
-.toolbar a {
+#docs-link {
     margin-left: auto;
+}
+.toolbar a {
     font-size: 0.9rem;
     font-weight: 800;
     text-decoration: none;

@@ -12,6 +12,7 @@
 - The coding playground has a fresh, playful look: rounded buttons, bright colors, kid-friendly fonts.
 - The drawing robot on the canvas now looks like the Aksa logo robot.
 - The playground now publishes automatically to play.aksabot.com.
+- The docs and the playground now link to each other.
 
 ## 0.0.3 — 2026-07-16
 
