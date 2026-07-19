@@ -13,6 +13,7 @@
 - The drawing robot on the canvas now looks like the Aksa logo robot.
 - The playground now publishes automatically to play.aksabot.com.
 - The docs and the playground now link to each other.
+- The documentation now opens in Indonesian by default.
 
 ## 0.0.3 — 2026-07-16
 

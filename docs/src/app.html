@@ -3,6 +3,15 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script>
+			// Indonesian is the default: fresh visits to the English root are sent
+			// to /id. In-site navigation (the EN switcher) is left alone.
+			if (
+				location.pathname === "/" &&
+				!document.referrer.startsWith(location.origin)
+			)
+				location.replace("/id");
+		</script>
 		%bosia.head%
 	</head>
 	<body data-bosia-preload="hover">
