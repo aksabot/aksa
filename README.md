@@ -65,6 +65,17 @@ python3 -m http.server                # then open http://localhost:8000/play/
 
 Run `aksa` from the repo root so it finds `locales/`.
 
+### Flash a real ESP32 (C3/C6)
+
+Needs Chrome/Edge (WebSerial), `bun`, and the esp32 core (`arduino-cli core install esp32:esp32`). No Docker required — the compile server runs natively.
+
+```sh
+make server                           # compile server on :8765 (leave running)
+make play && python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000/play/device.html` in Chrome, plug in the board, and click send — the chip is auto-detected, compiled, and flashed.
+
 ## The language (v1)
 
 ```

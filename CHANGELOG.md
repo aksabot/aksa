@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.5 — 2026-07-21
+
+### Added
+
+- One command to start the tool that sends your code to a real board: `make server`.
+
 ## 0.0.4 — 2026-07-19
 
 ### Added

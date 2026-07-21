@@ -37,6 +37,9 @@ diff: aksa
 test-server: aksa
 	bun server/test.ts
 
+server: aksa
+	bun server/compile.ts
+
 typecheck:
 	cd play && bun install && bun x tsc --noEmit
 
@@ -68,4 +71,4 @@ clean:
 	rm -f aksa tests/test_lexer tests/test_locale tests/test_parser tests/test_checker tests/test_vm wasm/aksa.js wasm/aksa.wasm
 	rm -rf play/dist device/sketch
 
-.PHONY: test diff test-server typecheck wasm play device device-flash clean
+.PHONY: test diff test-server server typecheck wasm play device device-flash clean
