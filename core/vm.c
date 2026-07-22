@@ -392,6 +392,7 @@ typedef struct {
     AksaInFn in;
     AksaYieldFn yield;
     AksaHostFn host;
+    AksaPollFn poll;
     void *user;
     char **owned; /* every runtime-created string, freed when the VM ends */
     int nowned, capowned;
@@ -655,6 +656,7 @@ static int vm_execute(VM *vm, Func *script) {
         case OP_LOOP: {
             int off = (f->ip[0] << 8) | f->ip[1];
             f->ip += 2 - off;
+            if (vm->poll && vm->poll(vm->user)) return vm->failed; /* Stop */
             break;
         }
         case OP_REPEAT: {
@@ -751,6 +753,7 @@ int aksa_run(const char *src, const AksaLocale *loc, AksaErrors *errs,
         vm->in = host && host->in ? host->in : stdin_in;
         vm->yield = host ? host->yield : NULL;
         vm->host = host ? host->host : NULL;
+        vm->poll = host ? host->poll : NULL;
         vm->user = host ? host->user : NULL;
         rc = vm_execute(vm, script);
         for (int i = 0; i < vm->nowned; i++) free(vm->owned[i]);

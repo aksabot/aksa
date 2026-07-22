@@ -21,9 +21,10 @@
 - [x] P6e: all JS → strict TypeScript (web+server, bun-native); tsconfig + `make typecheck`
 - [x] P6f: auto-detect chip on flash (esptool-js CHIP_NAME → board); compile targets esp32c3/esp32c6, bootloader at 0x0; others rejected
 - [ ] P6b: more locales; device lesson track after real-board testing; per-board GPIO pin map (C3 vs C6). Deliverable: Aksabot C6 pin map. First point verified: C6 Super Mini user LED = GPIO15 (GPIO8 is a strapping pin, not a plain LED; "BAT" LED = charge status)
-- [ ] P7: on-device runtime — ESP32-C3 is its own hotspot + editor + interpreter (`make device` / `device-flash`); compiles at 78% flash; check off after real-board test (LED polarity, heap, both locales)
+- [x] P7: on-device runtime — board is its own hotspot + editor + interpreter (`make device`, default C6). Tested on real C6: AP join, GPIO15 blink, `ulangi`, live analog stream, Stop. Program runs in its own task (16KB stack); output via stream buffer + `/output` poll; Stop = poll hook checked each loop back-edge + interruptible `tunggu`; OOM-safe task start (no busy wedge)
 - [ ] P8: Aksabot (closed kit, ESP32-C6) — reuse P7 AP+editor+on-chip VM; board profile (named components via generated `buat name = gpio` preamble); 3 new snake_case builtins (`atur`/pin_pwm, `sudut`/servo_write, `baca_jarak`/pin_read_distance) + HAL (esp32/sim); hardware lesson track (parallel to 15 screen lessons). v1 editor = text
 - [ ] Production order (Aksabot): 1 prototype from off-the-shelf modules → prove C6 software → prove curriculum with kids → PCB+casing → mass. No PCB before wiring+curriculum validated
+- [ ] Timer/interrupt for precise timing: task separation is fine for the web+VM split (jitter-tolerant), but reading encoders / fixed-rate sampling / safety stops need hardware timer or external interrupt (INT0), not a FreeRTOS task
 - [ ] Block+text editor: drag-drop blocks that emit Aksa text side-by-side. Deferred until text editor v1 proves out
 - [x] Docs site (docs.aksabot.com): static bosia app in `docs/` — en + /id, language guide, builtins/errors/CLI reference, 15 lessons, Aksabot section, search, llms.txt, Cloudflare deploy
 - [x] Web redesign: playful kid theme (Lilita One/Nunito, sky bg, bouncy buttons); both pages, mobile stack <800px; brand + canvas cursor use favicon robot (antenna ball = pen color)

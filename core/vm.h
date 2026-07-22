@@ -7,6 +7,11 @@
 typedef void (*AksaOutFn)(const char *text, void *user);
 typedef void (*AksaInFn)(char *buf, int bufsz, void *user); /* read one line */
 typedef int (*AksaYieldFn)(void *user);                     /* nonzero => stop */
+/* Cheap synchronous "should I stop?" check, run once per loop back-edge.
+   Unlike yield it must not block or suspend — it's for embedders (e.g. the
+   board's Stop button) that need prompt cooperative cancellation of a loop
+   that spends its time sleeping. NULL: never checked, zero cost. */
+typedef int (*AksaPollFn)(void *user); /* nonzero => stop */
 /* Turtle/hardware builtins: canonical name + its single number or string
    argument (builtins take at most one, checker-enforced). Reads (pin_read,
    pin_read_analog) write their value into *result; other builtins leave it
@@ -22,6 +27,7 @@ typedef struct {
     AksaYieldFn yield; /* NULL: never yields */
     AksaHostFn host;   /* NULL: turtle/hardware builtins error */
     void *user;
+    AksaPollFn poll;   /* NULL: never; checked each loop back-edge */
 } AksaHost;
 
 /* Parse, compile to bytecode, and run. Returns 0 on success; all problems

@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.0.6 — 2026-07-22
+
+### Added
+
+- The board can now be its own Wi-Fi hotspot: join it, open a browser, and code — no computer needed.
+- The page now shows output live as the program runs, with a Stop button.
+- Programs can loop forever (watch a button, a sensor) and keep printing until you tap Stop.
+- The board's Wi-Fi now has a password (same as the network name) and allows one device at a time.
+
+### Fixed
+
+- The board's example program now blinks the correct light (GPIO15) on the C6.
+- Loops (`ulangi`) no longer crash the board when coding straight on it.
+- The Stop button now stops a program even while it is waiting (`tunggu`).
+- The board no longer gets stuck on "busy" if a program fails to start.
+- If the board stops responding, the page now says so instead of freezing on "...".
+
 ## 0.0.5 — 2026-07-21
 
 ### Added

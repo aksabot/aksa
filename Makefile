@@ -43,15 +43,19 @@ server: aksa
 typecheck:
 	cd play && bun install && bun x tsc --noEmit
 
-DEVICE_FQBN = esp32:esp32:esp32c3
+DEVICE_FQBN = esp32:esp32:esp32c6
 DEVICE_PORT ?= $(firstword $(wildcard /dev/cu.usbmodem*))
 
 device:
 	device/build.sh
 	arduino-cli compile --fqbn $(DEVICE_FQBN) device/sketch
 
-device-flash: device
-	arduino-cli upload --fqbn $(DEVICE_FQBN) -p $(DEVICE_PORT) device/sketch
+# Flash the on-device runtime (hotspot + editor + interpreter). Build +
+# compile + upload with a retry on the C6 USB hiccup:
+#   make device-flash                         (defaults: BOARD=c6, first port)
+#   make device-flash DEVICE_PORT=/dev/cu.usbmodemXXXX
+device-flash:
+	./device/flash.sh $(BOARD) $(DEVICE_PORT)
 
 # Flash one Aksa program to a plugged-in board, no browser/server:
 #   make aksa-flash FILE=examples/kedip.aksa       (defaults: LOCALE=id BOARD=c6)
