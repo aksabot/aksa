@@ -1,0 +1,30 @@
+// Profil papan Aksabot (ESP32-C6 Super Mini) — tier STARTER, pembuka otomatis.
+// Level di atas Starter bisa pakai pin/komponen berbeda.
+// Ditambahkan di depan program anak agar komponen dipanggil dengan nama,
+// bukan nomor pin. Peta pin: docs/content/docs/id/aksabot/pinmap.md
+//
+// Pin ADC (bisa baca_analog): 0-6. Hindari 8/9 (strapping), 12/13 (USB).
+
+// -- Sensor analog (baca_analog) --
+buat potensio = 0
+buat joy_x = 1
+buat joy_y = 2
+buat cahaya = 3     // LDR: terang/gelap
+buat suhu = 4       // LM35
+buat joy_tombol = 5
+buat suara = 6      // mikrofon (deteksi tepuk/suara)
+
+// -- Output --
+buat lampu = 7
+buat lampu_warna = 14   // LED strip warna
+buat lampu_papan = 15   // LED bawaan board
+buat bel = 18           // buzzer
+
+// -- Input & gerak --
+buat tombol = 19
+buat gerak = 20         // sensor PIR
+buat servo = 21
+
+// -- Layar angka (7-segment TM1637, butuh 2 pin) --
+buat layar_clk = 22
+buat layar_data = 23

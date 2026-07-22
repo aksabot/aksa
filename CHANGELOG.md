@@ -8,6 +8,7 @@
 - The page now shows output live as the program runs, with a Stop button.
 - Programs can loop forever (watch a button, a sensor) and keep printing until you tap Stop.
 - The board's Wi-Fi now has a password (same as the network name) and allows one device at a time.
+- New pin map: 15 starter parts (LED, button, sensors, servo, display) each get a name to code with.
 
 ### Fixed
 
