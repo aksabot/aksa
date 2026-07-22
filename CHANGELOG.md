@@ -16,6 +16,7 @@
 - The Stop button now stops a program even while it is waiting (`tunggu`).
 - The board no longer gets stuck on "busy" if a program fails to start.
 - If the board stops responding, the page now says so instead of freezing on "...".
+- Very deeply nested programs now show a clear error instead of crashing the board.
 
 ## 0.0.5 — 2026-07-21
 

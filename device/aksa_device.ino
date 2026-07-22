@@ -24,7 +24,9 @@ void device_out_write(const char *t);
 size_t device_out_drain(char *buf, size_t n);
 
 static const size_t MAX_SOURCE = 16 * 1024;
-static const uint32_t AKSA_STACK = 16 * 1024; /* compiler recurses; 8K overflows */
+static const uint32_t AKSA_STACK = 48 * 1024; /* front-end recurses; sized so a program
+                                                 at PARSE_DEPTH_MAX (~30KB worst case,
+                                                 measured) can't overflow into a reboot */
 
 static WebServer server(80);
 static AksaLocale loc_id, loc_en;
@@ -46,6 +48,10 @@ static void aksaTask(void *) {
             free(msgs);
         }
     }
+    /* Min free stack over this run (bytes). Compare to AKSA_STACK to see real
+       headroom; the low point is a deeply nested program. Safe to remove. */
+    Serial.printf("aksa stack free min %u / %u bytes\n",
+                  (unsigned)uxTaskGetStackHighWaterMark(NULL), (unsigned)AKSA_STACK);
     free(run_src);
     run_src = NULL;
     running = false;

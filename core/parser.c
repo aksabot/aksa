@@ -3,11 +3,20 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Caps front-end C-stack recursion. The parser builds the AST, so bounding
+   construction depth here also bounds the later recursive walks in the checker
+   and compiler (compile_expr). Counted in guarded-frame units, not source
+   nesting levels: one `(` costs a few units. Deep enough for any real program,
+   shallow enough that the device task stack can't overflow into a reboot. */
+#define PARSE_DEPTH_MAX 128
+
 typedef struct {
     AksaLexer lx;
     AksaToken cur, next;
     AksaErrors *errs;
     int panic; /* suppress cascading errors until the next sync point */
+    int depth; /* recursion guard, see PARSE_DEPTH_MAX */
+    int overflow; /* depth limit hit: report it once, then stay quiet */
 } Par;
 
 static void padvance(Par *p) {
@@ -24,9 +33,17 @@ static int match(Par *p, AksaTokKind k) {
 }
 
 static void perr(Par *p, const char *id, const char *arg) {
-    if (p->panic) return;
+    if (p->panic || p->overflow) return;
     p->panic = 1;
     aksa_errors_add(p->errs, id, p->cur.line, p->cur.col, arg);
+}
+
+/* Nesting too deep: record E109 once (panic-guarded) and return a dummy node so
+   callers never see NULL, matching primary()'s default case. */
+static AksaNode *too_deep(Par *p) {
+    perr(p, "E109", "");   /* records once; then overflow silences the cascade */
+    p->overflow = 1;
+    return aksa_node_new(AST_NUM, p->cur.line, p->cur.col);
 }
 
 static void unexpected(Par *p) {
@@ -82,6 +99,9 @@ static char *unescape(const char *s, int len) {
 
 static AksaNode *expr(Par *p);
 static AksaNode *block(Par *p);
+static AksaNode *unary_expr(Par *p);
+static AksaNode *not_expr(Par *p);
+static AksaNode *if_stmt(Par *p);
 
 static AksaNode *primary(Par *p) {
     AksaToken t = p->cur;
@@ -134,7 +154,7 @@ static AksaNode *primary(Par *p) {
     }
 }
 
-static AksaNode *unary_expr(Par *p) {
+static AksaNode *unary_expr_body(Par *p) {
     if (p->cur.kind == TOK_MINUS) {
         AksaToken t = p->cur;
         padvance(p);
@@ -144,6 +164,13 @@ static AksaNode *unary_expr(Par *p) {
         return n;
     }
     return primary(p);
+}
+
+static AksaNode *unary_expr(Par *p) {
+    if (++p->depth > PARSE_DEPTH_MAX) { p->depth--; return too_deep(p); }
+    AksaNode *n = unary_expr_body(p);
+    p->depth--;
+    return n;
 }
 
 static AksaNode *binop(Par *p, AksaNode *lhs, int op, AksaNode *(*sub)(Par *)) {
@@ -177,7 +204,7 @@ static AksaNode *cmp_expr(Par *p) {
     return n;
 }
 
-static AksaNode *not_expr(Par *p) {
+static AksaNode *not_expr_body(Par *p) {
     if (p->cur.kind == TOK_NOT) {
         AksaToken t = p->cur;
         padvance(p);
@@ -189,15 +216,29 @@ static AksaNode *not_expr(Par *p) {
     return cmp_expr(p);
 }
 
+static AksaNode *not_expr(Par *p) {
+    if (++p->depth > PARSE_DEPTH_MAX) { p->depth--; return too_deep(p); }
+    AksaNode *n = not_expr_body(p);
+    p->depth--;
+    return n;
+}
+
 static AksaNode *and_expr(Par *p) {
     AksaNode *n = not_expr(p);
     while (p->cur.kind == TOK_AND) n = binop(p, n, TOK_AND, not_expr);
     return n;
 }
 
-static AksaNode *expr(Par *p) {
+static AksaNode *expr_body(Par *p) {
     AksaNode *n = and_expr(p);
     while (p->cur.kind == TOK_OR) n = binop(p, n, TOK_OR, and_expr);
+    return n;
+}
+
+static AksaNode *expr(Par *p) {
+    if (++p->depth > PARSE_DEPTH_MAX) { p->depth--; return too_deep(p); }
+    AksaNode *n = expr_body(p);
+    p->depth--;
     return n;
 }
 
@@ -208,7 +249,7 @@ static int starts_expr(AksaTokKind k) {
 
 static AksaNode *statement(Par *p);
 
-static AksaNode *block(Par *p) {
+static AksaNode *block_body(Par *p) {
     AksaNode *b = aksa_node_new(AST_BLOCK, p->cur.line, p->cur.col);
     if (!expect(p, TOK_LBRACE, "{")) return b;
     while (p->cur.kind != TOK_RBRACE && p->cur.kind != TOK_EOF) {
@@ -219,6 +260,13 @@ static AksaNode *block(Par *p) {
     }
     expect(p, TOK_RBRACE, "}");
     return b;
+}
+
+static AksaNode *block(Par *p) {
+    if (++p->depth > PARSE_DEPTH_MAX) { p->depth--; return too_deep(p); }
+    AksaNode *n = block_body(p);
+    p->depth--;
+    return n;
 }
 
 static AksaNode *assign_stmt(Par *p, int decl) {
@@ -237,7 +285,7 @@ static AksaNode *assign_stmt(Par *p, int decl) {
     return n;
 }
 
-static AksaNode *if_stmt(Par *p) {
+static AksaNode *if_stmt_body(Par *p) {
     AksaToken t = p->cur;
     padvance(p); /* IF */
     AksaNode *n = aksa_node_new(AST_IF, t.line, t.col);
@@ -247,6 +295,13 @@ static AksaNode *if_stmt(Par *p) {
     n->b = block(p);
     if (match(p, TOK_ELSE))
         n->c = p->cur.kind == TOK_IF ? if_stmt(p) : block(p);
+    return n;
+}
+
+static AksaNode *if_stmt(Par *p) {
+    if (++p->depth > PARSE_DEPTH_MAX) { p->depth--; return too_deep(p); }
+    AksaNode *n = if_stmt_body(p);
+    p->depth--;
     return n;
 }
 
@@ -325,6 +380,8 @@ AksaNode *aksa_parse(const char *src, const AksaLocale *loc, AksaErrors *errs) {
     aksa_lexer_init(&p.lx, src, loc, errs);
     p.errs = errs;
     p.panic = 0;
+    p.depth = 0;
+    p.overflow = 0;
     p.next.kind = TOK_EOF;
     padvance(&p); /* prime next */
     padvance(&p); /* prime cur */
