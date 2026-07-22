@@ -4,6 +4,11 @@
 
 ### Added
 
+- Send a program to a real board straight from the terminal: `make aksa-flash FILE=your.aksa`.
+
+### Fixed
+
+- Sending to an ESP32-C6 board from the browser no longer drops the connection mid-way.
 - One command to start the tool that sends your code to a real board: `make server`.
 
 ## 0.0.4 — 2026-07-19

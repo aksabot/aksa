@@ -67,14 +67,15 @@ Run `aksa` from the repo root so it finds `locales/`.
 
 ### Flash a real ESP32 (C3/C6)
 
-Needs Chrome/Edge (WebSerial), `bun`, and the esp32 core (`arduino-cli core install esp32:esp32`). No Docker required — the compile server runs natively.
+Straight from the terminal — needs `bun` and the esp32 core (`arduino-cli core install esp32:esp32`). No Docker, no browser, no server.
 
 ```sh
-make server                           # compile server on :8765 (leave running)
-make play && python3 -m http.server 8000
+make aksa-flash FILE=examples/kedip.aksa          # emit → compile → upload
+# defaults: LOCALE=id BOARD=c6, port = first /dev/cu.usbmodem*
+# override: make aksa-flash FILE=x.aksa BOARD=c3 DEVICE_PORT=/dev/cu.usbmodem1101
 ```
 
-Then open `http://localhost:8000/play/device.html` in Chrome, plug in the board, and click send — the chip is auto-detected, compiled, and flashed.
+The browser path (`play/device.html` + `make server`) exists too, but esptool-js loses the port when the C6's native USB re-enumerates on reset — the terminal path above is the reliable one for now.
 
 ## The language (v1)
 

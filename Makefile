@@ -53,6 +53,12 @@ device:
 device-flash: device
 	arduino-cli upload --fqbn $(DEVICE_FQBN) -p $(DEVICE_PORT) device/sketch
 
+# Flash one Aksa program to a plugged-in board, no browser/server:
+#   make aksa-flash FILE=examples/kedip.aksa       (defaults: LOCALE=id BOARD=c6)
+BOARD ?= c6
+aksa-flash: aksa
+	./flash.sh $(FILE) $(LOCALE) $(BOARD) $(DEVICE_PORT)
+
 wasm: wasm/aksa.js
 
 play: wasm/aksa.js play/dist/main.js
@@ -71,4 +77,4 @@ clean:
 	rm -f aksa tests/test_lexer tests/test_locale tests/test_parser tests/test_checker tests/test_vm wasm/aksa.js wasm/aksa.wasm
 	rm -rf play/dist device/sketch
 
-.PHONY: test diff test-server server typecheck wasm play device device-flash clean
+.PHONY: test diff test-server server typecheck wasm play device device-flash aksa-flash clean

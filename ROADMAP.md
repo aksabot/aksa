@@ -12,14 +12,15 @@
 - [x] P3: hardware simulator (virtual board: 3 LEDs, button, slider, buzzer, fan; pin builtins + non-blocking tunggu; examples dropdown; headless CLI board for 10 golden tests)
 - [x] P4: C emitter (`aksa emit`) + tiny value runtime + sim/esp32 HAL; differential tests (`tests/diff.sh`) prove emitted C compiles `-Werror` and matches the VM on all golden ok/err programs (E109 depth excluded)
 - [x] P5: compile server (Bun + arduino-cli in Docker, ESP32) + browser flasher (esptool-js) + serial monitor; flash path untested on a real board
-- [ ] P5 deferred: test on real ESP32; `tanya` on device (serial read in HAL); Pico/UF2; per-IP rate limit; build+test Docker image (no Docker locally); flash.js: call requestPort() before compile (fail fast if no board + avoid user-gesture timeout)
+- [x] P5b: flash verified on real ESP32-C6. Terminal: `make aksa-flash FILE=x.aksa` (flash.sh: emit→sketch→arduino-cli upload), auto-runs. Browser (play/device.html): manual download-mode (BOOT+RESET) + esptool-js `no_reset` flashes reliably — fixed the "device has been lost".
+- [ ] P5 deferred: browser auto-reboot-to-run on C6 native-USB (RTS/DTR pulse doesn't reboot via USB-JTAG controller → user taps RESET after flashing); `tanya` on device (serial read in HAL); Pico/UF2; per-IP rate limit; build+test Docker image (no Docker locally)
 - [x] P6g: reference-counted heap strings in emitted C (rt.c); loops that build text free per-iteration, no leak on device; tests/mem.sh (AK_LIVE=0) + ASan-clean corpus
 - [x] P6a (language only): IDE split into language page (lessons+turtle) and device page (board+flash); 15 graded lessons (id+en), basic→middle→advanced; share via URL hash
 - [x] P6c: drawing cursor renamed turtle→robot, arrow replaced with a robot character (rounded body, eyes, nose showing heading)
 - [x] P6d: lessons split into one file per locale (lessons.id.js/lessons.en.js), lessons.js just assembles the map
 - [x] P6e: all JS → strict TypeScript (web+server, bun-native); tsconfig + `make typecheck`
 - [x] P6f: auto-detect chip on flash (esptool-js CHIP_NAME → board); compile targets esp32c3/esp32c6, bootloader at 0x0; others rejected
-- [ ] P6b: more locales; device lesson track after real-board testing; per-board GPIO pin map (C3 vs C6). Deliverable: Aksabot C6 pin map (named components → GPIO)
+- [ ] P6b: more locales; device lesson track after real-board testing; per-board GPIO pin map (C3 vs C6). Deliverable: Aksabot C6 pin map. First point verified: C6 Super Mini user LED = GPIO15 (GPIO8 is a strapping pin, not a plain LED; "BAT" LED = charge status)
 - [ ] P7: on-device runtime — ESP32-C3 is its own hotspot + editor + interpreter (`make device` / `device-flash`); compiles at 78% flash; check off after real-board test (LED polarity, heap, both locales)
 - [ ] P8: Aksabot (closed kit, ESP32-C6) — reuse P7 AP+editor+on-chip VM; board profile (named components via generated `buat name = gpio` preamble); 3 new snake_case builtins (`atur`/pin_pwm, `sudut`/servo_write, `baca_jarak`/pin_read_distance) + HAL (esp32/sim); hardware lesson track (parallel to 15 screen lessons). v1 editor = text
 - [ ] Production order (Aksabot): 1 prototype from off-the-shelf modules → prove C6 software → prove curriculum with kids → PCB+casing → mass. No PCB before wiring+curriculum validated

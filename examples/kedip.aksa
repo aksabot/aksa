@@ -1,0 +1,7 @@
+// Kedipkan LED di pin 8 terus-menerus.
+selama (benar) {
+  nyalakan(15)
+  tunggu(1000)
+  matikan(15)
+  tunggu(1000)
+}

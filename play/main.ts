@@ -14,6 +14,7 @@ interface UIStrings {
   share: string; copied: string;
   flash: string; flashing: string; disconnect: string;
   flashFail: string; serverBusy: string; unsupportedDevice: string;
+  downloadHint: string; pressReset: string;
   noPin: (n: number) => string;
   modeDevice: string; modeLang: string;
   docs: string; docsUrl: string;
@@ -27,6 +28,8 @@ const UI: Record<string, UIStrings> = {
     flash: 'Kirim ke Perangkat', flashing: 'Mengirim…', disconnect: 'Putus Sambungan',
     flashFail: 'Gagal mengirim ke perangkat', serverBusy: 'Server sibuk — coba lagi sebentar',
     unsupportedDevice: 'Perangkat ini belum didukung',
+    downloadHint: '1) Tahan tombol BOOT, tekan RESET sekali, lepas BOOT.\n2) Baru pilih port papannya.',
+    pressReset: 'Terkirim! Tekan tombol RESET di papan untuk menjalankannya.',
     noPin: (n: number) => `Tidak ada pin ${n} di papan`,
     modeDevice: '🔌 Mode Perangkat', modeLang: '🤖 Mode Bahasa',
     docs: '📖 Panduan', docsUrl: 'https://docs.aksabot.com/id',
@@ -44,6 +47,8 @@ const UI: Record<string, UIStrings> = {
     flash: 'Send to Device', flashing: 'Sending…', disconnect: 'Disconnect',
     flashFail: 'Could not send to the device', serverBusy: 'Server is busy — try again in a moment',
     unsupportedDevice: 'This device is not supported yet',
+    downloadHint: '1) Hold BOOT, press RESET once, release BOOT.\n2) Then pick the board’s port.',
+    pressReset: 'Sent! Press the RESET button on the board to run it.',
     noPin: (n: number) => `There is no pin ${n} on the board`,
     modeDevice: '🔌 Device Mode', modeLang: '🤖 Language Mode',
     docs: '📖 Guide', docsUrl: 'https://docs.aksabot.com',
@@ -348,8 +353,10 @@ async function init(M: AksaM) {
     flashBtn.disabled = true;
     flashBtn.textContent = ui().flashing;
     consoleEl.textContent = '';
+    put(ui().downloadHint + '\n', 'info');
     try {
       await flasher.deploy(src, localeSel.value);
+      put(ui().pressReset + '\n', 'info');
       flashState = 'monitoring';
       flashBtn.disabled = false;
       applyLabels();

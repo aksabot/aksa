@@ -35,7 +35,15 @@ export class Flasher {
         baudrate: 921600,
         terminal: { clean() {}, write: (t: string) => put(t, 'info'), writeLine: (t: string) => put(t + '\n', 'info') },
       });
-      await loader.main();
+      // Native USB-Serial-JTAG (C3/C6) re-enumerates whenever the chip is
+      // reset, and WebSerial can't re-acquire a re-enumerated device without a
+      // fresh user gesture — so esptool-js's auto-reset drops the port
+      // ("device has been lost"). Instead the board is put in download mode by
+      // hand (hold BOOT, tap RESET) and we connect with no_reset: no reset, no
+      // re-enumeration mid-flash. ponytail: the manual button press is the
+      // ceiling; auto needs a WebSerial reconnect-after-enumerate dance
+      // esptool-js doesn't do here.
+      await loader.main('no_reset');
       const board = CHIP[loader.chip.CHIP_NAME];
       if (!board) throw new Error('unsupported_chip');
 
@@ -55,7 +63,18 @@ export class Flasher {
         eraseAll: false,
         compress: true,
       });
-      await loader.after('hard_reset');
+      // Reboot into run mode. esptool-js's HardReset only *releases* RTS (it
+      // assumes RTS was already asserted), which on native USB-JTAG doesn't
+      // pulse EN — the board just keeps running the download stub, so nothing
+      // happens until someone taps RESET. Pulse EN ourselves (true→false), the
+      // same "reset via RTS pin" esptool.py does. The reboot re-enumerates USB,
+      // so a swallowed device-lost mid-pulse is expected.
+      try {
+        await transport.setDTR(false); // boot pin HIGH — reset into run, not download
+        await transport.setRTS(true); // EN low → reset (setRTS re-applies DTR=high)
+        await new Promise((r) => setTimeout(r, 100));
+        await transport.setRTS(false); // EN high → boot the flashed app
+      } catch { /* re-enumerated mid-pulse — the board is already rebooting */ }
     } finally {
       await transport.disconnect().catch(() => {});
     }
@@ -64,7 +83,13 @@ export class Flasher {
   // Read serial output line by line until disconnect(). Runtime errors arrive
   // as "! E101 3:0 <already-localized message>" — shown in error styling.
   async monitor() {
-    await this.port!.open({ baudRate: 115200 });
+    // The flash reset just re-enumerated the device; give the re-appearing
+    // port a few tries to open, and give up quietly rather than surfacing a
+    // monitor hiccup as a flash failure.
+    for (let i = 0; ; i++) {
+      try { await this.port!.open({ baudRate: 115200 }); break; }
+      catch { if (i >= 8) return; await new Promise((r) => setTimeout(r, 250)); }
+    }
     this.reader = this.port!.readable.getReader();
     const dec = new TextDecoder();
     let buf = '';
