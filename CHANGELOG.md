@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.8 — 2026-07-24
+
+### Fixed
+
+- Long-running programs no longer slow the browser: the output box keeps only recent lines.
+
 ## 0.0.7 — 2026-07-23
 
 ### Changed

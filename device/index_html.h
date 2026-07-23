@@ -48,7 +48,9 @@ $('run').onclick=async function(){
     try{
       var r=await fetch('/output');
       var t=await r.text();
-      if(t){$('out').textContent+=t;$('out').scrollTop=$('out').scrollHeight;}
+      if(t){var o=$('out');o.textContent+=t;
+        if(o.textContent.length>4000)o.textContent=o.textContent.slice(-4000);
+        o.scrollTop=o.scrollHeight;}
       if(r.headers.get('X-Running')!='1'&&!t){
         stopPoll();
         if(!$('out').textContent)$('out').textContent=en?'(done)':'(selesai)';
