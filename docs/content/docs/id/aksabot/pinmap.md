@@ -45,6 +45,6 @@ Setiap komponen Aksabot punya nama. Papan menghasilkan pembuka `buat nama = pin`
 // Lampu malam: makin gelap, makin terang
 selama benar {
     atur(lampu, 100 - baca_analog(cahaya))
-    tunggu(100)
+    tunggu(1)
 }
 ```

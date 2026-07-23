@@ -6,5 +6,5 @@ ulangi 30 {
     } lainnya {
         matikan(kipas)
     }
-    tunggu(200)
+    tunggu(0.2)
 }

@@ -21,7 +21,7 @@ A night light that dims as the room gets brighter:
 selama benar {
     buat terang = baca_analog(sensor)
     atur(lampu, 100 - terang)
-    tunggu(100)
+    tunggu(1)
 }
 ```
 
@@ -33,7 +33,7 @@ selama benar {
     jika (baca_jarak(sonar) < 10) {
         nyalakan(alarm)
     }
-    tunggu(500)
+    tunggu(1)
 }
 ```
 

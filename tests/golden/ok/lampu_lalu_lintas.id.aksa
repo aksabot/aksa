@@ -1,11 +1,11 @@
 ulangi 3 {
     nyalakan(1)
-    tunggu(1000)
+    tunggu(1)
     matikan(1)
     nyalakan(2)
-    tunggu(400)
+    tunggu(0.4)
     matikan(2)
     nyalakan(3)
-    tunggu(1000)
+    tunggu(1)
     matikan(3)
 }

@@ -1,9 +1,9 @@
 nyalakan(6)
-tunggu(300)
+tunggu(0.3)
 matikan(6)
 buat hitungan = 0
 selama (baca(4) == 0 dan hitungan < 50) {
     hitungan = hitungan + 1
-    tunggu(100)
+    tunggu(0.1)
 }
 tulis("Waktu reaksimu:", hitungan)

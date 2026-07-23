@@ -302,7 +302,7 @@ Ak ak_pin_read_analog(Ak pin) {
     ak_release(pin);
     return ak_num(r);
 }
-Ak ak_wait(Ak ms) { hal_wait(ak_asnum(ms)); ak_release(ms); return ak_nil(); }
+Ak ak_wait(Ak sec) { hal_wait(ak_asnum(sec) * 1000.0); ak_release(sec); return ak_nil(); }
 Ak ak_unsupported(const char *name, int line) {
     aksa_rt_error("E106", line, name);
     return ak_nil();

@@ -1,6 +1,6 @@
 ulangi 5 {
     nyalakan(1)
-    tunggu(300)
+    tunggu(0.3)
     matikan(1)
-    tunggu(300)
+    tunggu(0.3)
 }

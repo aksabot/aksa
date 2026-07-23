@@ -4,5 +4,5 @@ ulangi 20 {
     } lainnya {
         matikan(2)
     }
-    tunggu(100)
+    tunggu(0.1)
 }

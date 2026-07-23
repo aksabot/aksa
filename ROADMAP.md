@@ -30,3 +30,4 @@
 - [x] Docs site (docs.aksabot.com): static bosia app in `docs/` — en + /id, language guide, builtins/errors/CLI reference, 15 lessons, Aksabot section, search, llms.txt, Cloudflare deploy
 - [x] Web redesign: playful kid theme (Lilita One/Nunito, sky bg, bouncy buttons); both pages, mobile stack <800px; brand + canvas cursor use favicon robot (antenna ball = pen color)
 - [x] Play deploy (play.aksabot.com): CI builds wasm (emsdk) + bundle, flattens play/+wasm/+locales/ into site/, Cloudflare Pages `aksa-play`
+- [x] `tunggu` unit = seconds (kid-friendly); decimals for sub-second (`0.1`=100ms). `ak_wait` ×1000 in `core/rt.c`; examples/docs/golden updated

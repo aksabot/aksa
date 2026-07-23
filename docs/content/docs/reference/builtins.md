@@ -36,7 +36,7 @@ These work against the virtual board in the browser and against real pins on a d
 | `turn_off(pin)`    | `matikan(pin)`    | Turn a pin off                                |
 | `read(pin)`        | `baca(pin)`       | Read a digital pin (button pressed or not)    |
 | `read_analog(pin)` | `baca_analog(pin)`| Read an analog pin (slider, sensor)           |
-| `wait(ms)`         | `tunggu(ms)`      | Pause for `ms` milliseconds (page stays alive)|
+| `wait(sec)`        | `tunggu(detik)`   | Pause for `sec` seconds; decimals allowed (`0.1` = 100ms) |
 
 ## Example
 

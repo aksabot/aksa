@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.7 — 2026-07-23
+
+### Changed
+
+- `tunggu` now waits in seconds, not milliseconds: `tunggu(1)` = 1 second, `tunggu(0.1)` = a blink.
+
 ## 0.0.6 — 2026-07-22
 
 ### Added

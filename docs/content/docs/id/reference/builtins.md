@@ -36,7 +36,7 @@ Perintah ini bekerja pada papan virtual di browser dan pada pin sungguhan di per
 | `matikan(pin)`     | `turn_off(pin)`    | Matikan pin                                      |
 | `baca(pin)`        | `read(pin)`        | Baca pin digital (tombol ditekan atau tidak)     |
 | `baca_analog(pin)` | `read_analog(pin)` | Baca pin analog (slider, sensor)                 |
-| `tunggu(ms)`       | `wait(ms)`         | Jeda `ms` milidetik (halaman tetap hidup)        |
+| `tunggu(detik)`    | `wait(sec)`        | Jeda `detik` detik; boleh desimal (`0.1` = 100md) |
 
 ## Contoh
 
