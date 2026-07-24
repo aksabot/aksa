@@ -1,6 +1,6 @@
 fungsi hitung(n) {
   jika (n == 0) { kembali 0 }
-  tulis(n)
+  cetak(n)
   kembali hitung(n - 1)
 }
 hitung(3)

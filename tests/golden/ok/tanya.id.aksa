@@ -1,2 +1,2 @@
 nama = tanya("siapa namamu?")
-tulis("halo " + nama)
+cetak("halo " + nama)

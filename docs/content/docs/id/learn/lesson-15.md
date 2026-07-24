@@ -13,12 +13,12 @@ buat tebakan = 0
 selama (tebakan != rahasia) {
     tebakan = tanya("Tebak angka 1 sampai 10:")
     jika (tebakan < rahasia) {
-        tulis("Terlalu kecil!")
+        cetak("Terlalu kecil!")
     } lainnya jika (tebakan > rahasia) {
-        tulis("Terlalu besar!")
+        cetak("Terlalu besar!")
     }
 }
-tulis("Hebat! Angkanya", rahasia)
+cetak("Hebat! Angkanya", rahasia)
 ```
 
 Salin kode ini ke editor Aksa, jalankan, lalu ubah sesuatu dan jalankan lagi!

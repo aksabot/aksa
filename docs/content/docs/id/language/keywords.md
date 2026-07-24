@@ -26,17 +26,17 @@ Aksa punya tepat 13 kata kunci. Tidak ada yang tertanam di kode — lexer membac
 ```aksa
 buat umur = 9              // 'buat' opsional: umur = 9 juga bisa
 jika (umur > 7) {
-  tulis("anak besar")
+  cetak("anak besar")
 } lainnya {
-  tulis("anak kecil")
+  cetak("anak kecil")
 }
 
 i = 3
 selama (i > 0) {
-  tulis(i)
+  cetak(i)
   i = i - 1
   jika (i == 1) { berhenti }
 }
 ```
 
-Perintah bawaan seperti `tulis` dan `maju` bukan kata kunci — mereka berasal dari tabel pustaka standar dan juga dilokalkan. Lihat [Perintah Bawaan](/id/reference/builtins).
+Perintah bawaan seperti `cetak` dan `maju` bukan kata kunci — mereka berasal dari tabel pustaka standar dan juga dilokalkan. Lihat [Perintah Bawaan](/id/reference/builtins).

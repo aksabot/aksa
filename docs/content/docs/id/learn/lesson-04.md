@@ -9,7 +9,7 @@ Program bisa bertanya kepadamu dengan perintah 'tanya'. Jawabanmu tersimpan di v
 
 ```aksa
 nama = tanya("Siapa namamu?")
-tulis("Halo,", nama, "! Senang bertemu denganmu")
+cetak("Halo,", nama, "! Senang bertemu denganmu")
 ```
 
 Salin kode ini ke editor Aksa, jalankan, lalu ubah sesuatu dan jalankan lagi!

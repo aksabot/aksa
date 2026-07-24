@@ -10,7 +10,7 @@ Mau tahu sedang di putaran ke berapa? Buat sebuah penghitung, lalu tambah 1 di s
 ```aksa
 buat i = 1
 ulangi 5 {
-    tulis("Langkah ke", i)
+    cetak("Langkah ke", i)
     i = i + 1
 }
 ```

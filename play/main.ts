@@ -38,7 +38,7 @@ const UI: Record<string, UIStrings> = {
       'Tombol → Lampu': 'ulangi 20 {\n    jika (baca(4) == 1) {\n        nyalakan(2)\n    } lainnya {\n        matikan(2)\n    }\n    tunggu(1)\n}\n',
       'Kipas Saat Panas': 'buat sensor = 5\nbuat kipas = 7\nulangi 30 {\n    jika (baca_analog(sensor) > 30) {\n        nyalakan(kipas)\n    } lainnya {\n        matikan(kipas)\n    }\n    tunggu(1)\n}\n',
       'Lampu Lalu Lintas': 'ulangi 3 {\n    nyalakan(1)\n    tunggu(1)\n    matikan(1)\n    nyalakan(2)\n    tunggu(1)\n    matikan(2)\n    nyalakan(3)\n    tunggu(1)\n    matikan(3)\n}\n',
-      'Permainan Reaksi': 'nyalakan(6)\ntunggu(1)\nmatikan(6)\nbuat hitungan = 0\nselama (baca(4) == 0 dan hitungan < 50) {\n    hitungan = hitungan + 1\n    tunggu(1)\n}\ntulis("Waktu reaksimu:", hitungan)\n',
+      'Permainan Reaksi': 'nyalakan(6)\ntunggu(1)\nmatikan(6)\nbuat hitungan = 0\nselama (baca(4) == 0 dan hitungan < 50) {\n    hitungan = hitungan + 1\n    tunggu(1)\n}\ncetak("Waktu reaksimu:", hitungan)\n',
     },
   },
   en: {

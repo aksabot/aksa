@@ -10,10 +10,10 @@ description: "'selama' mengulang terus selama syaratnya masih benar."
 ```aksa
 buat angka = 5
 selama (angka > 0) {
-    tulis(angka)
+    cetak(angka)
     angka = angka - 1
 }
-tulis("Meluncur! 🚀")
+cetak("Meluncur! 🚀")
 ```
 
 Salin kode ini ke editor Aksa, jalankan, lalu ubah sesuatu dan jalankan lagi!

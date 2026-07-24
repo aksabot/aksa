@@ -7,7 +7,7 @@ Fungsi adalah perintah buatanmu sendiri. Tulis resepnya sekali, lalu panggil nam
 
 ```aksa
 fungsi sapa(nama) {
-    tulis("Halo,", nama, "!")
+    cetak("Halo,", nama, "!")
 }
 sapa("Aksa")
 sapa("Bima")
@@ -22,7 +22,7 @@ Fungsi bisa memberi jawaban dengan `kembali`:
 fungsi luas(sisi) {
     kembali sisi * sisi
 }
-tulis("Luas kotak sisi 5:", luas(5))
+cetak("Luas kotak sisi 5:", luas(5))
 ```
 
 Fungsi bisa memanggil dirinya sendiri dan fungsi lain — rekursi bekerja:
@@ -32,7 +32,7 @@ fungsi fib(n) {
     jika (n < 2) { kembali n }
     kembali fib(n - 1) + fib(n - 2)
 }
-tulis(fib(10))
+cetak(fib(10))
 ```
 
 ## Aturan, diperiksa sebelum apa pun berjalan

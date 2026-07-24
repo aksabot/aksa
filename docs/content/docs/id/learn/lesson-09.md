@@ -11,9 +11,9 @@ Sesuatu hanya bisa benar atau salah — tak ada di antaranya. Kamu bisa menyimpa
 buat sudah_sarapan = benar
 buat hujan = salah
 jika (sudah_sarapan dan bukan hujan) {
-    tulis("Ayo main di luar!")
+    cetak("Ayo main di luar!")
 } lainnya {
-    tulis("Kita main di dalam saja")
+    cetak("Kita main di dalam saja")
 }
 ```
 

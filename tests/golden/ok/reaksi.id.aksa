@@ -6,4 +6,4 @@ selama (baca(4) == 0 dan hitungan < 50) {
     hitungan = hitungan + 1
     tunggu(0.1)
 }
-tulis("Waktu reaksimu:", hitungan)
+cetak("Waktu reaksimu:", hitungan)

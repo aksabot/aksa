@@ -30,7 +30,7 @@ int main(void) {
     CHECK(aksa_locale_keyword(&loc, "berhenti", 8) == TOK_BREAK);
     CHECK(aksa_locale_keyword(&loc, "jik", 3) == -1);
     CHECK(aksa_locale_keyword(&loc, "if", 2) == -1); /* en keyword absent in id */
-    CHECK_STR(aksa_locale_builtin(&loc, "tulis", 5), "print");
+    CHECK_STR(aksa_locale_builtin(&loc, "cetak", 5), "print");
     CHECK(aksa_locale_builtin(&loc, "print", 5) == NULL);
 
     /* escapes: \n, \", \uXXXX (é = U+00E9) */

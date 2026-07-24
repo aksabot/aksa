@@ -1,2 +1,2 @@
 x = 2
-jika (x == 1) { tulis("satu") } lainnya jika (x == 2) { tulis("dua") } lainnya { tulis("lain") }
+jika (x == 1) { cetak("satu") } lainnya jika (x == 2) { cetak("dua") } lainnya { cetak("lain") }

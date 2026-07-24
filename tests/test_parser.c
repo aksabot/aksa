@@ -44,7 +44,7 @@ int main(void) {
     char arg[64];
 
     /* literals, calls, precedence */
-    CHECK(check_ast(&ID, "tulis(\"halo\")", "(call tulis (str \"halo\"))") == 0);
+    CHECK(check_ast(&ID, "cetak(\"halo\")", "(call cetak (str \"halo\"))") == 0);
     CHECK(check_ast(&ID, "x = 1 + 2 * 3", "(assign x (+ 1 (* 2 3)))") == 0);
     CHECK(check_ast(&ID, "x = (1 + 2) * 3", "(assign x (* (+ 1 2) 3))") == 0);
     CHECK(check_ast(&ID, "x = -2 + 3", "(assign x (+ (neg 2) 3))") == 0);
@@ -57,8 +57,8 @@ int main(void) {
     CHECK(check_ast(&ID, "x = bukan (1 == 2)", "(assign x (not (== 1 2)))") == 0);
 
     /* control flow */
-    CHECK(check_ast(&ID, "jika (benar) { tulis(1) } lainnya { tulis(2) }",
-                    "(if true (block (call tulis 1)) (block (call tulis 2)))") == 0);
+    CHECK(check_ast(&ID, "jika (benar) { cetak(1) } lainnya { cetak(2) }",
+                    "(if true (block (call cetak 1)) (block (call cetak 2)))") == 0);
     CHECK(check_ast(&ID, "jika (x > 1) { } lainnya jika (x < 0) { }",
                     "(if (> x 1) (block) (if (< x 0) (block)))") == 0);
     CHECK(check_ast(&ID, "ulangi 10 { maju(50) }", "(repeat 10 (block (call maju 50)))") == 0);
@@ -71,10 +71,10 @@ int main(void) {
                     "(func f (params) (block (return)))") == 0);
 
     /* multiple top-level statements */
-    CHECK(check_ast(&ID, "x = 1\ntulis(x)", "(assign x 1)\n(call tulis x)") == 0);
+    CHECK(check_ast(&ID, "x = 1\ncetak(x)", "(assign x 1)\n(call cetak x)") == 0);
 
     /* string escapes are decoded into the AST */
-    CHECK(check_ast(&ID, "tulis(\"a\\nb\")", "(call tulis (str \"a\nb\"))") == 0);
+    CHECK(check_ast(&ID, "cetak(\"a\\nb\")", "(call cetak (str \"a\nb\"))") == 0);
 
     /* locale invariance: same structure from en source */
     CHECK(check_ast(&EN, "function add(a, b) { return a + b }",
@@ -93,10 +93,10 @@ int main(void) {
     }
 
     /* errors: missing ')' */
-    CHECK_STR(err_id(&ID, "tulis(1", 0, &n, arg, sizeof arg), "E005");
+    CHECK_STR(err_id(&ID, "cetak(1", 0, &n, arg, sizeof arg), "E005");
     CHECK_STR(arg, ")");
     /* missing '}' */
-    CHECK_STR(err_id(&ID, "jika (benar) { tulis(1)", 0, &n, arg, sizeof arg), "E005");
+    CHECK_STR(err_id(&ID, "jika (benar) { cetak(1)", 0, &n, arg, sizeof arg), "E005");
     CHECK_STR(arg, "}");
     /* missing '=' after buat name */
     CHECK_STR(err_id(&ID, "buat x 5", 0, &n, arg, sizeof arg), "E005");
@@ -106,7 +106,7 @@ int main(void) {
     CHECK_STR(err_id(&ID, "}", 0, &n, arg, sizeof arg), "E004");
     CHECK_STR(arg, "}");
     /* recovery: two independent errors both reported */
-    err_id(&ID, "tulis(1\ntulis(2\ntulis(3)", 0, &n, NULL, 0);
+    err_id(&ID, "cetak(1\ncetak(2\ncetak(3)", 0, &n, NULL, 0);
     CHECK(n == 2);
     /* lexer errors flow through, parser doesn't double-report */
     err_id(&ID, "x = @", 0, &n, arg, sizeof arg);
@@ -118,7 +118,7 @@ int main(void) {
     /* dump includes localized error lines */
     {
         int nerr = 0;
-        char *out = aksa_dump_ast("tulis(1", &ID, &nerr);
+        char *out = aksa_dump_ast("cetak(1", &ID, &nerr);
         CHECK(nerr == 1);
         CHECK(strstr(out, "! E005") != NULL);
         CHECK(strstr(out, "yang hilang") != NULL);

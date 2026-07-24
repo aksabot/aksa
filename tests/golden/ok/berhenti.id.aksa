@@ -2,5 +2,5 @@ i = 0
 selama (benar) {
   i = i + 1
   jika (i == 3) { berhenti }
-  tulis(i)
+  cetak(i)
 }

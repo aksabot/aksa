@@ -1,2 +1,2 @@
 x = 1
-tulis(x / 0)
+cetak(x / 0)

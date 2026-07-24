@@ -1,2 +1,2 @@
-tulis("umur: " + 9)
-tulis("ak" + "sa")
+cetak("umur: " + 9)
+cetak("ak" + "sa")

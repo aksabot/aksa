@@ -7,4 +7,4 @@ fungsi jumlah(n) {
   }
   kembali total
 }
-tulis(jumlah(5))
+cetak(jumlah(5))

@@ -1,2 +1,2 @@
 buat nama = "Aksa"
-tulis("halo " + nama)
+cetak("halo " + nama)

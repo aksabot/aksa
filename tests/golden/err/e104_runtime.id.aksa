@@ -1,2 +1,2 @@
 x = tanya()
-tulis(x - 1)
+cetak(x - 1)

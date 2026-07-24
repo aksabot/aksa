@@ -1,5 +1,5 @@
 i = 3
 selama (i > 0) {
-  tulis(i)
+  cetak(i)
   i = i - 1
 }

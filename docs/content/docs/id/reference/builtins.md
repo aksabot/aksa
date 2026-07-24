@@ -9,7 +9,7 @@ Perintah bawaan adalah perintah yang sudah disertakan Aksa. Seperti kata kunci, 
 
 | Indonesia  | Inggris    | Fungsinya                                         |
 | ---------- | ---------- | ------------------------------------------------- |
-| `tulis(…)` | `print(…)` | Tampilkan nilai di layar (isian berapa pun)       |
+| `cetak(…)` | `print(…)` | Tampilkan nilai di layar (isian berapa pun)       |
 | `tanya(…)` | `ask(…)`   | Ajukan pertanyaan dan tunggu jawabannya           |
 
 ## Robot (menggambar)

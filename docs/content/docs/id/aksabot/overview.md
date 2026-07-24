@@ -9,7 +9,7 @@ Aksabot adalah kit perangkat keras tertutup berbasis ESP32-C6, dirancang sebagai
 
 ## Tanpa komputer
 
-Papan ini adalah lingkungan koding-nya sendiri. Nyalakan dan ia menjadi hotspot Wi-Fi yang menyajikan editor Aksa — sambungkan dari ponsel, tablet, atau laptop mana pun, tulis program di browser, dan program berjalan langsung di chip. Tanpa aplikasi, tanpa instalasi, tanpa internet.
+Papan ini adalah lingkungan koding-nya sendiri. Nyalakan dan ia menjadi hotspot Wi-Fi yang menyajikan editor Aksa — sambungkan dari ponsel, tablet, atau laptop mana pun, cetak program di browser, dan program berjalan langsung di chip. Tanpa aplikasi, tanpa instalasi, tanpa internet.
 
 ## Komponen bernama, bukan nomor pin
 

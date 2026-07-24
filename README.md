@@ -21,7 +21,7 @@ fungsi sapa(nama) {
 }
 
 ulangi 3 {
-  tulis(sapa("dunia"))
+  cetak(sapa("dunia"))
 }
 ```
 
@@ -40,7 +40,7 @@ Early days — the language core works, the kid-facing environment is next.
 | Lexer, locale system (en/id, Unicode identifiers) | ✅ |
 | Parser → AST, several errors per run | ✅ |
 | Semantic checker (`aksa check`) | ✅ |
-| Bytecode VM (`aksa run`: functions, loops, `tulis`/`tanya`) | ✅ |
+| Bytecode VM (`aksa run`: functions, loops, `cetak`/`tanya`) | ✅ |
 | Browser editor, robot graphics, run controls | ✅ |
 | Hardware simulator (LEDs, sensors) | ⏳ Phase 3 |
 | Transpile to C, flash real ESP32 via WebSerial | ⏳ Phase 4–5 |

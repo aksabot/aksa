@@ -1,2 +1,2 @@
 fungsi tambah(a, b) { kembali a + b }
-tulis(tambah(2, 3))
+cetak(tambah(2, 3))

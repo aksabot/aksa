@@ -23,7 +23,7 @@ select{font-size:16px;padding:6px;border-radius:8px}
 </style></head><body>
 <div id="wrap"><pre id="hl"></pre><textarea id="src" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off">selama (benar) {
   buat data = baca_analog(0)
-  tulis(data)
+  cetak(data)
   jika (data > 700) {
     nyalakan(15)
   } lainnya {
@@ -42,7 +42,7 @@ var $=function(id){return document.getElementById(id)};
 var poll=null;
 /* ponytail: keyword list is hand-copied from locales/{id,en}.json; if a builtin
    is added there, add it here too (highlight-only, won't break the language). */
-var HL=/(\/\/[^\n]*)|("(?:[^"\\]|\\.)*")|(\b\d+(?:\.\d+)?\b)|\b(jika|lainnya|ulangi|selama|fungsi|kembali|benar|salah|dan|atau|bukan|buat|berhenti|if|else|repeat|while|function|return|true|false|and|or|not|make|stop|tulis|tanya|maju|mundur|belok_kanan|belok_kiri|warna|angkat_pena|turunkan_pena|nyalakan|matikan|baca_analog|baca|tunggu|print|ask|forward|backward|turn_right|turn_left|color|pen_up|pen_down|turn_on|turn_off|read_analog|read|wait)\b/g;
+var HL=/(\/\/[^\n]*)|("(?:[^"\\]|\\.)*")|(\b\d+(?:\.\d+)?\b)|\b(jika|lainnya|ulangi|selama|fungsi|kembali|benar|salah|dan|atau|bukan|buat|berhenti|if|else|repeat|while|function|return|true|false|and|or|not|make|stop|cetak|tanya|maju|mundur|belok_kanan|belok_kiri|warna|angkat_pena|turunkan_pena|nyalakan|matikan|baca_analog|baca|tunggu|print|ask|forward|backward|turn_right|turn_left|color|pen_up|pen_down|turn_on|turn_off|read_analog|read|wait)\b/g;
 function esc(s){return s.replace(/[&<>]/g,function(c){return c=='&'?'&amp;':c=='<'?'&lt;':'&gt;';});}
 function paint(){var s=$('src'),h=$('hl');
   h.innerHTML=esc(s.value).replace(HL,function(m,c,st,n){var t=c?'ct':st?'st':n?'nu':'kw';return '<span class='+t+'>'+m+'</span>';})+'\n';

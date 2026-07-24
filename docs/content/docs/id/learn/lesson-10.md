@@ -9,7 +9,7 @@ Fungsi adalah perintah buatanmu sendiri. Tulis resepnya sekali dengan kata kunci
 
 ```aksa
 fungsi sapa(nama) {
-    tulis("Halo,", nama, "!")
+    cetak("Halo,", nama, "!")
 }
 sapa("Aksa")
 sapa("Bima")

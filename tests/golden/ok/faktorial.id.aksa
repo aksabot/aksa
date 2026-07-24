@@ -4,4 +4,4 @@ selama (i <= 5) {
   hasil = hasil * i
   i = i + 1
 }
-tulis(hasil)
+cetak(hasil)

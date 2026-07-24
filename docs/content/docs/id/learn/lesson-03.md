@@ -10,9 +10,9 @@ Komputer jago berhitung. Pakai + untuk tambah, - untuk kurang, * untuk kali, dan
 ```aksa
 buat apel = 4
 buat jeruk = 3
-tulis("Jumlah buah:", apel + jeruk)
-tulis("Dua kali apel:", apel * 2)
-tulis("Sisa jeruk:", jeruk - 1)
+cetak("Jumlah buah:", apel + jeruk)
+cetak("Dua kali apel:", apel * 2)
+cetak("Sisa jeruk:", jeruk - 1)
 ```
 
 Salin kode ini ke editor Aksa, jalankan, lalu ubah sesuatu dan jalankan lagi!

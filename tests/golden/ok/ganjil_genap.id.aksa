@@ -1,5 +1,5 @@
 fungsi cek(n) {
-  jika (n % 2 == 0) { tulis("genap") } lainnya { tulis("ganjil") }
+  jika (n % 2 == 0) { cetak("genap") } lainnya { cetak("ganjil") }
 }
 cek(4)
 cek(7)

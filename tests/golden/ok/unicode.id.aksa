@@ -1,2 +1,2 @@
 jumlah_kué = 3
-tulis(jumlah_kué)
+cetak(jumlah_kué)

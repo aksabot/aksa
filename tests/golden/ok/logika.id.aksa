@@ -1,2 +1,2 @@
-tulis(benar, salah)
-tulis(1 < 2, bukan benar)
+cetak(benar, salah)
+cetak(1 < 2, bukan benar)

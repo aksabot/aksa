@@ -2,7 +2,7 @@ fungsi uji() {
   pesan = ""
   ulangi 50 {
     pesan = pesan + "x"
-    tulis("iter " + pesan)
+    cetak("iter " + pesan)
   }
 }
 uji()

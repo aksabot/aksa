@@ -1,6 +1,6 @@
 x = 1
 fungsi f() {
-  tulis(x)
+  cetak(x)
   x = 2
 }
 f()

@@ -45,7 +45,7 @@ const BUILTINS = [
 	"read",
 	"read_analog",
 	"wait",
-	"tulis",
+	"cetak",
 	"tanya",
 	"maju",
 	"mundur",

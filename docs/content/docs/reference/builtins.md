@@ -9,7 +9,7 @@ Builtins are the commands Aksa ships with. Like keywords, their names come from 
 
 | English    | Indonesian | What it does                                        |
 | ---------- | ---------- | --------------------------------------------------- |
-| `print(…)` | `tulis(…)` | Show values on the screen (any number of inputs)    |
+| `print(…)` | `cetak(…)` | Show values on the screen (any number of inputs)    |
 | `ask(…)`   | `tanya(…)` | Ask a question and wait for the answer              |
 
 ## Robot (drawing)

@@ -75,7 +75,7 @@ int main(void) {
 
     /* strings: slice excludes quotes; escaped quote stays inside */
     {
-        int n = lex_all(&ID, "tulis(\"halo dunia\")", t, 64, NULL);
+        int n = lex_all(&ID, "cetak(\"halo dunia\")", t, 64, NULL);
         CHECK(n == 4);
         CHECK(t[0].kind == TOK_IDENT);
         CHECK(t[1].kind == TOK_LPAREN);
@@ -109,7 +109,7 @@ int main(void) {
 
     /* comments and line/col tracking */
     {
-        int n = lex_all(&ID, "// komentar\ntulis(1)\n  jika", t, 64, NULL);
+        int n = lex_all(&ID, "// komentar\ncetak(1)\n  jika", t, 64, NULL);
         CHECK(n == 5);
         CHECK(t[0].kind == TOK_IDENT && t[0].line == 2 && t[0].col == 1);
         CHECK(t[3].kind == TOK_RPAREN && t[3].line == 2 && t[3].col == 8);
@@ -138,7 +138,7 @@ int main(void) {
     /* E002 unterminated string (EOF and newline) */
     {
         errs.count = 0;
-        lex_all(&ID, "tulis(\"oops", t, 64, &errs);
+        lex_all(&ID, "cetak(\"oops", t, 64, &errs);
         CHECK(errs.count == 1);
         CHECK_STR(errs.items[0].id, "E002");
         CHECK(errs.items[0].line == 1 && errs.items[0].col == 7);
@@ -172,9 +172,9 @@ int main(void) {
     /* dump: tokens then errors, error count reported */
     {
         int nerr = -1;
-        char *out = aksa_dump_tokens("tulis(\"halo\")", &ID, &nerr);
+        char *out = aksa_dump_tokens("cetak(\"halo\")", &ID, &nerr);
         CHECK(nerr == 0);
-        CHECK(strstr(out, "1:1 IDENT 'tulis'") != NULL);
+        CHECK(strstr(out, "1:1 IDENT 'cetak'") != NULL);
         CHECK(strstr(out, "1:7 STRING 'halo'") != NULL);
         CHECK(strstr(out, "EOF") != NULL);
         free(out);

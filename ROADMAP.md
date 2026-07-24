@@ -4,7 +4,7 @@
 - [x] P1a: locale loader + lexer (id/en, Unicode idents, E001–E003) + wasm demo page
 - [x] P1b: parser → AST (recursive descent, panic-mode recovery, `aksa ast`)
 - [x] P1c: semantic checker (`aksa check`; static E100–E111, runs before every `aksa run`)
-- [x] P1d: bytecode VM, `aksa run` (tulis/tanya, functions, loops, localized runtime errors)
+- [x] P1d: bytecode VM, `aksa run` (cetak/tanya, functions, loops, localized runtime errors)
 - [x] P1e: golden tests (40 ok + 36 error programs, `tests/golden.sh` in `make test`)
 - [x] P2a: browser run (console via WASM hooks, inline async `tanya`, stop button, instruction-budget yield)
 - [x] P2b: CodeMirror 6 editor (bun-bundled; locale-driven highlighting, live squiggles, error panel)
@@ -33,3 +33,4 @@
 - [x] Web redesign: playful kid theme (Lilita One/Nunito, sky bg, bouncy buttons); both pages, mobile stack <800px; brand + canvas cursor use favicon robot (antenna ball = pen color)
 - [x] Play deploy (play.aksabot.com): CI builds wasm (emsdk) + bundle, flattens play/+wasm/+locales/ into site/, Cloudflare Pages `aksa-play`
 - [x] `tunggu` unit = seconds (kid-friendly); decimals for sub-second (`0.1`=100ms). seconds→ms ×1000 in all 3 runtimes (`core/rt.c`, device `dev_wait`, `play/`); en examples/docs/golden updated
+- [x] Renamed id print builtin `tulis`→`cetak` (clearer "print"). One line in `locales/id.json`; runtimes dispatch on canonical `print`. Updated tests, golden .id, docs, lessons, highlighter regex

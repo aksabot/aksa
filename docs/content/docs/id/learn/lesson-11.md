@@ -11,8 +11,8 @@ Fungsi juga bisa mengembalikan jawaban dengan kata kunci 'kembali'. Panggil fung
 fungsi luas(sisi) {
     kembali sisi * sisi
 }
-tulis("Luas kotak sisi 5:", luas(5))
-tulis("Luas kotak sisi 10:", luas(10))
+cetak("Luas kotak sisi 5:", luas(5))
+cetak("Luas kotak sisi 10:", luas(10))
 ```
 
 Salin kode ini ke editor Aksa, jalankan, lalu ubah sesuatu dan jalankan lagi!

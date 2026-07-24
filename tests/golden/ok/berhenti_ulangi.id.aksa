@@ -1,2 +1,2 @@
 ulangi 5 { berhenti }
-tulis("selesai")
+cetak("selesai")

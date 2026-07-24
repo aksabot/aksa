@@ -10,9 +10,9 @@ Dengan 'jika', program bisa memilih. Kalau bagian dalam ( ) benar, jalankan blok
 ```aksa
 umur = tanya("Berapa umurmu?")
 jika (umur >= 10) {
-    tulis("Wah, kamu sudah besar!")
+    cetak("Wah, kamu sudah besar!")
 } lainnya {
-    tulis("Kamu masih kecil, tapi hebat!")
+    cetak("Kamu masih kecil, tapi hebat!")
 }
 ```
 

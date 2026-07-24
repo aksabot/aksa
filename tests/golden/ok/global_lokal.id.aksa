@@ -3,5 +3,5 @@ fungsi f() {
   x = 99
   kembali x
 }
-tulis(f())
-tulis(x)
+cetak(f())
+cetak(x)

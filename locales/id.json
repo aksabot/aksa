@@ -15,7 +15,7 @@
     "berhenti": "BREAK"
   },
   "builtins": {
-    "tulis": "print",
+    "cetak": "print",
     "tanya": "ask",
     "maju": "forward",
     "mundur": "backward",

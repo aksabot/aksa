@@ -10,9 +10,9 @@ Bagian di dalam `( )` harus bernilai benar atau salah. Saat benar, blok pertama 
 ```aksa
 umur = tanya("Berapa umurmu?")
 jika (umur >= 10) {
-    tulis("Wah, kamu sudah besar!")
+    cetak("Wah, kamu sudah besar!")
 } lainnya {
-    tulis("Kamu masih kecil, tapi hebat!")
+    cetak("Kamu masih kecil, tapi hebat!")
 }
 ```
 
@@ -20,11 +20,11 @@ Rangkaian pilihan juga bisa:
 
 ```aksa
 jika (tebakan < rahasia) {
-    tulis("Terlalu kecil!")
+    cetak("Terlalu kecil!")
 } lainnya jika (tebakan > rahasia) {
-    tulis("Terlalu besar!")
+    cetak("Terlalu besar!")
 } lainnya {
-    tulis("Tepat!")
+    cetak("Tepat!")
 }
 ```
 
@@ -48,10 +48,10 @@ Memberi `ulangi` sesuatu yang bukan angka adalah error `E110`.
 ```aksa
 buat angka = 5
 selama (angka > 0) {
-    tulis(angka)
+    cetak(angka)
     angka = angka - 1
 }
-tulis("Meluncur!")
+cetak("Meluncur!")
 ```
 
 Di browser, pengulangan tanpa akhir tidak akan pernah membekukan halaman — runtime menyerahkan giliran secara berkala dan tombol Stop selalu bekerja.
@@ -63,7 +63,7 @@ Di browser, pengulangan tanpa akhir tidak akan pernah membekukan halaman — run
 ```aksa
 i = 3
 selama (i > 0) {
-    tulis(i)
+    cetak(i)
     i = i - 1
     jika (i == 1) { berhenti }
 }

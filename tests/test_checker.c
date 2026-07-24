@@ -34,25 +34,25 @@ int main(void) {
     const char *ids[8];
 
     /* clean programs stay clean */
-    CHECK(check(&ID, "tulis(\"halo\")", ids, 0) == 0);
-    CHECK(check(&ID, "x = 5\ntulis(x + 1)", ids, 0) == 0);
+    CHECK(check(&ID, "cetak(\"halo\")", ids, 0) == 0);
+    CHECK(check(&ID, "x = 5\ncetak(x + 1)", ids, 0) == 0);
     CHECK(check(&ID,
         "fungsi fib(n) { jika (n < 2) { kembali n }\nkembali fib(n-1) + fib(n-2) }\n"
-        "tulis(fib(10))", ids, 0) == 0);
+        "cetak(fib(10))", ids, 0) == 0);
     /* turtle/hardware builtins are valid statically (E106 is runtime-only) */
     CHECK(check(&ID, "ulangi 4 { maju(50)\nbelok_kanan(90) }", ids, 0) == 0);
     /* main-loop idiom: function reads a global assigned later at top level */
-    CHECK(check(&ID, "fungsi f() { tulis(skor) }\nskor = 0\nf()", ids, 0) == 0);
+    CHECK(check(&ID, "fungsi f() { cetak(skor) }\nskor = 0\nf()", ids, 0) == 0);
     /* unknown-typed conditions (variables, calls, ask) are trusted */
     CHECK(check(&ID, "x = tanya()\njika (x == 1) { }\njika (baca(2) > 0) { }", ids, 0) == 0);
 
     /* E100: use before any assignment */
-    CHECK(check(&ID, "tulis(umur)", ids, 1) == 1);
+    CHECK(check(&ID, "cetak(umur)", ids, 1) == 1);
     CHECK_STR(ids[0], "E100");
-    CHECK(check(&ID, "tulis(x)\nx = 1", ids, 1) == 1); /* order matters */
+    CHECK(check(&ID, "cetak(x)\nx = 1", ids, 1) == 1); /* order matters */
     CHECK_STR(ids[0], "E100");
     /* local shadows global: read before assignment inside the function */
-    CHECK(check(&ID, "x = 1\nfungsi f() { tulis(x)\nx = 2 }\nf()", ids, 1) == 1);
+    CHECK(check(&ID, "x = 1\nfungsi f() { cetak(x)\nx = 2 }\nf()", ids, 1) == 1);
     CHECK_STR(ids[0], "E100");
 
     /* E102: unknown command (typo) */
@@ -68,7 +68,7 @@ int main(void) {
     CHECK_STR(ids[0], "E103");
     CHECK(check(&ID, "x = tanya(\"a\", \"b\")", ids, 1) == 1);
     CHECK_STR(ids[0], "E103");
-    CHECK(check(&ID, "tulis(1, 2, 3)", ids, 0) == 0); /* tulis is variadic */
+    CHECK(check(&ID, "cetak(1, 2, 3)", ids, 0) == 0); /* cetak is variadic */
 
     /* E104: operand type mismatch */
     CHECK(check(&ID, "x = 1 - benar", ids, 1) == 1);
@@ -105,13 +105,13 @@ int main(void) {
     /* E111: redefinition */
     CHECK(check(&ID, "fungsi f() { }\nfungsi f() { }", ids, 1) == 1);
     CHECK_STR(ids[0], "E111");
-    CHECK(check(&ID, "fungsi tulis() { }", ids, 1) == 1); /* clashes with builtin */
+    CHECK(check(&ID, "fungsi cetak() { }", ids, 1) == 1); /* clashes with builtin */
     CHECK_STR(ids[0], "E111");
     CHECK(check(&ID, "fungsi f(a, a) { }", ids, 1) == 1); /* duplicate param */
     CHECK_STR(ids[0], "E111");
 
     /* several problems reported in one pass */
-    CHECK(check(&ID, "tulis(umur)\njika (5) { }\nmaju()", ids, 3) == 3);
+    CHECK(check(&ID, "cetak(umur)\njika (5) { }\nmaju()", ids, 3) == 3);
     CHECK_STR(ids[0], "E100");
     CHECK_STR(ids[1], "E105");
     CHECK_STR(ids[2], "E103");

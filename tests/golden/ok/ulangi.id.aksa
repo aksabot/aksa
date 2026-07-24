@@ -1,1 +1,1 @@
-ulangi 3 { tulis("x") }
+ulangi 3 { cetak("x") }

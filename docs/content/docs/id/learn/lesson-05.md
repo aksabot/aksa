@@ -9,7 +9,7 @@ Malas menulis perintah yang sama berkali-kali? Pakai 'ulangi'! Semua yang ada di
 
 ```aksa
 ulangi 3 {
-    tulis("Aksa itu seru!")
+    cetak("Aksa itu seru!")
 }
 ```
 

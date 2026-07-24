@@ -73,7 +73,7 @@ description: All notable changes to Aksa.
 - Aksa now understands full program structure: if/else, loops, and functions.
 - When brackets are missing, Aksa says which one and where — and keeps checking the rest.
 - Programs now run! Loops, decisions, and your own functions all work with "aksa run".
-- You can ask questions in your program (tanya) and show answers (tulis).
+- You can ask questions in your program (tanya) and show answers (cetak).
 - Mistakes while running (like dividing by zero) are explained simply, in your language.
 - Aksa now checks your whole program before running and lists every mistake it finds.
 - It catches typos, missing variables, and wrong inputs — all at once, before anything runs.

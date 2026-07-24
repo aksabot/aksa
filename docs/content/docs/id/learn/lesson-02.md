@@ -10,7 +10,7 @@ Variabel itu seperti kotak berlabel untuk menyimpan sesuatu. Buat kotaknya denga
 ```aksa
 buat nama = "Aksa"
 buat umur = 8
-tulis(nama, "berumur", umur, "tahun")
+cetak(nama, "berumur", umur, "tahun")
 ```
 
 Salin kode ini ke editor Aksa, jalankan, lalu ubah sesuatu dan jalankan lagi!

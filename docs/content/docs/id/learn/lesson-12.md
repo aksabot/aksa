@@ -11,9 +11,9 @@ Tanda % memberi sisa pembagian. Kalau sisa dibagi 2 sama dengan 0, angkanya gena
 buat n = 1
 ulangi 10 {
     jika (n % 2 == 0) {
-        tulis(n, "genap")
+        cetak(n, "genap")
     } lainnya {
-        tulis(n, "ganjil")
+        cetak(n, "ganjil")
     }
     n = n + 1
 }

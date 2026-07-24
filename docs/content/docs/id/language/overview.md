@@ -18,7 +18,7 @@ fungsi sapa(nama) {
 }
 
 ulangi 3 {
-  tulis(sapa("dunia"))
+  cetak(sapa("dunia"))
 }
 ```
 

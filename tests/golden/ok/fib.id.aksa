@@ -2,4 +2,4 @@ fungsi fib(n) {
   jika (n < 2) { kembali n }
   kembali fib(n - 1) + fib(n - 2)
 }
-tulis(fib(10))
+cetak(fib(10))

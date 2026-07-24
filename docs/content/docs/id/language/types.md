@@ -11,11 +11,11 @@ Bilangan bulat dan desimal, dengan matematika biasa:
 
 ```aksa
 buat apel = 4
-tulis(apel + 3)     // 7
-tulis(apel * 2)     // 8
-tulis(apel / 2)     // 2
-tulis(apel - 1)     // 3
-tulis(apel % 2)     // 0 — sisa pembagian
+cetak(apel + 3)     // 7
+cetak(apel * 2)     // 8
+cetak(apel / 2)     // 2
+cetak(apel - 1)     // 3
+cetak(apel % 2)     // 0 — sisa pembagian
 ```
 
 Membagi dengan nol menghasilkan error runtime yang ramah (`E101`), bukan crash.
@@ -26,7 +26,7 @@ Teks hidup di antara tanda kutip ganda. `+` menyambung teks:
 
 ```aksa
 buat nama = "Aksa"
-tulis("halo " + nama)
+cetak("halo " + nama)
 ```
 
 Teks yang kehilangan kutip penutupnya ditangkap dengan error `E002`.
@@ -39,7 +39,7 @@ Sesuatu hanya bisa `benar` atau `salah` — tak ada di antaranya:
 buat sudah_sarapan = benar
 buat hujan = salah
 jika (sudah_sarapan dan bukan hujan) {
-  tulis("Ayo main di luar!")
+  cetak("Ayo main di luar!")
 }
 ```
 
