@@ -2,9 +2,14 @@
 
 ## 0.0.8 — 2026-07-24
 
+### Added
+
+- The on-board editor now colors keywords, text and numbers, and keeps your indent when you press Enter.
+
 ### Fixed
 
 - Long-running programs no longer slow the browser: the output box keeps only recent lines.
+- The output box no longer grows over the editor: it splits the screen evenly and scrolls.
 
 ## 0.0.7 — 2026-07-23
 

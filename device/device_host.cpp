@@ -75,7 +75,7 @@ static int dev_host(const char *canon, double num, const char *str,
   else if (strcmp(canon, "pin_read_analog") == 0)
     *result = hal_pin_read_analog(num);
   else if (strcmp(canon, "wait") == 0)
-    dev_wait(num);
+    dev_wait(num * 1000.0); /* tunggu takes seconds; dev_wait sleeps ms */
   else
     return 0; /* turtle builtins: not available on the board */
   return 1;
