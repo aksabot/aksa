@@ -5,14 +5,18 @@
 ### Changed
 
 - The command that shows things on screen is now `cetak` instead of `tulis`.
+- On the board editor, Run is greyed out while a program runs; Stop lights up only then.
 
 ### Added
 
 - The on-board editor now colors keywords, text and numbers, and keeps your indent when you press Enter.
+- The board editor remembers your last code after a refresh.
+- New design: a low-power line-follower robot board (round PCB, 8 light sensors, protected battery).
 
 ### Fixed
 
 - The board now runs cooler: it rests when idle, halves chip speed, and lowers Wi-Fi power.
+- Forever loops now stay cool automatically, even without a wait inside them.
 - `tunggu` now waits in seconds on the board and in the playground too (both were acting in milliseconds).
 - Long-running programs no longer slow the browser: the output box keeps only recent lines.
 - The output box starts short and grows with output up to half the screen, then scrolls, instead of pushing the editor away.

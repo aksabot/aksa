@@ -51,9 +51,21 @@ static int dev_yield(void *) {
   return stop_flag ? 1 : 0; /* stop only on request — forever-loops allowed */
 }
 
-/* Cheap synchronous check the VM runs once per loop iteration, so Stop works
-   even when the loop spends its time sleeping in `tunggu`. */
-static int dev_poll(void *) { return stop_flag; }
+/* Runs once per loop iteration, so Stop works even when the loop spends its time
+   sleeping in `tunggu`. Also throttles hot forever-loops (a `selama (benar)` with
+   no `tunggu`): shed ~1 ms of real sleep per THROTTLE_MS of spinning so the board
+   stays cool. A loop that already waits, or finishes within THROTTLE_MS, is
+   untouched. Lower THROTTLE_MS = cooler + slower; tune on hardware. */
+static const unsigned long THROTTLE_MS = 10;
+static int dev_poll(void *) {
+  static unsigned long last;
+  unsigned long now = millis();
+  if (now - last >= THROTTLE_MS) {
+    delay(1);
+    last = now;
+  }
+  return stop_flag;
+}
 
 /* Sleep in small chunks so Stop is noticed within ~5 ms instead of at the end
    of a long wait; delay() also feeds the watchdog. */

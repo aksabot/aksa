@@ -48,7 +48,7 @@ function esc(s){return s.replace(/[&<>]/g,function(c){return c=='&'?'&amp;':c=='
 function paint(){var s=$('src'),h=$('hl');
   h.innerHTML=esc(s.value).replace(HL,function(m,c,st,n){var t=c?'ct':st?'st':n?'nu':'kw';return '<span class='+t+'>'+m+'</span>';})+'\n';
   h.scrollTop=s.scrollTop;h.scrollLeft=s.scrollLeft;}
-$('src').addEventListener('input',paint);
+$('src').addEventListener('input',function(){paint();try{localStorage.setItem('aksa_src',$('src').value);}catch(e){}});
 $('src').addEventListener('scroll',function(){var s=$('src'),h=$('hl');h.scrollTop=s.scrollTop;h.scrollLeft=s.scrollLeft;});
 $('src').addEventListener('keydown',function(e){
   if(e.key!='Enter')return;
@@ -61,6 +61,7 @@ $('src').addEventListener('keydown',function(e){
   s.selectionStart=s.selectionEnd=p+ins.length;
   paint();
 });
+try{var sv=localStorage.getItem('aksa_src');if(sv!=null)$('src').value=sv;}catch(e){}
 paint();
 function setRunning(b){$('run').disabled=b;$('stop').disabled=!b;}
 function stopPoll(){if(poll){clearInterval(poll);poll=null;}setRunning(false);}
