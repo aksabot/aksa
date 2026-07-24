@@ -8,8 +8,10 @@
 
 ### Fixed
 
+- The board now runs cooler: it rests when idle, halves chip speed, and lowers Wi-Fi power.
+- `tunggu` now waits in seconds on the board and in the playground too (both were acting in milliseconds).
 - Long-running programs no longer slow the browser: the output box keeps only recent lines.
-- The output box no longer grows over the editor: it splits the screen evenly and scrolls.
+- The output box starts short and grows with output up to half the screen, then scrolls, instead of pushing the editor away.
 
 ## 0.0.7 — 2026-07-23
 

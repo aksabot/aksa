@@ -74,8 +74,8 @@ export class Board {
   }
 
   // waits in short slices so the stop button interrupts long pauses
-  async wait(ms: number) {
-    const end = performance.now() + ms;
+  async wait(sec: number) {
+    const end = performance.now() + sec * 1000; // tunggu takes seconds
     while (performance.now() < end && !this.opts.stopped())
       await new Promise((r) => setTimeout(r, Math.min(50, end - performance.now())));
   }

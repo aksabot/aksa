@@ -6,5 +6,5 @@ repeat 30 {
     } else {
         turn_off(fan)
     }
-    wait(200)
+    wait(0.2)
 }

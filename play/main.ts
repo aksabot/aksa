@@ -53,11 +53,11 @@ const UI: Record<string, UIStrings> = {
     modeDevice: '🔌 Device Mode', modeLang: '🤖 Language Mode',
     docs: '📖 Guide', docsUrl: 'https://docs.aksabot.com',
     examples: {
-      'Blink': 'repeat 5 {\n    turn_on(1)\n    wait(300)\n    turn_off(1)\n    wait(300)\n}\n',
-      'Button → Light': 'repeat 20 {\n    if (read(4) == 1) {\n        turn_on(2)\n    } else {\n        turn_off(2)\n    }\n    wait(100)\n}\n',
-      'Fan When Hot': 'make sensor = 5\nmake fan = 7\nrepeat 30 {\n    if (read_analog(sensor) > 30) {\n        turn_on(fan)\n    } else {\n        turn_off(fan)\n    }\n    wait(200)\n}\n',
-      'Traffic Light': 'repeat 3 {\n    turn_on(1)\n    wait(1000)\n    turn_off(1)\n    turn_on(2)\n    wait(400)\n    turn_off(2)\n    turn_on(3)\n    wait(1000)\n    turn_off(3)\n}\n',
-      'Reaction Game': 'turn_on(6)\nwait(300)\nturn_off(6)\nmake count = 0\nwhile (read(4) == 0 and count < 50) {\n    count = count + 1\n    wait(100)\n}\nprint("Your reaction time:", count)\n',
+      'Blink': 'repeat 5 {\n    turn_on(1)\n    wait(1)\n    turn_off(1)\n    wait(1)\n}\n',
+      'Button → Light': 'repeat 20 {\n    if (read(4) == 1) {\n        turn_on(2)\n    } else {\n        turn_off(2)\n    }\n    wait(1)\n}\n',
+      'Fan When Hot': 'make sensor = 5\nmake fan = 7\nrepeat 30 {\n    if (read_analog(sensor) > 30) {\n        turn_on(fan)\n    } else {\n        turn_off(fan)\n    }\n    wait(1)\n}\n',
+      'Traffic Light': 'repeat 3 {\n    turn_on(1)\n    wait(1)\n    turn_off(1)\n    turn_on(2)\n    wait(1)\n    turn_off(2)\n    turn_on(3)\n    wait(1)\n    turn_off(3)\n}\n',
+      'Reaction Game': 'turn_on(6)\nwait(1)\nturn_off(6)\nmake count = 0\nwhile (read(4) == 0 and count < 50) {\n    count = count + 1\n    wait(1)\n}\nprint("Your reaction time:", count)\n',
     },
   },
 };
@@ -177,7 +177,7 @@ async function init(M: AksaM) {
     }
     if (board) return board.op(canon, num);
     if (canon === 'wait') { // pausing still works without the board
-      const end = performance.now() + num;
+      const end = performance.now() + num * 1000; // tunggu takes seconds
       while (performance.now() < end && !stopRequested)
         await new Promise((r) => setTimeout(r, Math.min(50, end - performance.now())));
       return true;

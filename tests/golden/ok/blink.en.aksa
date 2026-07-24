@@ -1,6 +1,6 @@
 repeat 5 {
     turn_on(1)
-    wait(300)
+    wait(0.3)
     turn_off(1)
-    wait(300)
+    wait(0.3)
 }

@@ -45,7 +45,7 @@ Every Aksabot component has a name. The board generates a `make name = pin` prea
 // Night light: darker room, brighter lamp
 while true {
     set(lampu, 100 - read_analog(cahaya))
-    wait(100)
+    wait(1)
 }
 ```
 
