@@ -19,6 +19,7 @@ pre{background:#f0f0f0;border-radius:8px;padding:8px;min-height:4em;white-space:
 .row{display:flex;gap:8px}
 button{flex:1;font-size:18px;padding:10px;border:0;border-radius:8px;background:#2563eb;color:#fff}
 #stop{background:#dc2626}
+#run:disabled,#stop:disabled{background:#9ca3af;color:#e5e7eb}
 select{font-size:16px;padding:6px;border-radius:8px}
 </style></head><body>
 <div id="wrap"><pre id="hl"></pre><textarea id="src" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off">selama (benar) {
@@ -34,7 +35,7 @@ select{font-size:16px;padding:6px;border-radius:8px}
 <div class="row">
 <select id="loc"><option value="id">Indonesia</option><option value="en">English</option></select>
 <button id="run">Jalankan &#9654;</button>
-<button id="stop">Stop &#9632;</button>
+<button id="stop" disabled>Stop &#9632;</button>
 </div>
 <pre id="out"></pre>
 <script>
@@ -61,7 +62,8 @@ $('src').addEventListener('keydown',function(e){
   paint();
 });
 paint();
-function stopPoll(){if(poll){clearInterval(poll);poll=null;}}
+function setRunning(b){$('run').disabled=b;$('stop').disabled=!b;}
+function stopPoll(){if(poll){clearInterval(poll);poll=null;}setRunning(false);}
 $('run').onclick=async function(){
   $('out').textContent='';
   var en=$('loc').value=='en';
@@ -70,6 +72,7 @@ $('run').onclick=async function(){
     if(!rr.ok){$('out').textContent=(en?'Board: ':'Papan: ')+(await rr.text());return;}
   }catch(e){$('out').textContent=String(e);return;}
   stopPoll();
+  setRunning(true);
   poll=setInterval(async function(){
     try{
       var r=await fetch('/output');
