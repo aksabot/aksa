@@ -31,6 +31,12 @@ Every Aksabot component has a name. The board generates a `make name = pin` prea
 
 **15 of 15 usable pins are taken.** ADC pins (`read_analog`) are GPIO 0–6 only.
 
+## Battery sense (standard)
+
+Boards powered by an 18650 read the cell voltage on **GPIO6 / ADC1_6** through a `B+ → 100k → GPIO6 → 100k → GND` divider (plus a 100nF cap to GND). The firmware serves the level at `GET /bat` (plain 0–100). The board's "BAT" LED only shows *charging* and can't be read by code.
+
+> **Starter exception:** the Starter tier uses GPIO6 for the microphone (`suara`) and has no spare ADC, so it has **no battery sense**. Only boards with a free ADC pin reserve GPIO6 for battery.
+
 ## Pins to avoid
 
 | Pin | Reason |

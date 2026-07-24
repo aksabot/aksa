@@ -31,6 +31,12 @@ Setiap komponen Aksabot punya nama. Papan menghasilkan pembuka `buat nama = pin`
 
 **15 dari 15 pin usable terpakai.** Pin ADC (`baca_analog`) hanya GPIO 0–6.
 
+## Sensor baterai (standar)
+
+Papan yang memakai 18650 membaca tegangan sel di **GPIO6 / ADC1_6** lewat pembagi `B+ → 100k → GPIO6 → 100k → GND` (plus kapasitor 100nF ke GND). Firmware menyajikan levelnya di `GET /bat` (angka 0–100). LED "BAT" di papan hanya menandakan *sedang mengisi* dan tidak bisa dibaca kode.
+
+> **Pengecualian Starter:** tier Starter memakai GPIO6 untuk mikrofon (`suara`) dan tidak punya ADC sisa, jadi **tanpa sensor baterai**. Hanya papan dengan pin ADC bebas yang memesan GPIO6 untuk baterai.
+
 ## Pin yang dihindari
 
 | Pin | Alasan |

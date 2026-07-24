@@ -109,6 +109,26 @@ static void handleStop() {
   server.send(200, "text/plain; charset=utf-8", "ok");
 }
 
+/* Aksabot standard: an 18650 is read on GPIO6 through a 1:2 resistor divider
+   (2x100k), so the pin sees half the cell voltage — double it back. Li-ion maps
+   3.3V(empty)->0% .. 4.2V(full)->100%. Averaged to steady the noisy ADC.
+   ponytail: linear V->% is rough (Li-ion sags under load); a fine "charge me
+   soon" hint. Add a discharge-curve lookup only if real accuracy is needed. */
+#define AKSA_BAT_PIN 6
+static int batteryPercent() {
+  uint32_t mv = 0;
+  for (int i = 0; i < 8; i++) mv += analogReadMilliVolts(AKSA_BAT_PIN);
+  mv = (mv / 8) * 2;
+  int pct = ((int)mv - 3300) * 100 / (4200 - 3300);
+  return pct < 0 ? 0 : pct > 100 ? 100 : pct;
+}
+
+static void handleBattery() {
+  char buf[8];
+  snprintf(buf, sizeof buf, "%d", batteryPercent());
+  server.send(200, "text/plain; charset=utf-8", buf);
+}
+
 void setup() {
   Serial.begin(115200);
   setCpuFrequencyMhz(80); /* 160->80 (WiFi's floor): ~half the CPU heat, plenty
@@ -134,6 +154,7 @@ void setup() {
   server.on("/run", HTTP_POST, handleRun);
   server.on("/output", HTTP_GET, handleOutput);
   server.on("/stop", HTTP_POST, handleStop);
+  server.on("/bat", HTTP_GET, handleBattery);
   server.begin();
   Serial.printf("%s up at http://%s, free heap %u\n", ssid,
                 WiFi.softAPIP().toString().c_str(), ESP.getFreeHeap());
